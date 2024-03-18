@@ -1,5 +1,7 @@
 package distributed;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class Terminal {
@@ -76,6 +78,11 @@ public class Terminal {
         input.close();
     }
 
+    /**
+     * Executes the add functionality. 
+     * @param tokens The tokenized string array of the command given.
+     */
+    // NOTE: This - and the other dblike methods - should be moved to another class.
     private void add(String[] tokens){
 
         if(tokens.length == 1){
@@ -95,6 +102,7 @@ public class Terminal {
                     }
                     System.out.printf("Added hotel %s with %.2f$ per room located at %s. It has %d available rooms.\n", 
                                                 hotelName, price, region, availableRooms);
+
                 } catch (IndexOutOfBoundsException e) {
                     System.err.println("Not enough arguments for hotel. Type \"help add\", to see the syntax.");
                 } catch (NumberFormatException e){
@@ -102,7 +110,22 @@ public class Terminal {
                     System.err.println("Price must be a parseable float. Try removing any currency signs.");
                 }
                 break;
-        
+
+            case "room":
+                try {
+                    String hotel = tokens[3];
+                    Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(tokens[5]);
+                    Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(tokens[7]);
+                    System.out.printf("Added to hotel %s date range %s to %s.\n", 
+                                        hotel, startDate.toString(), endDate.toString());
+                    
+                } catch (IndexOutOfBoundsException e) {
+                    System.err.println("Not enough arguments for hotel. Type \"help add\", to see the syntax.");
+                } catch (Exception e){
+                    System.err.println(e.getMessage());
+                }
+                break;
+                
             default:        
                 System.err.println("Value after add must be \"hotel\" or \"room\".");
                 break;
