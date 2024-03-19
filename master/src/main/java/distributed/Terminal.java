@@ -8,15 +8,14 @@ public class Terminal {
     /**
      * Text printed when the "list" command is given
     */
-    private String listText = """
-            Available commands:
-            - list: Lists Available commands
-            - help (h): Prints help text
-            - hotels: Lists all hotels with all the rooms they have.
-            - add: Adds hotel or room to existing database.
-            - remove: Removes hotel or room from existing databse.
-            - book: Books a room from a hotel to a given date range.
-            """;
+    private String listText = 
+            "Available commands:" +
+            "- list: Lists Available commands" +
+            "- help (h): Prints help text" +
+            "- hotels: Lists all hotels with all the rooms they have." +
+            "- add: Adds hotel or room to existing database." +
+            "- remove: Removes hotel or room from existing databse." +
+            "- book: Books a room from a hotel to a given date range.";
 
     public Terminal(){}
 
