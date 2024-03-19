@@ -1,10 +1,7 @@
 package distributed;
+import distributed.Parser.JSONFileParser;
 
-import org.json.simple.parser.*;
-
-import java.io.FileReader;
-
-import org.json.simple.*;;
+import org.json.simple.*;
 /**
  * Hello world!
  *
@@ -13,7 +10,9 @@ public class App
 {
    public static void main( String[] args )
     {
-        testNewCapabilites();
+        if(args.length == 1 && args[0].equals("debug")){
+            testNewCapabilites();
+        }
 
         Terminal term = new Terminal();
         term.setup();
@@ -21,18 +20,17 @@ public class App
     }
 
     public static void testNewCapabilites(){
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject data = (JSONObject) parser.parse(new FileReader("src/main/java/distributed/data/initialData.json"));
-            System.out.println(( (JSONObject) data.get("hotels")).get("Four Seasons").toString());
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-            System.out.println("CWD: " + System.getProperty("user.dir"));
-        }
-
         System.out.println("Hello");
-    
+
+        JSONFileParser parser = new JSONFileParser();
+        JSONObject data = null;
+        try {
+            data = parser.parseFile();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        System.out.println(data.get("hotels"));
     }
 
 }
