@@ -34,7 +34,7 @@ public class JSONFileParserTest {
             }
                 """;
         
-        JSONFileParser parser = new JSONFileParser("src/main/java/distributed/data/dummyData.json");
+        JSONFileParser parser = new JSONFileParser("dummyData.json");
         JSONObject data = null;
         try{
             data = parser.parseFile();
@@ -62,7 +62,7 @@ public class JSONFileParserTest {
 
     @Test
     public void testExceptionFromParseFile(){
-        JSONFileParser parser = new JSONFileParser("dummyData.json");
+        JSONFileParser parser = new JSONFileParser("nonExistentData.json");
         assertThrows(FileNotFoundException.class, () -> parser.parseFile());
     }
     
