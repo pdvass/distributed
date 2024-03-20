@@ -1,0 +1,22 @@
+{
+    "Four Seasons": {
+    "name": "Four Seasons",
+    "rooms": [
+        {
+            "room1": {
+                "id": "FourSeasonsRoom1",
+                "startDate": "21/04/2024",
+                "endDate": "30/04/2024"
+            }
+        },
+        {
+            "room2": {
+                "id": "FourSeasonsRoom2",
+                "startDate": "17/04/2024",
+                "endDate": "25/04/2024"
+            }
+        }
+    ],
+    "region": "Kallithea"
+    }
+}
