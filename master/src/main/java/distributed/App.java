@@ -30,7 +30,9 @@ public class App
             System.out.println(e.getMessage());
         }
         
-        System.out.println(data.get("hotels"));
+        JSONArray hotels = (JSONArray) data.get("hotels");
+        // System.out.println(data);
+        parser.iterateJSON(hotels);
     }
 
 }
