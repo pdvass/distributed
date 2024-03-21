@@ -1,4 +1,4 @@
-package distributed.Parser;
+package distributed.JSONFileSystem;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThrows;

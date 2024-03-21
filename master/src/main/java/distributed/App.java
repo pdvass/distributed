@@ -1,9 +1,9 @@
 package distributed;
-import distributed.Parser.JSONFileParser;
+import distributed.JSONFileSystem.JSONFileParser;
 
 import org.json.simple.*;
 /**
- * Hello world!
+ * Project's entry point.
  *
  */
 public class App 
@@ -22,17 +22,22 @@ public class App
     public static void testNewCapabilites(){
         System.out.println("Hello");
 
-        JSONFileParser parser = new JSONFileParser();
+        JSONFileParser parser = new JSONFileParser("FourSeasons.json");
         JSONObject data = null;
         try {
             data = parser.parseFile();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-        JSONArray hotels = (JSONArray) data.get("hotels");
-        // System.out.println(data);
-        parser.iterateJSON(hotels);
+        parser.iterateJSON(data);
+        parser.updatePath("Pergamos");
+        try {
+            data = parser.parseFile();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        parser.iterateJSON(data);
+
     }
 
 }

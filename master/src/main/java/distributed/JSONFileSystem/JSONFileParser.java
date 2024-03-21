@@ -1,4 +1,4 @@
-package distributed.Parser;
+package distributed.JSONFileSystem;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -53,13 +53,11 @@ public class JSONFileParser {
             return;
         }
 
-
-
         // Wrapper to save all the info for each hotel in the enclosing scopes.
         // We use it to avoid the following error:
         //  Local variable hi defined in an enclosing scope must be final or effectively final. [Java(536871575)]
         // The work around is by mutating each value instead of initializing.
-        // This Struct-like represantation helps keep in mind the respective Classes implementations.
+        // This Struct-like represantation helps with keeping in mind the respective Classes implementations.
         var hotelWrapper = new Object(){
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> startDate = new ArrayList<>();
@@ -100,9 +98,8 @@ public class JSONFileParser {
         // Should be converted to logs.
         System.out.println("Hotel " + hotelWrapper.value + " in region " + hotelWrapper.region + " is Done");
         System.out.println("It has " + hotelWrapper.rooms + " rooms. Its " + 
-                        (hotelWrapper.rooms == 1 ? "room is " : "rooms are " ) + 
+                        (hotelWrapper.rooms == 1 ? "room is " : "rooms are ") + 
                 "available from " +  hotelWrapper.startDate.toString() + " to " + hotelWrapper.endDate.toString() +
                 ". The respective ids are " + hotelWrapper.id.toString());
     }
-
 }
