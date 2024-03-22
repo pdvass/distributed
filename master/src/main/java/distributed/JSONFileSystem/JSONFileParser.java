@@ -2,22 +2,31 @@ package distributed.JSONFileSystem;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+/**
+ * JSONFileParser responsible for parsing JSON files that follows the structure
+ * corresponding for hotel and room management. It is used as a tool by JSONDirManager.
+ * 
+ * @author pdvass
+ * @see JSONDirManager
+ */
 public class JSONFileParser {
-    private String path = "src/main/java/distributed/data/";
+    private String path;
 
     /**
      * Constructor that uses a path given by the user. The file must be a 
      * JSON file.
      * @param path String representing the path of the file.
      */
+    // NOTE: this should either throw or create the file if it does not exist.
     public JSONFileParser(String path){
-        this.path += path;
+        this.path = path;
     }
 
     /**
@@ -26,16 +35,17 @@ public class JSONFileParser {
      * point to a json file.
      * @param path String representing the new path of the file.
      */
-    public void updatePath(String path){
+    protected void updatePath(String path){
         this.path = this.path.replaceAll("/\\w+.json", "/" + path + ".json");
     }
 
     /**
      * Parses the file located at the path given. May throw an exception.
      * @return A JSONObject representing the data of the JSON file given.
+     * @throws FileNotFoundException If the file does not exist.
      * @throws Exception If there is a problem reading the file.
      */
-    public JSONObject parseFile() throws FileNotFoundException, Exception{
+    protected JSONObject parseFile() throws FileNotFoundException, Exception{
         JSONObject data = null;
         JSONParser parser = new JSONParser();
         // FileReader may throw an Exception.
@@ -45,7 +55,7 @@ public class JSONFileParser {
     }
 
     @SuppressWarnings("unchecked")
-    public void iterateJSON(JSONObject data){
+    protected void iterateJSON(JSONObject data){
         if(data == null){
             throw new IllegalArgumentException("data argument should not be null") ;
         }
@@ -55,7 +65,7 @@ public class JSONFileParser {
 
         // Wrapper to save all the info for each hotel in the enclosing scopes.
         // We use it to avoid the following error:
-        //  Local variable hi defined in an enclosing scope must be final or effectively final. [Java(536871575)]
+        // - Local variable hi defined in an enclosing scope must be final or effectively final. [Java(536871575)]
         // The work around is by mutating each value instead of initializing.
         // This Struct-like represantation helps with keeping in mind the respective Classes implementations.
         var hotelWrapper = new Object(){
@@ -101,5 +111,26 @@ public class JSONFileParser {
                         (hotelWrapper.rooms == 1 ? "room is " : "rooms are ") + 
                 "available from " +  hotelWrapper.startDate.toString() + " to " + hotelWrapper.endDate.toString() +
                 ". The respective ids are " + hotelWrapper.id.toString());
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void createHotelJSON(String name, String region){
+        JSONObject data = new JSONObject();
+        data.put("region", region);
+        data.put("name", name);
+        JSONArray rooms = new JSONArray();
+
+        data.put("rooms", rooms);
+        JSONObject hotel = new JSONObject();
+        hotel.put(name, data);
+        String json = hotel.toJSONString();
+
+        try {
+            FileWriter writer = new FileWriter(this.path);
+            writer.write(json);
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
