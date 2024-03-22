@@ -13,28 +13,28 @@ import org.junit.Test;
 
 public class JSONFileParserTest {
 
+    private final String path = "src/main/java/distributed/data/";
+
     @Test
     public void testParseValidity(){
         // Contents of dummy data file in a String.
         String rightAnswer = """
             {
-                "hotels": {
-                    "Pergamos": {
-                        "name": "Pergamos",
-                        "rooms": {
-                            "room1": {
-                                "id": "PergamosRoom1",
-                                "startDate": "11/04/2024",
-                                "endDate": "30/04/2024"
-                            }
-                        },
-                        "region": "Metaksourgio"
-                    }
+                "Pergamos": {
+                    "name": "Pergamos",
+                    "rooms": {
+                        "room1": {
+                            "id": "PergamosRoom1",
+                            "startDate": "11/04/2024",
+                            "endDate": "30/04/2024"
+                        }
+                    },
+                    "region": "Metaksourgio"
                 }
             }
                 """;
         
-        JSONFileParser parser = new JSONFileParser("dummyData.json");
+        JSONFileParser parser = new JSONFileParser(this.path + "dummyData.json");
         JSONObject data = null;
         try{
             data = parser.parseFile();
