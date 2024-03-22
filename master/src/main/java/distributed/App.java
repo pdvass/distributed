@@ -1,9 +1,10 @@
 package distributed;
-import distributed.Parser.JSONFileParser;
 
-import org.json.simple.*;
+// import java.util.concurrent.TimeUnit;
+import distributed.JSONFileSystem.JSONDirManager;
+
 /**
- * Hello world!
+ * Project's entry point.
  *
  */
 public class App 
@@ -21,16 +22,18 @@ public class App
 
     public static void testNewCapabilites(){
         System.out.println("Hello");
+        JSONDirManager manager = new JSONDirManager();
+        manager.addHotel("Hotel Victory", "Viktoria");
 
-        JSONFileParser parser = new JSONFileParser();
-        JSONObject data = null;
-        try {
-            data = parser.parseFile();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-        System.out.println(data.get("hotels"));
+        manager.addRoom("Hotel Victory", "19/05/2024", "29/05/2024");
+
+        // try{
+        //     TimeUnit.SECONDS.sleep(5);
+        // } catch (Exception e){
+        //     System.out.println(e.getMessage());
+        // }
+
+        // manager.removeRoom("Hotel Victory", 2);
+
     }
-
 }
