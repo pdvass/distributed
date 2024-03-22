@@ -22,7 +22,12 @@ Since Comments are not allowed in JSON, we will decribe its structure here:
                 }
             }
         ],
-        "region": "Metaksourgio"
+        "region": "Metaksourgio",
+        // For how many persons the room is
+        "persons":3,
+        "stars":3,
+        "nOfReviews": 15,
+        "imageURI":"/share/dev/images/Pergamos.png"
     }
 }
 ```
