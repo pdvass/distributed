@@ -5,6 +5,8 @@ import distributed.JSONFileSystem.JSONDirManager;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;;
 
 /**
  * Terminal to parse user input and invoke the methods that are needed.
@@ -69,10 +71,10 @@ public class Terminal {
                     System.out.println(listText);
                     break;
                 case "add":
-                    this.add(commandTokens, manager);
+                    this.add(commandTokens, in, manager);
                     break;
                 case "remove":
-                    this.remove(commandTokens, manager);
+                    this.remove(commandTokens, in, manager);
                     break;
                 case "book":
                     System.out.println("Booked a room");
@@ -91,8 +93,7 @@ public class Terminal {
      * @param tokens The tokenized string array of the command given.
      */
     // NOTE: This - and the other dblike methods - should be moved to another class.
-    private void add(String[] tokens, JSONDirManager manager){
-
+    private void add(String[] tokens, String in, JSONDirManager manager){
         if(tokens.length == 1){
             System.err.println("Not enough arguments");
             return;
@@ -100,34 +101,38 @@ public class Terminal {
         switch (tokens[1].toLowerCase()) {
             case "hotel":
                 try {
-                    String hotelName = tokens[2];
-                    int availableRooms = Integer.parseInt(tokens[3].replace('(', ' ').trim());
-                    float price = Float.parseFloat(tokens[4]);
-                    String region = tokens[5].replace(')', ' ');
+                    String[] hotelInfo = this.getCommand("add", "hotel", in);
+                    String[] info = hotelInfo[1].trim().split(" ");
+                    int availableRooms = Integer.parseInt(info[0].replace('(', ' ').trim());
+                    float price = Float.parseFloat(info[1]);
+                    String region = tokens[5].replace(')', ' ').trim();
                     if(region.trim().length() == 0){
                         System.err.println("Region is empty.");
                         return;
                     }
-                    manager.addHotel(hotelName, region);
+                    manager.addHotel(hotelInfo[0], region);
                     System.out.printf("Added hotel %s with %.2f$ per room located at %s. It has %d available rooms.\n", 
-                                                hotelName, price, region, availableRooms);
+                                        hotelInfo[0], price, region, availableRooms);
 
                 } catch (IndexOutOfBoundsException e) {
                     System.err.println("Not enough arguments for hotel. Type \"help add\", to see the syntax.");
                 } catch (NumberFormatException e){
                     System.err.println("Either Available Rooms or Price cannot be parsed. Available rooms must be a parseable integer");
                     System.err.println("Price must be a parseable float. Try removing any currency signs.");
+                } catch (Exception e){
+                    System.err.println(e.getMessage());
                 }
                 break;
 
             case "room":
                 try {
-                    String hotel = tokens[3];
-                    Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(tokens[5]);
-                    Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(tokens[7]);
-                    manager.addRoom(hotel, tokens[5], tokens[7]);
+                    String[] hotelInfo = this.getCommand("add", "room", in);
+                    String[] dates = hotelInfo[1].split(" ");
+                    Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(dates[1]);
+                    Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(dates[3]);
+                    manager.addRoom(hotelInfo[0], dates[1], dates[3]);
                     System.out.printf("Added to hotel %s date range %s to %s.\n", 
-                                        hotel, startDate.toString(), endDate.toString());
+                                hotelInfo[0], startDate.toString(), endDate.toString());
                     
                 } catch (IndexOutOfBoundsException e) {
                     System.err.println("Not enough arguments for hotel. Type \"help add\", to see the syntax.");
@@ -142,29 +147,34 @@ public class Terminal {
         }
     }
 
-    private void remove(String[] tokens, JSONDirManager manager){
+    private void remove(String[] tokens, String in, JSONDirManager manager){
         if(tokens.length == 2){
             System.err.println("Not enough arguments");
             return;
         }
+        String[] hotelInfo = new String[2];
         switch (tokens[1]) {
             case "hotel":
                 try{
-                    String hotelName = tokens[2];
-                    manager.removeHotel(hotelName);
+                    hotelInfo = this.getCommand("remove", "hotel", in);
+                    manager.removeHotel(hotelInfo[0]);
                 } catch (IndexOutOfBoundsException e){
                     System.err.println("You must give the name of the hotel which you need to remove.");
+                } catch (Exception e){
+                    System.err.println(e.getMessage());
                 }
                 break;
             case "room":
                 try {
+                    hotelInfo = this.getCommand("remove", "room", in);
                     int roomId = Integer.parseInt(tokens[2]);
-                    String hotelName = tokens[4];
-                    manager.removeRoom(hotelName, roomId);
+                    manager.removeRoom(hotelInfo[0], roomId);
                 } catch (IndexOutOfBoundsException e) {
                     System.err.println("Not enough arguments. Type \"help remove\", to see th syntax.");
                 } catch (NumberFormatException e){
                     System.err.println("RoomID must be a parseable integer");
+                } catch (Exception e){
+                    System.err.println(e.getMessage());
                 }
                 break;
             default:
@@ -187,7 +197,6 @@ public class Terminal {
         switch (tokens[1]) {
             case "add":
                 System.out.println("\"add\" Adds a hotel or a room to the database. Its syntax is as follows.");
-                System.out.println("Hotel name must be either one word or concatenated with unerscores (\"_\").");
                 System.out.println("For hotel: ");
                 System.out.println("\t~> add hotel $HOTEL_NAME ($AVAILABLE_ROOMS $PRICE $REGION)");
                 System.out.println("For room: ");
@@ -210,5 +219,47 @@ public class Terminal {
                 System.out.println("We can't help you with that command");
                 break;
         }
+    }
+
+    private String[] getCommand(String action, String object, String in) throws Exception{
+        String regex = "";
+        String[] hotelInfo = new String[2];
+        switch (action) {
+            case "add":
+                switch (object) {
+                    case "room":
+                        regex = "(?<cmd>add room to)\\s+(?<name>.+)\\s+(?<info>from .+)\\s*";
+                        break;
+                    case "hotel":
+                        regex = "(?<cmd>add hotel)\\s+(?<name>.+)\\s+(?<info>\\(.+\\))\\s*";
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "remove":
+                switch (object) {
+                    case "room":
+                        regex = "(?<cmd>remove room .+ from)\\s+(?<name>.+)\\s*(?<info>\\s*)\\s*";
+                        break;
+                    case "hotel":
+                        regex = "(?<cmd>remove hotel)\\s+(?<name>.+)\\s*(?<info>\\s*)\\s*";
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(in);
+        if(matcher.find()){
+            hotelInfo[0] = matcher.group("name");
+            hotelInfo[1] = matcher.group("info");
+        } else {
+            throw new Exception("Could not configure hotel name");
+        }
+        return hotelInfo;
     }
 }
