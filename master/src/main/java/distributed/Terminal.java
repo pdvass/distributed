@@ -137,6 +137,10 @@ public class Terminal {
                     String[] dates = hotelInfo[1].split(" ");
                     Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(dates[1]);
                     Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(dates[3]);
+                    if(startDate.after(endDate)){
+                        System.err.println("Start date must be before endDate");
+                        return;
+                    }
                     manager.addRoom(hotelInfo[0], dates[1], dates[3]);
                     System.out.printf("Added to hotel %s date range %s to %s.\n", 
                                 hotelInfo[0], startDate.toString(), endDate.toString());
@@ -257,6 +261,7 @@ public class Terminal {
             case "add":
                 switch (object) {
                     case "room":
+                        //?<somename> in regex denotes a group with name: somename.
                         regex = "(?<cmd>add room to)\\s+(?<name>.+)\\s+(?<info>from .+)\\s*";
                         break;
                     case "hotel":
