@@ -10,6 +10,7 @@ import java.util.regex.Matcher;;
 
 /**
  * Terminal to parse user input and invoke the methods that are needed.
+ * @author pdvass
  */
 public class Terminal {
     /**
@@ -88,9 +89,15 @@ public class Terminal {
         input.close();
     }
 
-    /**
-     * Executes the add functionality. 
-     * @param tokens The tokenized string array of the command given.
+   /**
+     * Uses a JSONDirManager to communicate with the file system and invoke
+     * the corresponding add function (either for hotel or room)
+     * 
+     * @param tokens String Array with the input tokenized
+     * @param in String of the user's input
+     * @param manager JSONDirManager object
+     * 
+     * @see JSONDirManager
      */
     // NOTE: This - and the other dblike methods - should be moved to another class.
     private void add(String[] tokens, String in, JSONDirManager manager){
@@ -147,6 +154,16 @@ public class Terminal {
         }
     }
 
+    /**
+     * Uses a JSONDirManager to communicate with the file system and invoke
+     * the corresponding remove function (either for hotel or room)
+     * 
+     * @param tokens String Array with the input tokenized
+     * @param in String of the user's input
+     * @param manager JSONDirManager object
+     * 
+     * @see JSONDirManager
+     */
     private void remove(String[] tokens, String in, JSONDirManager manager){
         if(tokens.length == 2){
             System.err.println("Not enough arguments");
@@ -221,7 +238,19 @@ public class Terminal {
         }
     }
 
+    /**
+     * Isolates the hotel name and remaining info of the command.
+     * 
+     * @param action The action that will be invoked. Used for taking advantage of its grammar.
+     * @param object The object on which the command will be used (hotel or room).
+     * @param in User's input
+     * @return A String array of size 2 with the hotel name and the remaining info of the command.
+     * @throws Exception If the hotel name or info cannot be configured.
+     */
     private String[] getCommand(String action, String object, String in) throws Exception{
+        // To further understand the regex expressions used for each action and object
+        // see analysis on the right side of
+        // https://regex101.com/
         String regex = "";
         String[] hotelInfo = new String[2];
         switch (action) {
@@ -258,7 +287,7 @@ public class Terminal {
             hotelInfo[0] = matcher.group("name");
             hotelInfo[1] = matcher.group("info");
         } else {
-            throw new Exception("Could not configure hotel name");
+            throw new Exception("Could not configure either hotel name or info.");
         }
         return hotelInfo;
     }
