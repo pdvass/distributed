@@ -1,31 +1,33 @@
-import java.net.*;
 import java.io.*;
+import java.net.*;
 
 public class TCPServer {
-    public static void main(String[] args) throws IOException{
-
-        String serverHostName = "localhost";
+    public static void main(String[] args) throws IOException {
+        // Define port to listen on
         int portNumber = 3389;
 
+        // Create server socket
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             System.out.println("Server is listening...");
 
+            // Accept incoming connections
             try (Socket clientSocket = serverSocket.accept();
-                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {
+                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
                 System.out.println("Connected to client.");
 
-                try (Socket serverBSocket = new Socket(serverHostName, portNumber);
-                
-                     ObjectOutputStream serverBOut = new ObjectOutputStream(serverBSocket.getOutputStream())) {
-                    serverBOut.writeObject(objToSend);
+                // Receive data from client and echo it back
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    System.out.println("Received: " + inputLine);
+                    out.println(inputLine);
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
             }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Could not listen on port " + portNumber);
+            System.exit(-1);
         }
     }
 }
