@@ -1,4 +1,8 @@
+<<<<<<< HEAD:master/src/test/java/distributed/Parser/JSONFileParserTest.java
 // package distributed.Parser;
+=======
+package distributed.JSONFileSystem;
+>>>>>>> 93ee1b50459f269eba4ff2aac4eb61416dca33b9:master/src/test/java/distributed/JSONFileSystem/JSONFileParserTest.java
 
 // import static org.junit.Assert.assertTrue;
 // import static org.junit.Assert.assertThrows;
@@ -13,6 +17,7 @@
 
 // public class JSONFileParserTest {
 
+<<<<<<< HEAD:master/src/test/java/distributed/Parser/JSONFileParserTest.java
 //     @Test
 //     public void testParseValidity(){
 //         // Contents of dummy data file in a String.
@@ -41,6 +46,36 @@
 //         } catch (Exception e){
 //             fail("Exception should not be thrown while reading the file.");
 //         }
+=======
+    private final String path = "src/main/java/distributed/data/";
+
+    @Test
+    public void testParseValidity(){
+        // Contents of dummy data file in a String.
+        String rightAnswer = """
+            {
+                "Pergamos": {
+                    "name": "Pergamos",
+                    "rooms": {
+                        "room1": {
+                            "id": "PergamosRoom1",
+                            "startDate": "11/04/2024",
+                            "endDate": "30/04/2024"
+                        }
+                    },
+                    "region": "Metaksourgio"
+                }
+            }
+                """;
+        
+        JSONFileParser parser = new JSONFileParser(this.path + "dummyData.json");
+        JSONObject data = null;
+        try{
+            data = parser.parseFile();
+        } catch (Exception e){
+            fail("Exception should not be thrown while reading the file.");
+        }
+>>>>>>> 93ee1b50459f269eba4ff2aac4eb61416dca33b9:master/src/test/java/distributed/JSONFileSystem/JSONFileParserTest.java
 
 //         // Parsing the String into the same format as the files contents.
 //         JSONParser JSONparser = new JSONParser();
@@ -60,10 +95,18 @@
 //         assertTrue(dataString.equals(rightAnswerString));
 //     }
 
+<<<<<<< HEAD:master/src/test/java/distributed/Parser/JSONFileParserTest.java
 //     @Test
 //     public void testExceptionFromParseFile(){
 //         JSONFileParser parser = new JSONFileParser("dummyData.json");
 //         assertThrows(FileNotFoundException.class, () -> parser.parseFile());
 //     }
+=======
+    @Test
+    public void testExceptionFromParseFile(){
+        JSONFileParser parser = new JSONFileParser("nonExistentData.json");
+        assertThrows(FileNotFoundException.class, () -> parser.parseFile());
+    }
+>>>>>>> 93ee1b50459f269eba4ff2aac4eb61416dca33b9:master/src/test/java/distributed/JSONFileSystem/JSONFileParserTest.java
     
 // }

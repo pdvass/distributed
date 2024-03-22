@@ -1,31 +1,41 @@
 {
-    "hotels": {
-        "Four Seasons": {
+    "hotels": [
+        {
+            "Four Seasons": {
             "name": "Four Seasons",
-            "rooms": {
-                "room1": {
-                    "id": "FourSeasonsRoom1",
-                    "startDate": "21/04/2024",
-                    "endDate": "30/04/2024"
+            "rooms": [
+                {
+                    "room1": {
+                        "id": "FourSeasonsRoom1",
+                        "startDate": "21/04/2024",
+                        "endDate": "30/04/2024"
+                    }
                 },
-                "room2": {
-                    "id": "FourSeasonsRoom2",
-                    "startDate": "17/04/2024",
-                    "enddate": "25/04/2024"
+                {
+                    "room2": {
+                        "id": "FourSeasonsRoom2",
+                        "startDate": "17/04/2024",
+                        "endDate": "25/04/2024"
+                    }
                 }
-            },
+            ],
             "region": "Kallithea"
+            }
         },
-        "Pergamos": {
+        {
+            "Pergamos": {
             "name": "Pergamos",
-            "rooms": {
-                "room1": {
-                    "id": "PergamosRoom1",
-                    "startDate": "11/04/2024",
-                    "endDate": "30/04/2024"
+            "rooms": [
+                {
+                    "room1": {
+                        "id": "PergamosRoom1",
+                        "startDate": "11/04/2024",
+                        "endDate": "30/04/2024"
+                    }
                 }
-            },
+            ],
             "region": "Metaksourgio"
+            }
         }
-    } 
+    ]
 }
