@@ -15,9 +15,16 @@ public class App
             testNewCapabilites();
         }
 
-        Terminal term = new Terminal();
-        term.setup();
-        term.init();
+        TerminalThread terminalThread = new TerminalThread();
+        terminalThread.run();
+        terminalThread.start();
+
+        TerminalThreadPool threadPool = new TerminalThreadPool();
+
+        while(terminalThread.isAlive()){
+
+            System.out.println("Waiting...");
+        }
     }
 
     public static void testNewCapabilites(){
