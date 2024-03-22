@@ -126,6 +126,8 @@ public class JSONDirManager {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    // NOTE: To be implemented
     public void printAllHotels(){}
+    public void addReview(){}
 }
