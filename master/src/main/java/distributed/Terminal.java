@@ -1,9 +1,14 @@
 package distributed;
 
+import distributed.JSONFileSystem.JSONDirManager;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+/**
+ * Terminal to parse user input and invoke the methods that are needed.
+ */
 public class Terminal {
     /**
      * Text printed when the "list" command is given
@@ -39,12 +44,15 @@ public class Terminal {
         Scanner input = new Scanner(System.in);
         boolean running = true;
 
+        JSONDirManager manager = new JSONDirManager();
+
         while (running) {
             System.out.print("> ");
 
             String in = input.nextLine();
-            String[] commandTokens = in.toLowerCase().trim().split(" ");
-            switch (commandTokens[0]) {
+            //NOTE: Should put a regex to capture a name with spaces
+            String[] commandTokens = in.trim().split(" ");
+            switch (commandTokens[0].toLowerCase()) {
                 case "quit":
                 case "q":
                     System.out.println("Quitting...");
@@ -52,7 +60,7 @@ public class Terminal {
                     break;
                 case "help":
                 case "h":
-                    help(commandTokens);
+                    this.help(commandTokens);
                     break;
                 case "hotels":
                     System.out.println("No hotels yet");
@@ -61,10 +69,10 @@ public class Terminal {
                     System.out.println(listText);
                     break;
                 case "add":
-                    add(commandTokens);
+                    this.add(commandTokens, manager);
                     break;
                 case "remove":
-                    System.out.println("Remmoved a hotel");
+                    this.remove(commandTokens, manager);
                     break;
                 case "book":
                     System.out.println("Booked a room");
@@ -83,13 +91,13 @@ public class Terminal {
      * @param tokens The tokenized string array of the command given.
      */
     // NOTE: This - and the other dblike methods - should be moved to another class.
-    private void add(String[] tokens){
+    private void add(String[] tokens, JSONDirManager manager){
 
         if(tokens.length == 1){
             System.err.println("Not enough arguments");
             return;
         }
-        switch (tokens[1]) {
+        switch (tokens[1].toLowerCase()) {
             case "hotel":
                 try {
                     String hotelName = tokens[2];
@@ -100,6 +108,7 @@ public class Terminal {
                         System.err.println("Region is empty.");
                         return;
                     }
+                    manager.addHotel(hotelName, region);
                     System.out.printf("Added hotel %s with %.2f$ per room located at %s. It has %d available rooms.\n", 
                                                 hotelName, price, region, availableRooms);
 
@@ -116,6 +125,7 @@ public class Terminal {
                     String hotel = tokens[3];
                     Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(tokens[5]);
                     Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(tokens[7]);
+                    manager.addRoom(hotel, tokens[5], tokens[7]);
                     System.out.printf("Added to hotel %s date range %s to %s.\n", 
                                         hotel, startDate.toString(), endDate.toString());
                     
@@ -127,6 +137,37 @@ public class Terminal {
                 break;
                 
             default:        
+                System.err.println("Value after add must be \"hotel\" or \"room\".");
+                break;
+        }
+    }
+
+    private void remove(String[] tokens, JSONDirManager manager){
+        if(tokens.length == 2){
+            System.err.println("Not enough arguments");
+            return;
+        }
+        switch (tokens[1]) {
+            case "hotel":
+                try{
+                    String hotelName = tokens[2];
+                    manager.removeHotel(hotelName);
+                } catch (IndexOutOfBoundsException e){
+                    System.err.println("You must give the name of the hotel which you need to remove.");
+                }
+                break;
+            case "room":
+                try {
+                    int roomId = Integer.parseInt(tokens[2]);
+                    String hotelName = tokens[4];
+                    manager.removeRoom(hotelName, roomId);
+                } catch (IndexOutOfBoundsException e) {
+                    System.err.println("Not enough arguments. Type \"help remove\", to see th syntax.");
+                } catch (NumberFormatException e){
+                    System.err.println("RoomID must be a parseable integer");
+                }
+                break;
+            default:
                 System.err.println("Value after add must be \"hotel\" or \"room\".");
                 break;
         }
@@ -146,6 +187,7 @@ public class Terminal {
         switch (tokens[1]) {
             case "add":
                 System.out.println("\"add\" Adds a hotel or a room to the database. Its syntax is as follows.");
+                System.out.println("Hotel name must be either one word or concatenated with unerscores (\"_\").");
                 System.out.println("For hotel: ");
                 System.out.println("\t~> add hotel $HOTEL_NAME ($AVAILABLE_ROOMS $PRICE $REGION)");
                 System.out.println("For room: ");
