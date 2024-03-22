@@ -290,5 +290,6 @@ public class Terminal {
             throw new Exception("Could not configure either hotel name or info.");
         }
         return hotelInfo;
+        //SOSSSS
     }
 }

@@ -28,11 +28,6 @@
       <version>4.13</version>
       <scope>test</scope>
     </dependency>
-<<<<<<< HEAD
-  
-
-=======
->>>>>>> 93ee1b50459f269eba4ff2aac4eb61416dca33b9
     
     <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
     <dependency>

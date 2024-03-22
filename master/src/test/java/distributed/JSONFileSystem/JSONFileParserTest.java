@@ -17,36 +17,6 @@ package distributed.JSONFileSystem;
 
 // public class JSONFileParserTest {
 
-<<<<<<< HEAD:master/src/test/java/distributed/Parser/JSONFileParserTest.java
-//     @Test
-//     public void testParseValidity(){
-//         // Contents of dummy data file in a String.
-//         String rightAnswer = """
-//             {
-//                 "hotels": {
-//                     "Pergamos": {
-//                         "name": "Pergamos",
-//                         "rooms": {
-//                             "room1": {
-//                                 "id": "PergamosRoom1",
-//                                 "startDate": "11/04/2024",
-//                                 "endDate": "30/04/2024"
-//                             }
-//                         },
-//                         "region": "Metaksourgio"
-//                     }
-//                 }
-//             }
-//                 """;
-        
-//         JSONFileParser parser = new JSONFileParser("src/main/java/distributed/data/dummyData.json");
-//         JSONObject data = null;
-//         try{
-//             data = parser.parseFile();
-//         } catch (Exception e){
-//             fail("Exception should not be thrown while reading the file.");
-//         }
-=======
     private final String path = "src/main/java/distributed/data/";
 
     @Test
@@ -75,7 +45,6 @@ package distributed.JSONFileSystem;
         } catch (Exception e){
             fail("Exception should not be thrown while reading the file.");
         }
->>>>>>> 93ee1b50459f269eba4ff2aac4eb61416dca33b9:master/src/test/java/distributed/JSONFileSystem/JSONFileParserTest.java
 
 //         // Parsing the String into the same format as the files contents.
 //         JSONParser JSONparser = new JSONParser();
