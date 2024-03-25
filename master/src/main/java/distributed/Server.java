@@ -1,19 +1,20 @@
+package distributed;
 
-public class TerminalThread extends Thread{
+public class Server extends Thread {
 
     private String argument;
     private Terminal terminal;
 	
-	public TerminalThread(String argument){
+	public Server(String argument) {
 		this.argument = argument;
 	}
 
 	@Override
-	public void run(){
+	public void run() {
 
-        Terminal term = new Terminal();
-        term.setup();
-        term.init();
+        terminal = new Terminal();
+        terminal.setup();
+        terminal.init();
 
 		System.out.println("Thread with id: "+ threadId() + " started!");
 		

@@ -15,13 +15,13 @@ public class App
             testNewCapabilites();
         }
 
-        TerminalThread terminalThread = new TerminalThread();
-        terminalThread.run();
-        terminalThread.start();
+        Server server = new Server("My first thread");
+        server.run();
+        server.start();
 
-        TerminalThreadPool threadPool = new TerminalThreadPool();
+        //TerminalThreadPool threadPool = new TerminalThreadPool();
 
-        while(terminalThread.isAlive()){
+        while(server.isAlive()){
 
             System.out.println("Waiting...");
         }
