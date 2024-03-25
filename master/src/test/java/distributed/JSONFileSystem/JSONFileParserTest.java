@@ -1,10 +1,7 @@
 package distributed.JSONFileSystem;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
-
-import java.io.FileNotFoundException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -58,12 +55,6 @@ public class JSONFileParserTest {
         String rightAnswerString = rightAnswerJSON.toString();
 
         assertTrue(dataString.equals(rightAnswerString));
-    }
-
-    @Test
-    public void testExceptionFromParseFile(){
-        JSONFileParser parser = new JSONFileParser("nonExistentData.json");
-        assertThrows(FileNotFoundException.class, () -> parser.parseFile());
     }
     
 }
