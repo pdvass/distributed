@@ -1,11 +1,14 @@
 package distributed.JSONFileSystem;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import distributed.Estate.Hotel;
 
 /**
  * JSONDirManager (JSON Directory Manager) is responsible for creating, 
@@ -46,13 +49,14 @@ public class JSONDirManager {
      * 
      * @see JSONFileParser#createHotelJSON(String, String)
      */
-    public void addHotel(String name, String region){
+    public void addHotel(String name, String region, float stars, int n){
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
         try {
             File newHotel = new File(fileName);
             if(newHotel.createNewFile()){
                 System.out.println("New Hotel Added");
+                fileList.add(newHotel);
             } else {
                 System.out.println("File Already exists");
             }
@@ -62,7 +66,7 @@ public class JSONDirManager {
 
         JSONFileParser parser = new JSONFileParser(fileName);
 
-        parser.createHotelJSON(name, region);
+        parser.createHotelJSON(name, region, stars, n);
 
     }
 
@@ -86,6 +90,7 @@ public class JSONDirManager {
             data = parser.parseFile();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return;
         }
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
@@ -119,6 +124,8 @@ public class JSONDirManager {
             if(newHotel.delete()){
                 System.out.println("Hotel deleted");
             }
+            this.fileList.stream()
+                         .filter(file -> file.getName().equals(newHotel.getName()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }    
@@ -140,6 +147,7 @@ public class JSONDirManager {
             data = parser.parseFile();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return;
         }
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
@@ -162,7 +170,26 @@ public class JSONDirManager {
         }
     }
 
+    public ArrayList<Hotel> getHotels() throws FileNotFoundException, Exception {
+        ArrayList<Hotel> hotels = new ArrayList<>();
+        for(File f : fileList){
+            JSONFileParser parser = new JSONFileParser(this.path + f.getName());
+            JSONObject data = parser.parseFile();
+            hotels.add(parser.iterateJSON(data));
+        }
+        return hotels;
+    }
+
+    public void printAllHotels(){
+        try {
+            for(Hotel hotel : this.getHotels()){
+                System.out.println(hotel.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     // NOTE: To be implemented
-    public void printAllHotels(){}
     public void addReview(){}
 }
