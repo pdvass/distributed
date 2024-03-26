@@ -134,7 +134,7 @@ public class Terminal {
                     System.err.println("Either Available Rooms or Price cannot be parsed. Available rooms must be a parseable integer");
                     System.err.println("Price must be a parseable float. Try removing any currency signs.");
                 } catch (Exception e){
-                    System.err.println(e.getMessage());
+                    manager.logError(e.getMessage());
                 }
                 break;
 
@@ -158,7 +158,7 @@ public class Terminal {
                 } catch (IndexOutOfBoundsException e) {
                     System.err.println("Not enough arguments for hotel. Type \"help add\", to see the syntax.");
                 } catch (Exception e){
-                    System.err.println(e.getMessage());
+                    manager.logError(e.getMessage());
                 }
                 break;
                 
@@ -192,7 +192,7 @@ public class Terminal {
                 } catch (IndexOutOfBoundsException e){
                     System.err.println("You must give the name of the hotel which you need to remove.");
                 } catch (Exception e){
-                    System.err.println(e.getMessage());
+                    manager.logError(e.getMessage());
                 }
                 break;
             case "room":
@@ -205,7 +205,7 @@ public class Terminal {
                 } catch (NumberFormatException e){
                     System.err.println("RoomID must be a parseable integer");
                 } catch (Exception e){
-                    System.err.println(e.getMessage());
+                    manager.logError(e.getMessage());
                 }
                 break;
             default:

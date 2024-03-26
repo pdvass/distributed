@@ -20,12 +20,14 @@ public class JSONDirManager {
     // NOTE: Change path to also correspond to test path.
     private final String path = "src/main/java/distributed/data/";
     private ArrayList<File> fileList = new ArrayList<>();
+    private Logger logger;
 
     /**
      * Empty constructor that reads all the JSON files on the path folder. 
      * Can be extended with DFS to organise the folder with subfolders.
      */
     public JSONDirManager(){
+        logger = new Logger();
         File files = new File(this.path);
         for(File file : files.listFiles()){
             if(!file.isDirectory() && getFileExtension(file).equals("json")){
@@ -67,6 +69,11 @@ public class JSONDirManager {
         JSONFileParser parser = new JSONFileParser(fileName);
 
         parser.createHotelJSON(name, region, stars, n);
+        
+        // Write to Log
+        String contents = String.format("Added hotel %s", name);
+        logger.setLevel("info");
+        logger.writeToLog(contents);
 
     }
 
@@ -95,7 +102,8 @@ public class JSONDirManager {
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
         JSONObject room = new JSONObject();
-        room.put("id", name + "Room" + Integer.toString(rooms.size() + 1));
+        String roomID = name + "Room" + Integer.toString(rooms.size() + 1);
+        room.put("id", roomID);
         room.put("startDate", startDate);
         room.put("endDate", endDate);
 
@@ -110,6 +118,10 @@ public class JSONDirManager {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        String contents = String.format("Added room %s to hotel %s", roomID, name);
+        logger.setLevel("info");
+        logger.writeToLog(contents);
     }
 
     /**
@@ -128,7 +140,11 @@ public class JSONDirManager {
                          .filter(file -> file.getName().equals(newHotel.getName()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }    
+        }
+
+        String contents = String.format("Removed Hotel %s", name);
+        logger.setLevel("warn");
+        logger.writeToLog(contents);
     }
 
     /**
@@ -168,8 +184,20 @@ public class JSONDirManager {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        String contents = String.format("Removed room %d from hotel %s", roomNumber, name);
+        logger.setLevel("warn");
+        logger.writeToLog(contents);
     }
 
+    /**
+     * Get all hotels that are saved in {@link #fileList} at the moment this
+     * method is beign invoked.
+     * 
+     * @return ArrayList with all the hotels manager is directing.
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
     public ArrayList<Hotel> getHotels() throws FileNotFoundException, Exception {
         ArrayList<Hotel> hotels = new ArrayList<>();
         for(File f : fileList){
@@ -178,6 +206,11 @@ public class JSONDirManager {
             hotels.add(parser.iterateJSON(data));
         }
         return hotels;
+    }
+
+    public void logError(String contents){
+        logger.setLevel("danger");
+        logger.writeToLog("Error occured during master working time: " + contents);
     }
 
     public void printAllHotels(){
