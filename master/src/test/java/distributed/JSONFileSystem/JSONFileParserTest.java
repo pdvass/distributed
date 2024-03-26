@@ -8,6 +8,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author pdvass
+ */
 public class JSONFileParserTest {
 
     private final String path = "src/main/java/distributed/data/";

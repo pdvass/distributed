@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 
 
-
+/**
+ * @author pdvass
+ */
 @TestMethodOrder(OrderAnnotation.class)
 public class JSONDirManagerTest {
     private final String path = "src/main/java/distributed/data/";
