@@ -21,15 +21,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The room class mainly needed for keeping information about when a room object is 
  * booked. Also needed for computing the hash. Each room belongs to a Hotel object and cannot exist externally.
  * 
+ * @author pdvass
  * @see Hotel
  */
 public class Room {
+    private String name;
     private byte[] id;
     private Date startDate;
     private Date endDate;
+    // NOTE: Should add functionality for people
+    private int nOfPeople;
     private TreeMap<LocalDate, Integer> rangeMap;
 
     public Room(String name, String startDate, String endDate){
+        this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -51,6 +56,9 @@ public class Room {
 
         // Iterate the list and use each date as the key for the TreeMap.
         range.stream().forEach(i -> this.rangeMap.put(i, 0));
+
+        // NOTE: Default 
+        this.nOfPeople = 3;
     }
 
     /**
@@ -136,6 +144,14 @@ public class Room {
 
     public String getEndDate(){
         return this.endDate.toString();
+    }
+
+    public int getNOfPeople(){
+        return this.nOfPeople;
+    }
+
+    public String getName(){
+        return this.name;
     }
 
 }
