@@ -66,7 +66,7 @@ public class Terminal {
                     this.help(commandTokens);
                     break;
                 case "hotels":
-                    System.out.println("No hotels yet");
+                    manager.printAllHotels();
                     break;
                 case "list":
                     System.out.println(listText);
@@ -114,7 +114,17 @@ public class Terminal {
                         System.err.println("Region is empty.");
                         return;
                     }
-                    manager.addHotel(hotelInfo.get(0), region);
+                    float stars = Float.parseFloat(hotelInfo.get(2));
+                    if(stars > 5.0f){
+                        System.err.println("Stars cannot exceed 5.0");
+                        return;
+                    }
+                    int nOfReviews = Integer.parseInt(hotelInfo.get(3));
+                    if(nOfReviews < 0){
+                        System.err.println("Can't have negative number of reviews");
+                        return;
+                    }
+                    manager.addHotel(hotelInfo.get(0), region, stars, nOfReviews);
                     System.out.printf("Added hotel %s located at %s.\n", 
                                         hotelInfo.get(0), region);
 
@@ -219,7 +229,7 @@ public class Terminal {
             case "add":
                 System.out.println("\"add\" Adds a hotel or a room to the database. Its syntax is as follows.");
                 System.out.println("For hotel: ");
-                System.out.println("\t~> add hotel $HOTEL_NAME at $REGION");
+                System.out.println("\t~> add hotel $HOTEL_NAME at $REGION ($STARS $nOfReviews)");
                 System.out.println("For room: ");
                 System.out.println("\t~> add room to $HOTEL_NAME from $START_DATE to $END_DATE ($COST $nOfPersons)");
                 break;
@@ -278,12 +288,14 @@ public class Terminal {
                         }
                         break;
                     case "hotel":
-                        regex = "(?<cmd>add hotel)\\s+(?<name>.+)\\s+at\\s+(?<region>.+)\\s*";
+                        regex = "(?<cmd>add hotel)\\s+(?<name>.+)\\s+at\\s+(?<region>.+)\\s+\\((?<stars>\\d+.?\\d*)\\s+(?<nofreviews>\\d+)\\)";
                         pattern = Pattern.compile(regex);
                         matcher = pattern.matcher(in);
                         if(matcher.find()){
                             hotelInfo.add(matcher.group("name"));
                             hotelInfo.add(matcher.group("region"));
+                            hotelInfo.add(matcher.group("stars"));
+                            hotelInfo.add(matcher.group("nofreviews"));
                         } else {
                             throw new Exception("Could not configure either hotel name or info.");
                         }
