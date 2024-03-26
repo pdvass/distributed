@@ -29,9 +29,10 @@ public class Room {
     private Date endDate;
     // NOTE: Should add functionality for people
     private int nOfPeople;
+    private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
 
-    public Room(String name, String startDate, String endDate){
+    public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
         this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
@@ -56,7 +57,8 @@ public class Room {
         range.stream().forEach(i -> this.rangeMap.put(i, 0));
 
         // NOTE: Default 
-        this.nOfPeople = 3;
+        this.nOfPeople = nOfPeople;
+        this.cost = cost;
     }
 
     /**
@@ -151,6 +153,10 @@ public class Room {
 
     public String getName(){
         return this.name;
+    }
+
+    public float getCost(){
+        return this.cost;
     }
 
 }
