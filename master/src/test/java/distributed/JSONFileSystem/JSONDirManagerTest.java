@@ -25,16 +25,16 @@ public class JSONDirManagerTest {
     @Order(1)
     public void testCreateHotel(){
         JSONDirManager manager = new JSONDirManager();
-        manager.addHotel("Test Hotel", "Athens");
+        manager.addHotel("Test Hotel", "Athens", 5.0f, 143);
         File f = new File(this.path + "TestHotel.json");
         assertTrue(f.exists());
-        assertTrue(f.isFile());;
+        assertTrue(f.isFile());
     }
     
     @Test
     @Order(2)
     public void testHotelContents() throws FileNotFoundException{
-        final String expected = "{\"TestHotel\":{\"rooms\":[],\"name\":\"TestHotel\",\"region\":\"Athens\"}}";
+        final String expected = "{\"TestHotel\":{\"rooms\":[],\"name\":\"TestHotel\",\"stars\":5.0,\"nOfReviews\":143,\"region\":\"Athens\"}}";
         File f = new File(this.path + "TestHotel.json");
         Scanner reader = new Scanner(f);
         String data = reader.nextLine();
@@ -46,7 +46,7 @@ public class JSONDirManagerTest {
     @Order(3)
     public void testAddRoom() throws FileNotFoundException{
         final String expected = "{\"TestHotel\":{\"rooms\":[{\"endDate\":\"30\\/04\\/2024\"," +
-                    "\"id\":\"TestHotelRoom1\",\"startDate\":\"21\\/04\\/2024\"}],\"name\":\"TestHotel\",\"region\":\"Athens\"}}";
+                    "\"id\":\"TestHotelRoom1\",\"startDate\":\"21\\/04\\/2024\"}],\"name\":\"TestHotel\",\"stars\":5.0,\"nOfReviews\":143,\"region\":\"Athens\"}}";
         JSONDirManager manager = new JSONDirManager();
         manager.addRoom("Test Hotel", "21/04/2024", "30/04/2024");
         File f = new File(this.path + "TestHotel.json");
@@ -70,7 +70,7 @@ public class JSONDirManagerTest {
         final String expected = "{\"TestHotel\":{\"rooms\":[{\"endDate\":\"30\\/04\\/2024\","+
                     "\"id\":\"TestHotelRoom1\",\"startDate\":\"21\\/04\\/2024\"}"+
                     ",{\"endDate\":\"07\\/05\\/2024\",\"id\":\"TestHotelRoom2\",\"startDate\":\"05\\/05\\/2024\"}]"+
-                    ",\"name\":\"TestHotel\",\"region\":\"Athens\"}}";
+                    ",\"name\":\"TestHotel\",\"stars\":5.0,\"nOfReviews\":143,\"region\":\"Athens\"}}";
         JSONDirManager manager = new JSONDirManager();
         manager.addRoom("Test Hotel", "21/04/2024", "30/04/2024");
         manager.addRoom("Test Hotel", "05/05/2024", "07/05/2024");
@@ -85,7 +85,7 @@ public class JSONDirManagerTest {
     @Order(6)
     public void testRemoveMultipleRooms() throws FileNotFoundException{
         final String expected = "{\"TestHotel\":{\"rooms\":[{\"endDate\":\"07\\/05\\/2024\","+
-                "\"id\":\"TestHotelRoom2\",\"startDate\":\"05\\/05\\/2024\"}],\"name\":\"TestHotel\",\"region\":\"Athens\"}}";
+                "\"id\":\"TestHotelRoom2\",\"startDate\":\"05\\/05\\/2024\"}],\"name\":\"TestHotel\",\"stars\":5.0,\"nOfReviews\":143,\"region\":\"Athens\"}}";
         JSONDirManager manager = new JSONDirManager();
         manager.removeRoom("Test Hotel", 1);
         File f = new File(this.path + "TestHotel.json");
