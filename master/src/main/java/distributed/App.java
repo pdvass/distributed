@@ -1,8 +1,11 @@
 package distributed;
 
-// import java.util.concurrent.TimeUnit;
-import distributed.JSONFileSystem.JSONDirManager;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
+import distributed.Estate.Room;
 /**
  * Project's entry point.
  *
@@ -28,19 +31,22 @@ public class App
     }
 
     public static void testNewCapabilites(){
+        @SuppressWarnings("unused")
+        String id = "";
+        int value = 0;
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest("FourSeasonsRoom1".getBytes(StandardCharsets.UTF_8));
+            value += new BigInteger(hash).intValue();
+            id = new String(hash, StandardCharsets.UTF_8);
+        } catch (NoSuchAlgorithmException e){
+            System.out.println(e.getMessage());
+        }
+
         System.out.println("Hello");
-        JSONDirManager manager = new JSONDirManager();
-        manager.addHotel("Hotel Victory", "Viktoria");
-
-        manager.addRoom("Hotel Victory", "19/05/2024", "29/05/2024");
-
-        // try{
-        //     TimeUnit.SECONDS.sleep(5);
-        // } catch (Exception e){
-        //     System.out.println(e.getMessage());
-        // }
-
-        // manager.removeRoom("Hotel Victory", 2);
+        Room room = new Room("FourSeasonsRoom1", "21/04/2024", "30/04/2024");
+        System.out.println(room.getIntId());
+        System.out.println(value);
 
     }
 }

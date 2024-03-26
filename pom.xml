@@ -136,7 +136,7 @@
   
   <modules>
       
-    <module>child</module>
+    <module>master</module>
       
   </modules>
 </project>
