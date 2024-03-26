@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * @author pdvass
  * @see Room
  */
+
 public class Hotel {
     private ArrayList<Room> rooms;
     private int stars;

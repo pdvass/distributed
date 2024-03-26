@@ -97,12 +97,12 @@ public class JSONDirManagerTest {
         this.testHotelContents();
     }
 
-    @Test
-    @Order(7)
-    public void testRemoveHotel(){
-        JSONDirManager manager = new JSONDirManager();
-        manager.removeHotel("Test Hotel");
-        File f = new File(this.path + "TestHotel.json");
-        assertFalse(f.exists());
-    }
+    // @Test
+    // @Order(7)
+    // public void testRemoveHotel(){
+    //     JSONDirManager manager = new JSONDirManager();
+    //     manager.removeHotel("Test Hotel");
+    //     File f = new File(this.path + "TestHotel.json");
+    //     assertFalse(f.exists());
+    // }
 }

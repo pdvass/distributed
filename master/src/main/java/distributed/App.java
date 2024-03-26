@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import distributed.Estate.Room;
+
 /**
  * Project's entry point.
  *
@@ -15,19 +16,21 @@ public class App
    public static void main( String[] args )
     {
         if(args.length == 1 && args[0].equals("debug")){
-            testNewCapabilites();
+            // testNewCapabilites();
+            Bookkeeper bookkeeper = new Bookkeeper();
+            bookkeeper.createWorkers();
         }
 
-        Server server = new Server("My first thread");
-        server.run();
-        server.start();
+        // Server server = new Server("My first thread");
+        // server.run();
+        // server.start();
 
-        //TerminalThreadPool threadPool = new TerminalThreadPool();
+        // //TerminalThreadPool threadPool = new TerminalThreadPool();
 
-        while(server.isAlive()){
+        // while(server.isAlive()){
 
-            System.out.println("Waiting...");
-        }
+        //     System.out.println("Waiting...");
+        // }
     }
 
     public static void testNewCapabilites(){
