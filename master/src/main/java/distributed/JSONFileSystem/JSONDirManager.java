@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
  * @author pdvass
  */
 public class JSONDirManager {
+    // NOTE: Change path to also correspond to test path.
     private final String path = "src/main/java/distributed/data/";
     private ArrayList<File> fileList = new ArrayList<>();
 
@@ -76,6 +77,7 @@ public class JSONDirManager {
      */
     @SuppressWarnings("unchecked")
     public void addRoom(String name, String startDate, String endDate){
+        // Duplicate with 135 - 145, might need to extract function.
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
         JSONFileParser parser = new JSONFileParser(fileName);

@@ -112,7 +112,7 @@ public class Terminal {
                     String[] info = hotelInfo[1].trim().split(" ");
                     int availableRooms = Integer.parseInt(info[0].replace('(', ' ').trim());
                     float price = Float.parseFloat(info[1]);
-                    String region = tokens[5].replace(')', ' ').trim();
+                    String region = info[2].replace(')', ' ').trim();
                     if(region.trim().length() == 0){
                         System.err.println("Region is empty.");
                         return;
