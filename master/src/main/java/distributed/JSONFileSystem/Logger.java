@@ -24,7 +24,7 @@ public class Logger {
         DANGER
     };
 
-    private final String path = "src/main/java/distributed/logs";
+    private final String path = "src/main/java/distributed/logs/";
     private Level level = Level.DEFAULT;
     private File f;
 

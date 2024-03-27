@@ -1,6 +1,8 @@
 package distributed;
 
-import distributed.JSONFileSystem.JSONDirManager;
+import java.io.IOException;
+
+import distributed.Server.Server;
 
 /**
  * Project's entry point.
@@ -20,7 +22,11 @@ public class App
     }
 
     public static void testNewCapabilites() {
-        JSONDirManager manager = new JSONDirManager();
-        manager.printAllHotels();
+        Server server = new Server();
+        try {
+            server.start(4555);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
