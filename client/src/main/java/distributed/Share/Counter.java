@@ -1,4 +1,4 @@
-package distributed.Server;
+package distributed.Share;
 
 import java.io.Serializable;
 

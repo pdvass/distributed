@@ -1,4 +1,4 @@
-package distributed.Server;
+package distributed.Client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

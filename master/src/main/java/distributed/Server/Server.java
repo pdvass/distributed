@@ -3,6 +3,8 @@ package distributed.Server;
 import java.io.*;
 import java.net.*;
 
+import distributed.Share.Counter;
+
 public class Server {
     private ServerSocket serverSocket = null;
     private Socket clienSocket = null;
