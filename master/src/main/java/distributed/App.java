@@ -13,7 +13,7 @@ public class App
    public static void main( String[] args )
     {
         if(args.length == 1 && args[0].equals("debug")){
-            testNewCapabilites();
+            testNewCapabilties();
         }
 
         Terminal term = new Terminal();
@@ -21,7 +21,7 @@ public class App
         term.init();
     }
 
-    public static void testNewCapabilites() {
+    public static void testNewCapabilties() {
         Server server = new Server();
         try {
             server.start(4555);

@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import distributed.Share.Counter;
+import distributed.Share.Filter;
 
 public class Server {
     private ServerSocket serverSocket = null;
@@ -25,15 +26,20 @@ public class Server {
         
 
         while(!greeting.equals("q")){
-            
-            if(greeting.equals("GET obj")){
+
+            if(greeting.equals("filter")){
+                Filter f = (Filter) this.readObject();
+                System.out.println("Came filter for hotels in region " + f.getRegion() + " and dates " + f.getDateRange());
+            } else if(greeting.equals("GET obj")){
                 this.sendObject(c);
                 c = (Counter) this.readObject();
                 System.out.println(c.getCounter());
+
             } else {
                 System.out.println(greeting);
                 this.sendMessage(greeting);
             }
+
             greeting = this.ois.readUTF();
         }
     }
