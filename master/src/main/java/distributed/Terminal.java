@@ -17,13 +17,13 @@ public class Terminal {
      * Text printed when the "list" command is given
     */
     private String listText = 
-            "Available commands:" +
-            "- list: Lists Available commands" +
-            "- help (h): Prints help text" +
-            "- hotels: Lists all hotels with all the rooms they have." +
-            "- add: Adds hotel or room to existing database." +
-            "- remove: Removes hotel or room from existing databse." +
-            "- book: Books a room from a hotel to a given date range.";
+            "Available commands:\n" +
+            "- list: Lists Available commands\n" +
+            "- help (h): Prints help text\n" +
+            "- hotels: Lists all hotels with all the rooms they have.\n" +
+            "- add: Adds hotel or room to existing database.\n" +
+            "- remove: Removes hotel or room from existing databse.\n" +
+            "- book: Books a room from a hotel to a given date range.\n";
 
     public Terminal(){}
 
