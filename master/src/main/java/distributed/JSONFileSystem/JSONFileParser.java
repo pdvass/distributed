@@ -9,6 +9,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import distributed.Estate.Hotel;
+
 /**
  * JSONFileParser responsible for parsing JSON files that follows the structure
  * corresponding for hotel and room management. It is used as a tool by JSONDirManager.
@@ -55,12 +57,12 @@ public class JSONFileParser {
     }
 
     @SuppressWarnings("unchecked")
-    protected void iterateJSON(JSONObject data){
+    protected Hotel iterateJSON(JSONObject data){
         if(data == null){
             throw new IllegalArgumentException("data argument should not be null") ;
         }
         if(data.size() == 0){
-            return;
+            return null;
         }
 
         // Wrapper to save all the info for each hotel in the enclosing scopes.
@@ -69,12 +71,22 @@ public class JSONFileParser {
         // The work around is by mutating each value instead of initializing.
         // This Struct-like represantation helps with keeping in mind the respective Classes implementations.
         var hotelWrapper = new Object(){
+            String name = ""; 
+            // Start of Room Info
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> startDate = new ArrayList<>();
             ArrayList<String> endDate = new ArrayList<>();
-            String value = ""; 
-            String region = ""; 
+            float cost = 0;
+            int nOfPeople = 0;
+            // End of Room Info
             int rooms = 0;
+            String region = "";
+            float stars = 0.0f;
+            int nOfReviews = 0;
+        };
+
+        var returnValue = new Object(){
+            Hotel hotel = null;
         };
         
         // During these consecutive iterations every "get" function corresponds
@@ -85,8 +97,12 @@ public class JSONFileParser {
         data.values().iterator().forEachRemaining(rooms -> {
             JSONObject roomsArray = (JSONObject) rooms;
 
-            hotelWrapper.value = roomsArray.get("name").toString();                 
+            hotelWrapper.name = roomsArray.get("name").toString();                 
             hotelWrapper.region  = roomsArray.get("region").toString();
+            hotelWrapper.stars = Float.parseFloat(roomsArray.get("stars").toString());
+            hotelWrapper.nOfReviews = Integer.parseInt(roomsArray.get("nOfReviews").toString());
+
+            returnValue.hotel = new Hotel(hotelWrapper.name, hotelWrapper.region, hotelWrapper.stars, hotelWrapper.nOfReviews);
 
             // Rooms are represented internally by an ArrayList. We take advantage of it 
             // by representing rooms as an array in JSON's file structure.
@@ -98,6 +114,12 @@ public class JSONFileParser {
                     hotelWrapper.id.add(((JSONObject) info).get("id").toString());
                     hotelWrapper.startDate.add(((JSONObject) info).get("startDate").toString());
                     hotelWrapper.endDate.add(((JSONObject) info).get("endDate").toString());
+                    hotelWrapper.cost = Float.parseFloat(((JSONObject) info).get("cost").toString());
+                    hotelWrapper.nOfPeople = Integer.parseInt(((JSONObject) info).get("nOfPeople").toString());
+
+                    returnValue.hotel.addRoom(hotelWrapper.id.get(hotelWrapper.rooms), hotelWrapper.startDate.get(hotelWrapper.rooms), 
+                        hotelWrapper.endDate.get(hotelWrapper.rooms), hotelWrapper.cost, hotelWrapper.nOfPeople);
+
                     
                 });
                 hotelWrapper.rooms++;
@@ -106,21 +128,26 @@ public class JSONFileParser {
 
 
         // Should be converted to logs.
-        System.out.println("Hotel " + hotelWrapper.value + " in region " + hotelWrapper.region + " is Done");
-        System.out.println("It has " + hotelWrapper.rooms + " rooms. Its " + 
-                        (hotelWrapper.rooms == 1 ? "room is " : "rooms are ") + 
-                "available from " +  hotelWrapper.startDate.toString() + " to " + hotelWrapper.endDate.toString() +
-                ". The respective ids are " + hotelWrapper.id.toString());
+        // System.out.println("Hotel " + hotelWrapper.name + " in region " + hotelWrapper.region + " is Done");
+        // System.out.println("It has " + hotelWrapper.rooms + " rooms. Its " + 
+        //                 (hotelWrapper.rooms == 1 ? "room is " : "rooms are ") + 
+        //         "available from " +  hotelWrapper.startDate.toString() + " to " + hotelWrapper.endDate.toString() +
+        //         ". The respective ids are " + hotelWrapper.id.toString());
+
+        return returnValue.hotel;
     }
 
     @SuppressWarnings("unchecked")
-    protected void createHotelJSON(String name, String region){
+    protected void createHotelJSON(String name, String region, float stars, int n){
         JSONObject data = new JSONObject();
         data.put("region", region);
         data.put("name", name);
-        JSONArray rooms = new JSONArray();
 
+        JSONArray rooms = new JSONArray();
         data.put("rooms", rooms);
+
+        data.put("stars", stars);
+        data.put("nOfReviews", n);
         JSONObject hotel = new JSONObject();
         hotel.put(name, data);
         String json = hotel.toJSONString();

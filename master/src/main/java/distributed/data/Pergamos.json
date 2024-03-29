@@ -6,10 +6,14 @@
             "room1": {
                 "id": "PergamosRoom1",
                 "startDate": "11/04/2024",
-                "endDate": "30/04/2024"
+                "endDate": "30/04/2024",
+                "cost": 76.9,
+                "nOfPeople": 3
             }
         }
     ],
-    "region": "Metaksourgio"
+    "region": "Metaksourgio",
+    "stars":3,
+    "nOfReviews":15
     }
 }

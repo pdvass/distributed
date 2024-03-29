@@ -1,7 +1,11 @@
 package distributed;
 
-// import java.util.concurrent.TimeUnit;
-import distributed.JSONFileSystem.JSONDirManager;
+import java.io.IOException;
+import java.util.List;
+import distributed.Estate.Hotel;
+
+import distributed.Server.Server;
+import distributed.Share.Filter;
 
 /**
  * Project's entry point.
@@ -12,7 +16,7 @@ public class App
    public static void main( String[] args )
     {
         if(args.length == 1 && args[0].equals("debug")){
-            testNewCapabilites();
+            testNewCapabilties();
         }
 
         Terminal term = new Terminal();
@@ -20,20 +24,18 @@ public class App
         term.init();
     }
 
-    public static void testNewCapabilites(){
-        System.out.println("Hello");
-        JSONDirManager manager = new JSONDirManager();
-        manager.addHotel("Hotel Victory", "Viktoria");
+    public static void testNewCapabilties() {
+        Server server = new Server();
+        try {
+            server.start(4555);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        // Filter filter = new Filter(new String[]{"dates:[19/04/2024-24/04/2024]"});
+        // List<Hotel>  f = filter.applyFilter();
+        // f.forEach(hotel -> System.out.println(hotel.toString()));
 
-        manager.addRoom("Hotel Victory", "19/05/2024", "29/05/2024");
-
-        // try{
-        //     TimeUnit.SECONDS.sleep(5);
-        // } catch (Exception e){
-        //     System.out.println(e.getMessage());
-        // }
-
-        // manager.removeRoom("Hotel Victory", 2);
+        System.exit(0);
 
     }
 }

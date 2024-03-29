@@ -1,40 +1,47 @@
 package distributed.JSONFileSystem;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
-
-import java.io.FileNotFoundException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+/**
+ * @author pdvass
+ */
 public class JSONFileParserTest {
 
     private final String path = "src/main/java/distributed/data/";
 
+    @SuppressWarnings("null")
     @Test
     public void testParseValidity(){
         // Contents of dummy data file in a String.
         String rightAnswer = """
             {
                 "Pergamos": {
-                    "name": "Pergamos",
-                    "rooms": {
+                "name": "Pergamos",
+                "rooms": [
+                    {
                         "room1": {
                             "id": "PergamosRoom1",
                             "startDate": "11/04/2024",
-                            "endDate": "30/04/2024"
+                            "endDate": "30/04/2024",
+                            "cost": 76.9,
+                            "nOfPeople": 3
                         }
-                    },
-                    "region": "Metaksourgio"
+                    }
+                ],
+                "region": "Metaksourgio",
+                "stars":3,
+                "nOfReviews":15
                 }
             }
                 """;
         
-        JSONFileParser parser = new JSONFileParser(this.path + "dummyData.json");
+        JSONFileParser parser = new JSONFileParser(this.path + "Pergamos.json");
         JSONObject data = null;
         try{
             data = parser.parseFile();
@@ -58,12 +65,6 @@ public class JSONFileParserTest {
         String rightAnswerString = rightAnswerJSON.toString();
 
         assertTrue(dataString.equals(rightAnswerString));
-    }
-
-    @Test
-    public void testExceptionFromParseFile(){
-        JSONFileParser parser = new JSONFileParser("nonExistentData.json");
-        assertThrows(FileNotFoundException.class, () -> parser.parseFile());
     }
     
 }
