@@ -75,7 +75,12 @@ public class Hotel {
         return this.name;
     }
 
+    public void setHotelRoom(ArrayList<Room> rooms){
+        this.rooms = rooms;
+    }
+
     public String toString(){
+        // NOTE: StringBuilder is more efficient than String concats
         String repr = String.format("Name: %s. It is located in %s and averages %.2f stars from %d reviews. ", this.name, this.region, this.stars, this.nOfReviews);
         repr += "Here is some info for its room" + (this.rooms.size() > 1 ? "s:\n" : ":\n");
         for(Room room : this.rooms){

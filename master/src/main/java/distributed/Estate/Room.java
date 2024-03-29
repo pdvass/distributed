@@ -139,12 +139,12 @@ public class Room {
         return new BigInteger(this.id).intValue();
     }
 
-    public String getStartDate(){
-        return this.startDate.toString();
+    public Date getStartDate(){
+        return this.startDate;
     }
 
-    public String getEndDate(){
-        return this.endDate.toString();
+    public Date getEndDate(){
+        return this.endDate;
     }
 
     public int getNOfPeople(){

@@ -3,8 +3,13 @@ package distributed.Server;
 import java.io.*;
 import java.net.*;
 
+import distributed.Estate.Hotel;
+import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Counter;
 import distributed.Share.Filter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
     private ServerSocket serverSocket = null;
@@ -27,14 +32,28 @@ public class Server {
 
         while(!greeting.equals("q")){
 
-            if(greeting.equals("filter")){
+            // NOTE: better if refactored to switch
+            if(greeting.equals("filter")) {
                 Filter f = (Filter) this.readObject();
-                System.out.println("Came filter for hotels in region " + f.getRegion() + " and dates " + f.getDateRange());
+                List<Hotel> filteredHotels =  f.applyFilter();
+                List<String> filteredHotelsStrings = new ArrayList<>();
+                filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
+                this.sendObject(filteredHotelsStrings);
             } else if(greeting.equals("GET obj")){
                 this.sendObject(c);
                 c = (Counter) this.readObject();
                 System.out.println(c.getCounter());
 
+            } else if(greeting.equals("hotels")){
+                JSONDirManager manager = new JSONDirManager();
+                List<String> hotels = new ArrayList<>();
+                try {
+                    manager.getHotels().stream().forEach(hotel -> hotels.add(hotel.toString()));
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } 
+                this.sendObject(hotels);
             } else {
                 System.out.println(greeting);
                 this.sendMessage(greeting);
@@ -44,8 +63,7 @@ public class Server {
         }
     }
 
-    private void sendObject(Counter c) throws IOException{
-        System.out.println(c.getCounter());
+    private void sendObject(Object c) throws IOException{
         this.oos.writeObject(c);
         this.oos.flush();
     }

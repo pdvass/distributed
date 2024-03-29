@@ -2,6 +2,7 @@ package distributed;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Scanner;
 
 import distributed.Client.TCPClient;
@@ -26,15 +27,45 @@ public class ClientTerminal {
         String msg = scanner.nextLine();
         
         while (!msg.equals("q")) {
+
+            String cmd = this.getCommand(msg);
+
+            switch (cmd) {
+                case "filter":
+                    this.req.changeContents("filter");
+                    this.req.sendMessage();
+                    String[] tokens = msg.split(" ");
+                    Filter filter = new Filter(tokens);
+                    this.req.changeContents(filter);
+                    this.req.sendRequestObject();
+                    try{
+                        List<String> filteredHotels = (List<String>) this.req.receiveRequestObject();
+                        filteredHotels.forEach(hotelString -> System.out.println(hotelString));
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "hotels":
+                    this.req.changeContents("hotels");
+                    this.req.sendMessage();
+                    try{
+                        List<String> hotels = (List<String>) this.req.receiveRequestObject();
+                        hotels.forEach(hotelString -> System.out.println(hotelString));
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "book":
+                    System.out.println("Booking the room for you");
+                    break;
+                default:
+                    this.req.changeContents(msg);
+                    this.req.sendMessage();
+                    System.out.println(this.req.receiveMessage());
+                    break;
+            }
             
-            if(msg.equals("filter")){
-                this.req.changeContents("filter");
-                this.req.sendMessage();
-                Filter filter = new Filter("region:Kallithea", "dates:[21/04/2024, 23/04/2024]");
-                this.req.changeContents(filter);
-                this.req.sendRequestObject();
-                
-            } else if(msg.equals("GET obj")){
+            if(msg.equals("GET obj")){
                 // client.sendMessage(msg);
                 this.req.changeContents(msg);
                 this.req.sendMessage();
@@ -48,12 +79,6 @@ public class ClientTerminal {
                 } else {
                     System.out.println("It is null");
                 }
-            } else {
-                // client.sendMessage(msg);
-                this.req.changeContents(msg);
-                this.req.sendMessage();
-                // System.out.println(client.receiveMsg());
-                System.out.println(this.req.receiveMessage());
             }
 
             System.out.print("> ");
@@ -64,6 +89,29 @@ public class ClientTerminal {
         this.req.sendMessage();
         client.stop();
         scanner.close();
+    }
+
+    public String getCommand(String command){
+        String[] tokens = command.split(" ");
+        if(tokens.length < 2){
+            System.out.println("Not enough arguments");
+            return "";
+        }
+
+        switch (tokens[0]) {
+            case "get":
+                if(command.contains("filter")){
+                    return "filter";
+                }
+
+                if(tokens[1].equals("hotels") && tokens.length == 2){
+                    return "hotels";
+                }
+            case "book":
+                return "book";
+            default:
+                return "";
+        }
     }
     
 }
