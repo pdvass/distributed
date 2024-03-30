@@ -1,11 +1,7 @@
 package distributed;
 
-import java.io.IOException;
-import java.util.List;
-import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Server.Server;
-import distributed.Share.Filter;
 
 /**
  * Project's entry point.

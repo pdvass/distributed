@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import distributed.Client.TCPClient;
-import distributed.Share.Counter;
+// import distributed.Share.Counter;
 import distributed.Share.Filter;
 import distributed.Share.Request;
 
@@ -39,6 +39,7 @@ public class ClientTerminal {
                     this.req.changeContents(filter);
                     this.req.sendRequestObject();
                     try{
+                        @SuppressWarnings("unchecked")
                         List<String> filteredHotels = (List<String>) this.req.receiveRequestObject();
                         filteredHotels.forEach(hotelString -> System.out.println(hotelString));
                     } catch (Exception e){
@@ -49,6 +50,7 @@ public class ClientTerminal {
                     this.req.changeContents("hotels");
                     this.req.sendMessage();
                     try{
+                        @SuppressWarnings("unchecked")
                         List<String> hotels = (List<String>) this.req.receiveRequestObject();
                         hotels.forEach(hotelString -> System.out.println(hotelString));
                     } catch (Exception e){
@@ -65,21 +67,21 @@ public class ClientTerminal {
                     break;
             }
             
-            if(msg.equals("GET obj")){
-                // client.sendMessage(msg);
-                this.req.changeContents(msg);
-                this.req.sendMessage();
-                // Counter c = (Counter) client.receiveObject();
-                Counter c = (Counter) this.req.receiveRequestObject();
-                if(c != null){
-                    Counter updatedCounter = new Counter(c.getCounter() + 1);
-                    // client.sendObject(updatedCounter);
-                    this.req.changeContents(updatedCounter);
-                    this.req.sendRequestObject();
-                } else {
-                    System.out.println("It is null");
-                }
-            }
+            // if(msg.equals("GET obj")){
+            //     // client.sendMessage(msg);
+            //     this.req.changeContents(msg);
+            //     this.req.sendMessage();
+            //     // Counter c = (Counter) client.receiveObject();
+            //     Counter c = (Counter) this.req.receiveRequestObject();
+            //     if(c != null){
+            //         Counter updatedCounter = new Counter(c.getCounter() + 1);
+            //         // client.sendObject(updatedCounter);
+            //         this.req.changeContents(updatedCounter);
+            //         this.req.sendRequestObject();
+            //     } else {
+            //         System.out.println("It is null");
+            //     }
+            // }
 
             System.out.print("> ");
             msg = scanner.nextLine();

@@ -2,6 +2,9 @@ package distributed.Share;
 
 import java.io.Serializable;
 
+/**
+ * Simple Class example to exchange with the server.
+ */
 public class Counter implements Serializable {
     private int counter;
 

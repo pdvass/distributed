@@ -5,7 +5,7 @@ import java.net.*;
 
 import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
-import distributed.Share.Counter;
+// import distributed.Share.Counter;
 import distributed.Share.Filter;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class Server extends Thread {
         this.ois = new ObjectInputStream(this.clienSocket.getInputStream());
         this.oos = new ObjectOutputStream(this.clienSocket.getOutputStream());
         
-        Counter c = new Counter(0);
+        // Counter c = new Counter(0);
 
         // System.out.println("Client connected");
         String greeting = this.ois.readUTF();        
@@ -47,12 +47,14 @@ public class Server extends Thread {
                 filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
 
                 this.sendObject(filteredHotelsStrings);
-            } else if(greeting.equals("GET obj")){
-                this.sendObject(c);
-                c = (Counter) this.readObject();
-                System.out.println(c.getCounter());
+            } 
+            // else if(greeting.equals("GET obj")){
+            //     this.sendObject(c);
+            //     c = (Counter) this.readObject();
+            //     System.out.println(c.getCounter());
 
-            } else if (greeting.equals("hotels")){
+            // } 
+            else if (greeting.equals("hotels")){
                 JSONDirManager manager = new JSONDirManager();
                 List<String> hotels = new ArrayList<>();
                 try {
