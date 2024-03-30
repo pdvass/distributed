@@ -11,13 +11,21 @@ import distributed.Share.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server {
+public class Server extends Thread {
     private ServerSocket serverSocket = null;
     private Socket clienSocket = null;
     private ObjectInputStream ois = null;
     private ObjectOutputStream oos = null;
 
-    public void start(int port) throws IOException{
+    public void run(){
+        try {
+            this.init(4555);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void init(int port) throws IOException{
         this.serverSocket = new ServerSocket(port);
         this.clienSocket = serverSocket.accept();
 
@@ -26,9 +34,8 @@ public class Server {
         
         Counter c = new Counter(0);
 
-        String greeting = this.ois.readUTF();
-        System.out.println(greeting);
-        
+        // System.out.println("Client connected");
+        String greeting = this.ois.readUTF();        
 
         while(!greeting.equals("q")){
 
@@ -38,24 +45,25 @@ public class Server {
                 List<Hotel> filteredHotels =  f.applyFilter();
                 List<String> filteredHotelsStrings = new ArrayList<>();
                 filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
+
                 this.sendObject(filteredHotelsStrings);
             } else if(greeting.equals("GET obj")){
                 this.sendObject(c);
                 c = (Counter) this.readObject();
                 System.out.println(c.getCounter());
 
-            } else if(greeting.equals("hotels")){
+            } else if (greeting.equals("hotels")){
                 JSONDirManager manager = new JSONDirManager();
                 List<String> hotels = new ArrayList<>();
                 try {
                     manager.getHotels().stream().forEach(hotel -> hotels.add(hotel.toString()));
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
+                    // System.out.println(e.getMessage());
                 } 
                 this.sendObject(hotels);
             } else {
-                System.out.println(greeting);
+                // System.out.println(greeting);
                 this.sendMessage(greeting);
             }
 
@@ -83,7 +91,7 @@ public class Server {
         this.oos.flush();
     }
 
-    public void stop() throws IOException{
+    public void close() throws IOException{
         ois.close();
         oos.close();
         clienSocket.close();

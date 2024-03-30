@@ -3,7 +3,7 @@ package distributed;
 import java.io.IOException;
 import java.util.List;
 import distributed.Estate.Hotel;
-
+import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Server.Server;
 import distributed.Share.Filter;
 
@@ -20,20 +20,31 @@ public class App
         }
 
         Terminal term = new Terminal();
-        term.setup();
-        term.init();
+        // term.setup();
+        // term.init();
+
+        Thread termThread = new Thread(term);
+        Server server = new Server();
+        Thread serverThread = new Thread(server);
+
+        termThread.start();
+        serverThread.start();
+
+        System.out.println("Hello");
     }
 
     public static void testNewCapabilties() {
-        Server server = new Server();
+        JSONDirManager manager = new JSONDirManager();
+        Terminal term = new Terminal();
+        term.setup();
+        term.init();
+
         try {
-            server.start(4555);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            manager.getHotels();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        // Filter filter = new Filter(new String[]{"dates:[19/04/2024-24/04/2024]"});
-        // List<Hotel>  f = filter.applyFilter();
-        // f.forEach(hotel -> System.out.println(hotel.toString()));
 
         System.exit(0);
 

@@ -1,0 +1,28 @@
+{
+    "Diethnes": {
+    "name":"Diethnes",
+    "rooms": [
+        {
+            "room1": {
+                "cost":20.0,
+                "nOfPeople":1,
+                "endDate":"08\/05\/2024",
+                "id":"DiethnesRoom1",
+                "startDate":"05\/05\/2024"
+            }
+        },
+        {
+            "room2": {
+                "cost":45.0,
+                "nOfPeople":3,
+                "endDate":"10\/05\/2024",
+                "id":"DiethnesRoom2",
+                "startDate":"03\/05\/2024"
+            }
+        }
+    ],
+    "region":"Stathmos Larissis",
+    "stars":4.7,
+    "nOfReviews":6309
+    }
+}
