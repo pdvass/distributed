@@ -87,7 +87,7 @@ public class JSONDirManager {
      * the hotel is available
      */
     @SuppressWarnings("unchecked")
-    public void addRoom(String name, String startDate, String endDate){
+    public void addRoom(String name, String startDate, String endDate, float cost, int nOfPeople){
         // Duplicate with 135 - 145, might need to extract function.
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
@@ -102,11 +102,15 @@ public class JSONDirManager {
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
         JSONObject room = new JSONObject();
+        JSONObject roomInfo = new JSONObject();
         String roomID = name + "Room" + Integer.toString(rooms.size() + 1);
-        room.put("id", roomID);
-        room.put("startDate", startDate);
-        room.put("endDate", endDate);
+        roomInfo.put("id", roomID);
+        roomInfo.put("startDate", startDate);
+        roomInfo.put("endDate", endDate);
+        roomInfo.put("cost", cost);
+        roomInfo.put("nOfPeople", nOfPeople);
 
+        room.put("room" + Integer.toString(rooms.size() + 1), roomInfo);
         rooms.add(room);
 
         String json = data.toJSONString();

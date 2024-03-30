@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
  * Terminal to parse user input and invoke the methods that are needed.
  * @author pdvass
  */
-public class Terminal {
+public class Terminal extends Thread {
     /**
      * Text printed when the "list" command is given
     */
@@ -27,6 +27,11 @@ public class Terminal {
             """;
 
     public Terminal(){}
+
+    public void run(){
+        this.setup();
+        this.init();
+    }
 
     /**
      * Sets up ant dependencies or setting in the system.
@@ -149,7 +154,7 @@ public class Terminal {
                     }
                     float cost = Float.parseFloat(hotelInfo.get(3));
                     int nOfPeople = Integer.parseInt(hotelInfo.getLast());
-                    manager.addRoom(hotelInfo.get(0), hotelInfo.get(1), hotelInfo.get(2));
+                    manager.addRoom(hotelInfo.get(0), hotelInfo.get(1), hotelInfo.get(2), cost, nOfPeople);
                     System.out.printf("Added to hotel %s date range %s to %s. It costs %.2f$ and it is for %d %s\n", 
                                 hotelInfo.get(0), startDate.toString(), 
                                 endDate.toString(), cost, nOfPeople,
