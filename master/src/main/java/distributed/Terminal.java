@@ -92,6 +92,7 @@ public class Terminal extends Thread {
         }
 
         input.close();
+        System.exit(0);
     }
 
    /**

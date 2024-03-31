@@ -23,9 +23,7 @@ public class Server extends Thread {
 
         while(true){
             Socket client = serverSocket.accept();
-            // System.out.println("New client Connected");
-
-
+ 
             Response responseSocket = new Response(client);
             Thread res = new Thread(responseSocket);
             res.start();
