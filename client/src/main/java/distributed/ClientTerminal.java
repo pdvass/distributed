@@ -6,10 +6,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import distributed.Client.TCPClient;
-// import distributed.Share.Counter;
 import distributed.Share.Filter;
 import distributed.Share.Request;
 
+/**
+ * ClientTerminal is used for the Client to use from the cmd to send requests to the server.
+ * 
+ * @see Request
+ * @author pdvass
+ */
 public class ClientTerminal {
 
     private Request req = null;
@@ -66,22 +71,6 @@ public class ClientTerminal {
                     System.out.println(this.req.receiveMessage());
                     break;
             }
-            
-            // if(msg.equals("GET obj")){
-            //     // client.sendMessage(msg);
-            //     this.req.changeContents(msg);
-            //     this.req.sendMessage();
-            //     // Counter c = (Counter) client.receiveObject();
-            //     Counter c = (Counter) this.req.receiveRequestObject();
-            //     if(c != null){
-            //         Counter updatedCounter = new Counter(c.getCounter() + 1);
-            //         // client.sendObject(updatedCounter);
-            //         this.req.changeContents(updatedCounter);
-            //         this.req.sendRequestObject();
-            //     } else {
-            //         System.out.println("It is null");
-            //     }
-            // }
 
             System.out.print("> ");
             msg = scanner.nextLine();
