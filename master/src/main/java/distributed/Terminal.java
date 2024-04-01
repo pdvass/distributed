@@ -3,10 +3,14 @@ package distributed;
 import distributed.JSONFileSystem.JSONDirManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import org.apache.commons.text.similarity.LevenshteinDistance;
+
 import java.util.regex.Matcher;
 /**
  * Terminal to parse user input and invoke the methods that are needed.
@@ -87,14 +91,32 @@ public class Terminal extends Thread {
                     break;
                 case "show":
                     System.out.println("Show booking applying to the Filter");
+                    break;
                 default:
-                    System.out.printf("Command \"%s\" is unknown. Please try again.\n", in);
+                    if(commandTokens[0].isEmpty()){
+                        System.out.println("");
+                    } else {
+                        System.out.printf("Command \"%s\" is unknown. Please try again.\n", in);
+                        this.levenshtein(commandTokens[0]);
+                    }
                     break;
             }
         }
 
         input.close();
         System.exit(0);
+    }
+
+    private void levenshtein(String given){
+        final String[] commands = new String[]{"quit", "help", "hotels", "add", "remove", "list", "book", "show"};
+        LevenshteinDistance dist = new LevenshteinDistance();
+        ArrayList<Integer> distances = new ArrayList<>();
+        for(String command : commands){
+            distances.add(dist.apply(given, command));
+        }
+        int positionOfMinDistance = distances.indexOf(Collections.min(distances));
+        System.out.printf("Hint: Did you mean %s?\n", commands[positionOfMinDistance]);
+
     }
 
    /**
@@ -109,7 +131,7 @@ public class Terminal extends Thread {
      */
     // NOTE: This - and the other dblike methods - should be moved to another class.
     private void add(String[] tokens, String in, JSONDirManager manager){
-        if(tokens.length == 1){
+        if(tokens.length < 2){
             System.err.println("Not enough arguments");
             return;
         }
@@ -169,7 +191,9 @@ public class Terminal extends Thread {
                     manager.logError(e.getMessage());
                 }
                 break;
-                
+            case "review":
+                manager.addReview("Hotel California", 5);
+                break;
             default:        
                 System.err.println("Value after add must be \"hotel\" or \"room\".");
                 break;
@@ -187,7 +211,7 @@ public class Terminal extends Thread {
      * @see JSONDirManager
      */
     private void remove(String[] tokens, String in, JSONDirManager manager){
-        if(tokens.length == 2){
+        if(tokens.length < 3){
             System.err.println("Not enough arguments");
             return;
         }

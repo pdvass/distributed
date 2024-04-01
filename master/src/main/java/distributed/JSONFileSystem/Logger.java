@@ -1,5 +1,6 @@
 package distributed.JSONFileSystem;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,7 +32,9 @@ public class Logger {
     public Logger(){
         this.f = new File(this.path + "master.log");
         try {
-            this.f.createNewFile();
+            if(!f.exists()){
+                this.f.createNewFile();
+            }
         } catch (IOException e){
             System.err.println("Problem creating log file: " + e.getMessage());
         }
@@ -40,7 +43,9 @@ public class Logger {
     public Logger(String filename){
         this.f = new File(this.path + filename + ".log");
         try {
-            this.f.createNewFile();
+            if(!f.exists()){
+                this.f.createNewFile();
+            }
         } catch (IOException e){
             System.err.println("Problem creating log file: " + e.getMessage());
         }
@@ -72,7 +77,7 @@ public class Logger {
             case Level.WARN:
                 label = "[WARN]";
             case Level.DANGER:
-                label = "[DANGER]";
+                label = "[ERROR]";
                 break;
             default:
                 System.err.println("Level should never be left at DEFAULT");
@@ -89,8 +94,11 @@ public class Logger {
         LocalDateTime now = LocalDateTime.now();
         out += " " + dtf.format(now);
         try {
-            FileWriter writer = new FileWriter(this.f);
-            writer.append(out);
+            FileWriter writer = new FileWriter(this.f, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write(out);
+            bufferedWriter.write("\n");
+            bufferedWriter.close();
             writer.close();
         } catch (IOException e) {
             System.err.println("Could not write to logs. Reason: " + e.getMessage());
