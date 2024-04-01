@@ -85,6 +85,8 @@ public class Terminal extends Thread {
                 case "book":
                     System.out.println("Booked a room");
                     break;
+                case "show":
+                    System.out.println("Show booking applying to the Filter");
                 default:
                     System.out.printf("Command \"%s\" is unknown. Please try again.\n", in);
                     break;
