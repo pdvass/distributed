@@ -3,7 +3,11 @@ package distributed.JSONFileSystem;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -109,8 +113,18 @@ public class JSONDirManager {
         roomInfo.put("endDate", endDate);
         roomInfo.put("cost", cost);
         roomInfo.put("nOfPeople", nOfPeople);
+        int lastRoom = rooms.size() + 1;
 
-        room.put("room" + Integer.toString(rooms.size() + 1), roomInfo);
+        // In case ta hotel had two rooms (eg room1 and room2) and room1 was to be deleted,
+        // then with a room addition to that hotel line
+        //  int lastRoom = rooms.size() + 1;
+        // would produce another room2 since room.size() -> 1 + 1 = 2.
+        // In a while loop we search for the first available unique id, even after 
+        // multiple additions and deletions.
+        while(((JSONObject) rooms.getLast()).get("room" + Integer.toString(lastRoom)) != null){
+            lastRoom++;
+        }
+        room.put("room" + Integer.toString(lastRoom), roomInfo);
         rooms.add(room);
 
         String json = data.toJSONString();
@@ -171,11 +185,23 @@ public class JSONDirManager {
         }
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
-        final String enclosingName = name;
-        rooms.removeIf(room -> {
-            return ((JSONObject) room).get("id").equals(enclosingName + "Room" + Integer.toString(roomNumber));
+        JSONArray toBeRemoved = new JSONArray();
+        var index = new Object(){
+            int value = 0;
+        };
+        
+        // If, for some reason, multiple rooms have the same id, all
+        // are going to be deleted.
+        ((Collection<JSONObject>) rooms).forEach(room -> {
+            for(String key : ( (Set<String>) room.keySet())){
+                if(key.equals(("room" + Integer.toString(roomNumber)))){
+                    toBeRemoved.add(rooms.get(index.value));
+                }
+                index.value++;
+            }
         });
 
+        rooms.removeAll(toBeRemoved);
         data.remove("rooms");
 
         String json = data.toJSONString();
@@ -227,6 +253,50 @@ public class JSONDirManager {
         }
     }
     
-    // NOTE: To be implemented
-    public void addReview(){}
+    /**
+     * Adds a review to a hotel.
+     * 
+     * @param name The name of the hotel, that the review is to be added to.
+     * @param review The review representing the stars between 1 - 5.
+     */
+    @SuppressWarnings("unchecked")
+    public void addReview(String name, float review){
+        if (review < 0 || review > 5) {
+            System.out.println("Review must be at least 0 with a maximum of 5 stars.");
+            return;
+        }
+        name = name.replaceAll(" ", "");
+        String fileName = this.path + name + ".json";
+        JSONFileParser parser = new JSONFileParser(fileName);
+        JSONObject data = null;
+        try {
+            data = parser.parseFile();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        double stars = (double) ((JSONObject) data.get(name)).get("stars");
+        long n = (long) ((JSONObject) data.get(name)).get("nOfReviews");
+        double newStars = ((stars * n) + review) / (n + 1);
+        BigDecimal newStarsRounded = new BigDecimal(newStars).setScale(2, RoundingMode.UP);
+        ((JSONObject) data.get(name)).remove("stars");
+        ((JSONObject) data.get(name)).remove("nOfReviews");
+        ((JSONObject) data.get(name)).put("stars", newStarsRounded);
+        ((JSONObject) data.get(name)).put("nOfReviews", ++n);
+
+        String json = data.toJSONString();
+
+        // Rewrite the whole folder with the room removed.
+        try {
+            FileWriter writer = new FileWriter(fileName);
+            writer.write(json);
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        String contents = String.format("New review %.2f to hotel %s", review, name);
+        logger.setLevel("info");
+        logger.writeToLog(contents);
+    }
 }
