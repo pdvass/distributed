@@ -53,7 +53,7 @@ public class Filter implements Serializable {
                     this.dateRange[0] = startDate;
                     this.dateRange[1] = endDate;
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    System.out.println("Dates could not be parsed. Filter will not consider them");
                 }
             }
 
