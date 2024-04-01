@@ -24,7 +24,7 @@ public class Server extends Thread {
         while(true){
             Socket client = serverSocket.accept();
  
-            Response responseSocket = new Response(client);
+            ClientHandler responseSocket = new ClientHandler(client);
             Thread res = new Thread(responseSocket);
             res.start();
         }

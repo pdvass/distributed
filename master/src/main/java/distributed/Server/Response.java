@@ -4,76 +4,33 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-
-import distributed.Estate.Hotel;
-import distributed.JSONFileSystem.JSONDirManager;
-import distributed.Share.Filter;
 
 /**
  * More like ClientHandler. Might rename.
  */
 public class Response extends Thread {
-    private Socket clienSocket = null;
+    private Socket connection = null;
+    private Object contents;
     private ObjectInputStream ois = null;
     private ObjectOutputStream oos = null;
 
-    public Response(Socket socket){
-        this.clienSocket = socket;
+    public Response(Socket conn, Object contents) throws IOException{
+        this.connection = conn;
+        this.contents = contents;
+        this.ois = new ObjectInputStream(this.connection.getInputStream());
+        this.oos = new ObjectOutputStream(this.connection.getOutputStream());
     }
 
-    public void run() {
-       
-        try {
-            this.ois = new ObjectInputStream(this.clienSocket.getInputStream());
-            this.oos = new ObjectOutputStream(this.clienSocket.getOutputStream());
-
-            String greeting;
-            greeting = this.ois.readUTF();
-                
-
-            while(!greeting.equals("q")){
-
-                // NOTE: better if refactored to switch
-                if(greeting.equals("filter")) {
-                    Filter f = (Filter) this.readObject();
-                    List<Hotel> filteredHotels =  f.applyFilter();
-                    List<String> filteredHotelsStrings = new ArrayList<>();
-                    filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
-
-                    this.sendObject(filteredHotelsStrings);
-                } else if (greeting.equals("hotels")){
-                    JSONDirManager manager = new JSONDirManager();
-                    List<String> hotels = new ArrayList<>();
-                    try {
-                        manager.getHotels().stream().forEach(hotel -> hotels.add(hotel.toString()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        // System.out.println(e.getMessage());
-                    } 
-                    this.sendObject(hotels);
-                } else {
-                    // System.out.println(greeting);
-                    this.sendMessage(greeting);
-                }
-
-                greeting = this.ois.readUTF();
-            }
-
-            this.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    protected void changeContents(Object newContents){
+        this.contents = newContents;
     }
     
-    private void sendObject(Object c) throws IOException{
-        this.oos.writeObject(c);
+    protected void sendObject() throws IOException{
+        this.oos.writeObject(this.contents);
         this.oos.flush();
     }
 
-    private Object readObject(){
+    protected Object readObject(){
         Object obj = null;
         try {
             obj =  this.ois.readObject();
@@ -83,14 +40,19 @@ public class Response extends Thread {
         return obj;
     }
 
-    private void sendMessage(String msg) throws IOException{
-        this.oos.writeUTF(msg);
+    protected String readMessage() throws IOException {
+        String response = this.ois.readUTF();
+        return response;
+    }
+
+    protected void sendMessage() throws IOException {
+        this.oos.writeUTF((String) this.contents);
         this.oos.flush();
     }
 
-    public void close() throws IOException{
-        ois.close();
-        oos.close();
-        clienSocket.close();
+    protected void close() throws IOException{
+        this.ois.close();
+        this.oos.close();
+        this.connection.close();
     }
 }
