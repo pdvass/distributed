@@ -31,6 +31,7 @@ public class TCPClient {
      */
     public void startConnection(String ip, int port) throws UnknownHostException, IOException{
         this.clientSocket = new Socket(ip, port);
+        //First it sends, then it receives
         this.oos = new ObjectOutputStream(this.clientSocket.getOutputStream());
         this.ois = new ObjectInputStream(this.clientSocket.getInputStream());
     }

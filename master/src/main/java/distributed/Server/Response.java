@@ -7,8 +7,9 @@ import java.net.Socket;
 
 /**
  * Request is used to abstract the connection from the Terminal. Works as
- * a middle man between ClientHandler and Server.
+ * a middle man between Handlers and Server.
  * 
+ * @see distributed.Server.ManagerHandler
  * @see distributed.Server.ClientHandler
  * @see distributed.Server.Server
  * 
@@ -32,6 +33,7 @@ public class Response extends Thread {
     public Response(Socket conn, Object contents) throws IOException{
         this.connection = conn;
         this.contents = contents;
+        //First it receives, then it sends.
         this.ois = new ObjectInputStream(this.connection.getInputStream());
         this.oos = new ObjectOutputStream(this.connection.getOutputStream());
     }
