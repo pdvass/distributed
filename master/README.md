@@ -18,13 +18,13 @@ Since Comments are not allowed in JSON, we will decribe its structure here:
                     // Date range of the room's availability. It is not impacted by bookings
                     // Each room has its own DateRange even if it is the same for all
                     "startDate": "11/04/2024",
-                    "endDate": "30/04/2024"
+                    "endDate": "30/04/2024",
+                    // For how many persons the room is
+                    "persons":3,
                 }
             }
         ],
         "region": "Metaksourgio",
-        // For how many persons the room is
-        "persons":3,
         "stars":3,
         "nOfReviews": 15,
         "imageURI":"/share/dev/images/Pergamos.png"

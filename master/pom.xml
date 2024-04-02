@@ -12,7 +12,6 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>child</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
@@ -22,12 +21,21 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13</version>
-      <scope>test</scope>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.10.2</version>
+        <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+        </dependency>
+
     
     <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
     <dependency>
@@ -43,6 +51,14 @@
         <version>5.2.2</version>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <!-- For Lenevshtein distance -->
+        <artifactId>commons-text</artifactId>
+        <version>1.11.0</version>
+    </dependency>
 
   </dependencies>
 
@@ -63,10 +79,10 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
-        <plugin>
+        <!-- <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
-        </plugin>
+        </plugin> -->
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
@@ -90,6 +106,18 @@
         </plugin>
 
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.2.5</version>
+          <configuration>
+            <includes>
+              <include>**/*Test.java</include>
+            </includes>
+          </configuration>
+        </plugin>
+
+
+        <!-- <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
             <archive>
@@ -110,7 +138,27 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
+        </plugin> -->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>manager</id>
+            <configuration>
+              <mainClass>distributed.App</mainClass>
+            </configuration>
+          </execution>
+          <execution>
+            <id>server</id>
+            <configuration>
+              <mainClass>distributed.ServerApp</mainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       </plugins>
     </pluginManagement>
