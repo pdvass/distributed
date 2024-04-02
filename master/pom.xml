@@ -44,6 +44,14 @@
         <version>1.1.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <!-- For Lenevshtein distance -->
+        <artifactId>commons-text</artifactId>
+        <version>1.11.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
