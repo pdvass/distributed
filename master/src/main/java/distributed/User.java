@@ -2,6 +2,7 @@ package distributed;
 
 import java.util.HashMap;
 import java.util.Map;
+import distributed.Estate.Room;
 
 public class User {
 
@@ -17,7 +18,7 @@ public class User {
     }
 
     public void addReservation(String dateRange, Room room) {
-        map.put(dateRange,room);
+        // map.put(dateRange,room);
     }
 
     //set , get για name surname userID ,reservations
