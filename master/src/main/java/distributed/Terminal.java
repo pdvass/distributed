@@ -1,10 +1,13 @@
 package distributed;
 
 import distributed.JSONFileSystem.JSONDirManager;
+import distributed.Share.Request;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.io.IOException;
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -17,6 +20,8 @@ import java.util.regex.Matcher;
  * @author pdvass
  */
 public class Terminal extends Thread {
+    private Socket serverConn = null;
+    private Request req = null;
     /**
      * Text printed when the "list" command is given
     */
@@ -42,12 +47,25 @@ public class Terminal extends Thread {
      */
     public void setup(){
         System.out.println("Setting up the system...");
-        // Setting up any settings that may occur
+        try {
+            this.serverConn = new Socket("localhost", 4555);
+            this.req = new Request(this.serverConn, "Manager connection");
+            this.req.sendMessage();
+            if(this.req.receiveMessage().equals("manager connected")){
+                System.out.println("Connected to server.");
+            } else {
+                System.out.println("Not connected");
+            }
+
+        } catch (IOException e) {
+            System.out.println("Could not connect to server");
+        }
         System.out.println("Everything is ready.");
     }
 
     /**
      * Initiates the terminal to read from Master any commands
+     * @throws ClassNotFoundException 
      */
     public void init(){
         System.out.println("Welcome to room management system. Type 'list' for available commands.");
@@ -92,6 +110,32 @@ public class Terminal extends Thread {
                 case "show":
                     System.out.println("Show booking applying to the Filter");
                     break;
+                case "users":
+                    this.req.changeContents("users");
+                    try {
+                        this.req.sendMessage();
+                        int num = (int) this.req.receiveRequestObject();
+                        System.out.println(num);
+                        break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "check":
+                    this.req.changeContents("check");
+                    try {
+                        this.req.sendMessage();
+                        String msg = this.req.receiveMessage();
+                        while(!msg.equals("-1")){
+                            System.out.println(msg);
+                            msg = this.req.receiveMessage();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 default:
                     if(commandTokens[0].isEmpty()){
                         System.out.println("");
@@ -102,7 +146,6 @@ public class Terminal extends Thread {
                     break;
             }
         }
-
         input.close();
         System.exit(0);
     }

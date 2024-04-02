@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import distributed.Bookkeeper;
 import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
@@ -12,26 +13,29 @@ import distributed.Share.Filter;
 public class ClientHandler extends Thread {
     private Socket clienSocket = null;
     private Response res = null;
+    private Bookkeeper bookkeeper = new Bookkeeper();
+    private Mailbox mailbox = null;
 
-    public ClientHandler(Socket socket){
+    public ClientHandler(Socket socket, Response res){
         this.clienSocket = socket;
+        this.res = res;
+        this.bookkeeper.addUser();
+        this.mailbox = new Mailbox();
     }
 
     public void run() {
        
         try {
-            this.res = new Response(this.clienSocket, null);
+            // this.res = new Response(this.clienSocket, null);
 
             // Figure out type of connections made.
-            if(this.res.readMessage().equals("user connection")){
-                this.res.changeContents("client connected");
-                this.res.sendMessage();
-            }
-
-            if(this.res.readMessage().equals("worker connection")){
-                this.res.changeContents("worker connected");
-                this.res.sendMessage();
-            }
+            // if(this.res.readMessage().equals("user connection")){
+            //     this.res.changeContents("client connected");
+            //     this.res.sendMessage();
+            // } else if(this.res.readMessage().equals("worker connection")){
+            //     this.res.changeContents("worker connected");
+            //     this.res.sendMessage();
+            // }
 
             String greeting;
             // greeting = this.ois.readUTF();
@@ -62,13 +66,21 @@ public class ClientHandler extends Thread {
                     // this.sendObject(hotels);
                     this.res.changeContents(hotels);
                     this.res.sendObject();
-                } else {
+                } else if(greeting.contains("say")) {
+                    this.mailbox.addMessage("Manager", "Client says: " + greeting.substring(4));
+                }else {
                     // System.out.println(greeting);
                     // this.sendMessage(greeting);
                     this.res.changeContents(greeting);
                     this.res.sendMessage();
                 }
 
+                ArrayList<String> mails = mailbox.checkMail("Client");
+                if(!mails.isEmpty()){
+                    for(String mail : mails){
+                        System.out.println(mail);
+                    }
+                }
                 // greeting = this.ois.readUTF();
                 greeting = this.res.readMessage();
             }
@@ -83,6 +95,7 @@ public class ClientHandler extends Thread {
     public void close() throws IOException{
         this.res.close();
         this.clienSocket.close();
+        bookkeeper.removeUser();
     }
     
 }
