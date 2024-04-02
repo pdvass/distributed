@@ -36,7 +36,12 @@ public class ClientTerminal {
         TCPClient client = new TCPClient();
         client.startConnection("localhost", 4555);
 
-        this.req = new Request(client, "");
+        this.req = new Request(client, "user connection");
+        this.req.sendMessage();
+        if(!this.req.receiveMessage().equals("client connected")){
+            System.out.println("Could not connect. Please try again later.");
+            return;
+        }
 
         System.out.println("Welcome to out Booking agency. Type list for available commands.");
         System.out.print("> ");
