@@ -34,9 +34,22 @@ public class Hotel {
         return availabity;
     }
 
-    // NOTE: Should implement
-    public void book(){
+    /**
+     * Finds the room that is available on the dates desired by the user.
+     * @param username representing the name of the user who wants to make the reservation.
+     * @param from Date representing the first day of which the room need to be booked.
+     * @param to Date representing the last day of which the room need to be booked.
+     */
+    public void book(String username, Date from, Date to) {
         // NOTE: Should be synchronized
+        for(Room room : rooms) {
+            if(room.isAvailable(from, to)) {
+                room.book(from, to);
+                System.out.println("Room " + room.getName() + " booked for user " + username + " from " + from.toString() + " to " + to.toString());
+                return; // Booked the first available room and exit
+            }
+        }
+        System.out.println("No available rooms for the specified dates.");
 
     }
 

@@ -1,13 +1,18 @@
 package distributed;
 
+
+/**
+ * The Server class will represent the single-threaded nature of the Terminal class.
+ * 
+ * @author panagou
+ * @see Terminal
+ */
+
 public class Server extends Thread {
 
-    private String argument;
     private Terminal terminal;
 	
-	public Server(String argument) {
-		this.argument = argument;
-	}
+	public Server() {}
 
 	@Override
 	public void run() {
@@ -15,18 +20,12 @@ public class Server extends Thread {
         terminal = new Terminal();
         terminal.setup();
         terminal.init();
-
-		System.out.println("Thread with id: "+ threadId() + " started!");
 		
 		try {
 			sleep(5000);
-			System.out.println("Argument: "+argument);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println("Thread with id: "+ threadId() + " exiting");
 		
 	}
     

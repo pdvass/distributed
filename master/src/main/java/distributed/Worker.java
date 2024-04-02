@@ -1,8 +1,10 @@
 package distributed;
 
+import distributed.Estate.*;
+
 import java.util.HashMap;
 import java.util.Map;
-import distributed.Estate.*;
+
 
 /**
  * The Worker class mainly needed for keeping information about the Room objects which
@@ -41,6 +43,10 @@ public class Worker {
 
     public void removeRoom(int roomId) {
         rooms.remove(roomId);
+    }
+
+    public boolean hasRoom(int roomId) {
+        return (this.rooms).containsKey(roomId);
     }
 
     public Map<Integer, Room> returnRooms() {
