@@ -13,6 +13,12 @@ import distributed.Estate.Hotel;
 import distributed.Estate.Room;
 import distributed.JSONFileSystem.JSONDirManager;
 
+/**
+ * Filter is used to create predicates that hotels must fulfill to qualify for
+ * sending them back to the client.
+ * 
+ * @author pdvass
+ */
 public class Filter implements Serializable {
     private static final long serialVersionUID = 290320241224L;
 
@@ -23,6 +29,8 @@ public class Filter implements Serializable {
     
     public Filter(String[] filters){
         try {
+            // Infinity-like parameters to initialise the dateRange array. If dates are given as
+            // a filter, then they are "relaxed".
             dateRange[0] = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/9999");
             dateRange[1] = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2002");
         } catch (ParseException e) {
@@ -82,6 +90,15 @@ public class Filter implements Serializable {
 
 
     ////////////// UNIQUE TO SERVER //////////////
+
+    /**
+     * Applies filters to Hotel List.
+     * 
+     * @return A list of all the hotels.
+     * 
+     * @see Hotel
+     * @see JSONDirManager
+     */
     public final List<Hotel> applyFilter(){
         JSONDirManager manager = new JSONDirManager();
         ArrayList<Hotel> hotels = new ArrayList<>();
@@ -94,11 +111,14 @@ public class Filter implements Serializable {
             e.printStackTrace();
         }
 
+        // We use a more fuctional way of creating list, by initializing a stable state hotel list
+        // and creating a new one first by which hotel satisfies the filter predicates, if there are any.
         List<Hotel> filteredHotels = hotels.stream()
                         .filter(hotel -> (hotel.getRegion().equals(this.region) || this.region.equals("")))
                         .filter(hotel -> (hotel.getStars() >= this.stars || this.stars == -1))
                         .collect(Collectors.toList());
 
+        // and finally by keeping in each hotel the rooms that satisfies the filter predicates, if there are any.
         filteredHotels.iterator().forEachRemaining(
             hotel -> {
                 ArrayList<Room> rooms = hotel.getRooms().stream()
@@ -115,6 +135,8 @@ public class Filter implements Serializable {
             }
         );
 
+        // Finally, filter any hotel that might comply with a hotel filter, but none
+        // of its rooms does with the room filters.
         filteredHotels = filteredHotels.stream()
                                     .filter(hotel -> hotel.getRooms().size() != 0)
                                     .collect(Collectors.toList());

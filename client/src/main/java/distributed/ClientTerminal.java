@@ -6,13 +6,29 @@ import java.util.List;
 import java.util.Scanner;
 
 import distributed.Client.TCPClient;
-import distributed.Share.Counter;
 import distributed.Share.Filter;
 import distributed.Share.Request;
 
+/**
+ * ClientTerminal is used for the Client to use from the cmd to send requests to the server.
+ * 
+ * @see Request
+ * @author pdvass
+ */
 public class ClientTerminal {
 
     private Request req = null;
+    private final String commands = """
+            Available commands:
+              - get hotels: Gets all hotels available.
+              - get hotels filter $FILTER: get all the hotels available, that comply with the filter.
+                Filters can check the following things:
+                  * stars: The lower bound of stars, that the hotel must have. Must be float number.
+                  * region: The region that the hotel must be located.
+                  * dates: The dates the rooms must be available (Formatted as [StartDate-EndDate]).
+                  * nOfPersons: The number of persons that the room must have. Must be an integer number.
+              - book: Book specific room.
+            """;
 
     public ClientTerminal(){}
 
@@ -20,8 +36,14 @@ public class ClientTerminal {
         TCPClient client = new TCPClient();
         client.startConnection("localhost", 4555);
 
-        this.req = new Request(client, "");
+        this.req = new Request(client, "user connection");
+        this.req.sendMessage();
+        if(!this.req.receiveMessage().equals("client connected")){
+            System.out.println("Could not connect. Please try again later.");
+            return;
+        }
 
+        System.out.println("Welcome to out Booking agency. Type list for available commands.");
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         String msg = scanner.nextLine();
@@ -39,7 +61,10 @@ public class ClientTerminal {
                     this.req.changeContents(filter);
                     this.req.sendRequestObject();
                     try{
+                        // We already know from server side, that we need to cast to List<String>
+                        @SuppressWarnings("unchecked")
                         List<String> filteredHotels = (List<String>) this.req.receiveRequestObject();
+
                         filteredHotels.forEach(hotelString -> System.out.println(hotelString));
                     } catch (Exception e){
                         System.out.println(e.getMessage());
@@ -49,7 +74,10 @@ public class ClientTerminal {
                     this.req.changeContents("hotels");
                     this.req.sendMessage();
                     try{
+                        // We already know from server side, that we need to cast to List<String>
+                        @SuppressWarnings("unchecked")
                         List<String> hotels = (List<String>) this.req.receiveRequestObject();
+
                         hotels.forEach(hotelString -> System.out.println(hotelString));
                     } catch (Exception e){
                         System.out.println(e.getMessage());
@@ -58,27 +86,16 @@ public class ClientTerminal {
                 case "book":
                     System.out.println("Booking the room for you");
                     break;
+                case "h":
+                    System.out.println("Helped you");
+                    break;
+                case "commands":
+                    System.out.println(this.commands);
                 default:
                     this.req.changeContents(msg);
                     this.req.sendMessage();
                     System.out.println(this.req.receiveMessage());
                     break;
-            }
-            
-            if(msg.equals("GET obj")){
-                // client.sendMessage(msg);
-                this.req.changeContents(msg);
-                this.req.sendMessage();
-                // Counter c = (Counter) client.receiveObject();
-                Counter c = (Counter) this.req.receiveRequestObject();
-                if(c != null){
-                    Counter updatedCounter = new Counter(c.getCounter() + 1);
-                    // client.sendObject(updatedCounter);
-                    this.req.changeContents(updatedCounter);
-                    this.req.sendRequestObject();
-                } else {
-                    System.out.println("It is null");
-                }
             }
 
             System.out.print("> ");
@@ -93,13 +110,15 @@ public class ClientTerminal {
 
     public String getCommand(String command){
         String[] tokens = command.split(" ");
-        if(tokens.length < 2){
-            System.out.println("Not enough arguments");
-            return "";
-        }
-
+        
         switch (tokens[0]) {
             case "get":
+
+                if(tokens.length < 2){
+                    System.out.println("Not enough arguments");
+                    return "";
+                }
+
                 if(command.contains("filter")){
                     return "filter";
                 }
@@ -109,9 +128,10 @@ public class ClientTerminal {
                 }
             case "book":
                 return "book";
+            case "commands":
+                return "commands";
             default:
                 return "";
         }
     }
-    
 }

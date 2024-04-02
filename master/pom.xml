@@ -44,6 +44,14 @@
         <version>1.1.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <!-- For Lenevshtein distance -->
+        <artifactId>commons-text</artifactId>
+        <version>1.11.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -101,7 +109,7 @@
         </plugin>
 
 
-        <plugin>
+        <!-- <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
             <archive>
@@ -122,7 +130,27 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
+        </plugin> -->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>manager</id>
+            <configuration>
+              <mainClass>distributed.App</mainClass>
+            </configuration>
+          </execution>
+          <execution>
+            <id>server</id>
+            <configuration>
+              <mainClass>distributed.ServerApp</mainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       </plugins>
     </pluginManagement>
