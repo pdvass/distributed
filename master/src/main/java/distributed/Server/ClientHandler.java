@@ -22,6 +22,17 @@ public class ClientHandler extends Thread {
         try {
             this.res = new Response(this.clienSocket, null);
 
+            // Figure out type of connections made.
+            if(this.res.readMessage().equals("user connection")){
+                this.res.changeContents("client connected");
+                this.res.sendMessage();
+            }
+
+            if(this.res.readMessage().equals("worker connection")){
+                this.res.changeContents("worker connected");
+                this.res.sendMessage();
+            }
+
             String greeting;
             // greeting = this.ois.readUTF();
             greeting = this.res.readMessage();

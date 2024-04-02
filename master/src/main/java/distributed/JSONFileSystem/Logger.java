@@ -75,7 +75,8 @@ public class Logger {
                 label = "[INFO]";
                 break;
             case Level.WARN:
-                label = "[WARN]";
+                label = "[WARNING]";
+                break;
             case Level.DANGER:
                 label = "[ERROR]";
                 break;
