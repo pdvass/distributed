@@ -53,7 +53,6 @@ public class Request {
      *
      * @throws IOException
      * 
-     * @see {@link TCPClient#sendMessage(String)}
      */
     public void sendMessage() throws IOException{
         this.oos.writeUTF((String) this.contents);
@@ -65,7 +64,6 @@ public class Request {
      *
      * @throws IOException
      * 
-     * @see {@link TCPClient#receiveMsg()}
      */
     public String receiveMessage() throws IOException{
         String res = this.ois.readUTF();
@@ -76,7 +74,6 @@ public class Request {
      * Sends an Object through the enstablished connection.
      * @throws IOException 
      * 
-     * @see {@link TCPClient#sendObject(Object)}
      */
     public void sendRequestObject() throws IOException{
         this.oos.writeObject(this.contents);
@@ -88,7 +85,6 @@ public class Request {
      * @throws IOException 
      * @throws ClassNotFoundException 
      *
-     * @see {@link TCPClient#receiveObject()}
      */
     public Object receiveRequestObject() throws ClassNotFoundException, IOException{
         Object res = this.ois.readObject();
