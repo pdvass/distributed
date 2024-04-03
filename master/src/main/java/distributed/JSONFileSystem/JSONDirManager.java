@@ -243,6 +243,11 @@ public class JSONDirManager {
         logger.writeToLog("Error occured during master working time: " + contents);
     }
 
+    public void logInfo(String contents){
+        logger.setLevel("info");
+        logger.writeToLog(contents);
+    }
+
     public void printAllHotels(){
         try {
             for(Hotel hotel : this.getHotels()){
