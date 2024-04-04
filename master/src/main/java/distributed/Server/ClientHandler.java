@@ -9,6 +9,7 @@ import distributed.Bookkeeper;
 import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
+import distributed.Share.Tuple;
 
 /**
  * Client Handler is responsible for managing the connection between
@@ -21,6 +22,8 @@ import distributed.Share.Filter;
  * @author pdvass
  */
 public class ClientHandler extends Thread {
+    private static volatile long totalUsers = 0;
+    private long id;
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
@@ -32,6 +35,10 @@ public class ClientHandler extends Thread {
         this.res = res;
         this.bookkeeper.addUser();
         this.mailbox = new Mailbox();
+        if(totalUsers == Long.MAX_VALUE){
+            totalUsers = 0;
+        }
+        this.id = totalUsers++;
     }
 
     public void run() {
@@ -67,7 +74,8 @@ public class ClientHandler extends Thread {
                     this.res.changeContents(hotels);
                     this.res.sendObject();
                 } else if(greeting.contains("say")) {
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Client says: " + greeting.substring(4));
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Message",
+                                "Client" + this.id + " says: " + greeting.substring(4));
                 }else {
                     // System.out.println(greeting);
                     // this.sendMessage(greeting);
@@ -75,9 +83,9 @@ public class ClientHandler extends Thread {
                     this.res.sendMessage();
                 }
 
-                ArrayList<String> mails = mailbox.checkMail(this.type);
+                ArrayList<Tuple> mails = mailbox.checkMail(this.type);
                 if(!mails.isEmpty()){
-                    for(String mail : mails){
+                    for(Tuple mail : mails){
                         System.out.println(mail);
                     }
                 }

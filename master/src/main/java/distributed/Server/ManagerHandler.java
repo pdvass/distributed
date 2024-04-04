@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import distributed.Bookkeeper;
+import distributed.Share.Tuple;
 
 /**
  * Manger Handler is responsible for managing the connection between
@@ -41,18 +42,20 @@ public class ManagerHandler extends Thread {
                         res.sendObject();
                         break;
                     case "check":
-                        ArrayList<String> mails = mailbox.checkMail(this.type);
+                        ArrayList<Tuple> mails = mailbox.checkMail(this.type);
                         if(!mails.isEmpty()){
-                            for(String mail : mails){
+                            for(Tuple mail : mails){
                                 this.res.changeContents(mail);
-                                this.res.sendMessage();
+                                this.res.sendObject();
                             }
                         } else {
-                            this.res.changeContents("No messsages yet");
-                            this.res.sendMessage();
+                            Tuple empty = new Tuple("Message", "No messsages yet");
+                            this.res.changeContents(empty);
+                            this.res.sendObject();
                         }
-                        this.res.changeContents("-1");
-                        this.res.sendMessage();
+                        Tuple finalMsg = new Tuple("Message", "-1");
+                        this.res.changeContents(finalMsg);
+                        this.res.sendObject();
                         break;
                     default:
                         res.changeContents(-1);

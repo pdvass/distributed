@@ -3,6 +3,8 @@ package distributed.Server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import distributed.Share.Tuple;
+
 import distributed.JSONFileSystem.JSONDirManager;
 
 /**
@@ -16,7 +18,7 @@ import distributed.JSONFileSystem.JSONDirManager;
  * @author pdvass
  */
 public class Mailbox {
-    private static volatile HashMap<HandlerTypes, ArrayList<String>> messages = null;
+    private static volatile HashMap<HandlerTypes, ArrayList<Tuple>> messages = null;
     // For bigger app, every type of user, would have its own message queue, or even 
     // multiple per type.
     // private static volatile HashMap<String, ArrayList<String>> clientMessages = null;
@@ -41,9 +43,9 @@ public class Mailbox {
      * @param type Type of handler trying to access the mail.
      * @return The mails directed to the handler.
      */
-    protected ArrayList<String> checkMail(HandlerTypes type){
+    protected ArrayList<Tuple> checkMail(HandlerTypes type){
         @SuppressWarnings("unchecked")
-        ArrayList<String> mails = (ArrayList<String>) messages.get(type).clone();
+        ArrayList<Tuple> mails = (ArrayList<Tuple>) messages.get(type).clone();
         messages.get(type).clear();
         return mails;
     }
@@ -54,10 +56,22 @@ public class Mailbox {
      * @param type The type of Handler 
      * @param message The message for the handler.
      */
-    protected synchronized void addMessage(HandlerTypes fromType, HandlerTypes toType, String message){
+    protected synchronized void addMessage(HandlerTypes fromType, HandlerTypes toType, String message, Object contents){
         String log = String.format("%s left a message from %s", fromType.toString(), toType.toString());
         manager.logInfo(log);
-        messages.get(toType).add(message);
+        Tuple t = null;
+        switch (message) {
+            case "Message":
+                t = new Tuple("Message", contents);
+                messages.get(toType).add(t);
+                break;
+            case "Filter":
+                t = new Tuple("Filter", contents);
+                messages.get(toType).add(t);
+                break;
+            default:
+                break;
+        }
         return;
     }
 
