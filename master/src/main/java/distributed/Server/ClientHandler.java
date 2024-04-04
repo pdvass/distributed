@@ -10,11 +10,22 @@ import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
 
+/**
+ * Client Handler is responsible for managing the connection between
+ * the server and the client, by exchanging Requests and Responses. Each 
+ * client has its own ClientHandler.
+ * 
+ * @see distributed.Share.Request
+ * @see Response
+ * 
+ * @author pdvass
+ */
 public class ClientHandler extends Thread {
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
+    private HandlerTypes type = HandlerTypes.CLIENT;
 
     public ClientHandler(Socket socket, Response res){
         this.clienSocket = socket;
@@ -26,17 +37,6 @@ public class ClientHandler extends Thread {
     public void run() {
        
         try {
-            // this.res = new Response(this.clienSocket, null);
-
-            // Figure out type of connections made.
-            // if(this.res.readMessage().equals("user connection")){
-            //     this.res.changeContents("client connected");
-            //     this.res.sendMessage();
-            // } else if(this.res.readMessage().equals("worker connection")){
-            //     this.res.changeContents("worker connected");
-            //     this.res.sendMessage();
-            // }
-
             String greeting;
             // greeting = this.ois.readUTF();
             greeting = this.res.readMessage();
@@ -67,7 +67,7 @@ public class ClientHandler extends Thread {
                     this.res.changeContents(hotels);
                     this.res.sendObject();
                 } else if(greeting.contains("say")) {
-                    this.mailbox.addMessage("Manager", "Client says: " + greeting.substring(4));
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Client says: " + greeting.substring(4));
                 }else {
                     // System.out.println(greeting);
                     // this.sendMessage(greeting);
@@ -75,7 +75,7 @@ public class ClientHandler extends Thread {
                     this.res.sendMessage();
                 }
 
-                ArrayList<String> mails = mailbox.checkMail("Client");
+                ArrayList<String> mails = mailbox.checkMail(this.type);
                 if(!mails.isEmpty()){
                     for(String mail : mails){
                         System.out.println(mail);

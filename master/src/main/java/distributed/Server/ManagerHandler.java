@@ -7,11 +7,23 @@ import java.util.ArrayList;
 
 import distributed.Bookkeeper;
 
+/**
+ * Manger Handler is responsible for managing the connection between
+ * the server and the manager, by exchanging Requests and Responses. The
+ * manager connects to the server, through the Terminal.
+ * 
+ * @see distributed.Terminal
+ * @see distributed.Share.Request
+ * @see Response
+ * 
+ * @author pdvass
+ */
 public class ManagerHandler extends Thread {
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
+    private HandlerTypes type = HandlerTypes.MANAGER;
 
     public ManagerHandler(Socket socket, Response res){
         this.clienSocket = socket;
@@ -29,7 +41,7 @@ public class ManagerHandler extends Thread {
                         res.sendObject();
                         break;
                     case "check":
-                        ArrayList<String> mails = mailbox.checkMail("Manager");
+                        ArrayList<String> mails = mailbox.checkMail(this.type);
                         if(!mails.isEmpty()){
                             for(String mail : mails){
                                 this.res.changeContents(mail);
@@ -49,7 +61,7 @@ public class ManagerHandler extends Thread {
                 }
 
             } catch (EOFException e) {
-                // Do nothing, as this occurs if managers decides to log out.
+                // Do nothing, as this occurs if the manager decides to log out.
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
