@@ -88,7 +88,7 @@ public class Logger {
         return label;
     }
 
-    protected void writeToLog(String contents){
+    protected synchronized void writeToLog(String contents){
         String out = this.getLevelLabel();
         out += " " + contents;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");

@@ -68,6 +68,8 @@ public class Filter implements Serializable {
         }
     }
 
+    ////////////////////////// GETTERS //////////////////////////
+
     public String getRegion(){
         return this.region;
     }
@@ -88,6 +90,7 @@ public class Filter implements Serializable {
         return this.dateRange[0].toString() + " and " + this.dateRange[1].toString();
     }
 
+    ////////////////////////// GETTERS //////////////////////////
 
     ////////////// UNIQUE TO SERVER //////////////
 

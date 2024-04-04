@@ -46,6 +46,26 @@ public class JSONDirManager {
         return extension;
     }
 
+    public void updateFileList(){
+        this.fileList.clear();
+        File files = new File(this.path);
+        for(File file : files.listFiles()){
+            if(!file.isDirectory() && getFileExtension(file).equals("json")){
+                this.fileList.add(file);
+            }
+        }
+    }
+
+    ////////////////// NOTE //////////////////
+
+    // None of file altering methods are synchronized, since there is only one
+    // manager. If multiple files, then we change the architecture, so the file
+    // could be exposed and used as a lock in a syncronized block.
+    // We would never synchronize the method, because multiple
+    // writes to differenr files, is not a problem.
+
+    ////////////////// NOTE //////////////////
+
     /**
      * Uses JSONFileParser as a tool to create a new, almost empty, JSON file
      * which represents the new Hotel. Room array is initially empty.
@@ -243,6 +263,11 @@ public class JSONDirManager {
         logger.writeToLog("Error occured during master working time: " + contents);
     }
 
+    public void logInfo(String contents){
+        logger.setLevel("info");
+        logger.writeToLog(contents);
+    }
+
     public void printAllHotels(){
         try {
             for(Hotel hotel : this.getHotels()){
@@ -267,36 +292,53 @@ public class JSONDirManager {
         }
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
-        JSONFileParser parser = new JSONFileParser(fileName);
-        JSONObject data = null;
-        try {
-            data = parser.parseFile();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        File reviewdFile = null;
+        for(File f : this.fileList){
+            // System.out.println(f.getPath() + " " + fileName);
+            if(f.getPath().equals(fileName)){
+                reviewdFile = f;
+            }
+        }
+        if(reviewdFile == null){
+            this.logError(String.format("Hotel %s not found, to add a review.", name));
             return;
         }
-        double stars = (double) ((JSONObject) data.get(name)).get("stars");
-        long n = (long) ((JSONObject) data.get(name)).get("nOfReviews");
-        double newStars = ((stars * n) + review) / (n + 1);
-        BigDecimal newStarsRounded = new BigDecimal(newStars).setScale(2, RoundingMode.UP);
-        ((JSONObject) data.get(name)).remove("stars");
-        ((JSONObject) data.get(name)).remove("nOfReviews");
-        ((JSONObject) data.get(name)).put("stars", newStarsRounded);
-        ((JSONObject) data.get(name)).put("nOfReviews", ++n);
 
-        String json = data.toJSONString();
+        // Many reviews may be added for the same hote. We should check
+        // that writing to this hotels file is synchronized.
+        synchronized (reviewdFile) {
 
-        // Rewrite the whole folder with the room removed.
-        try {
-            FileWriter writer = new FileWriter(fileName);
-            writer.write(json);
-            writer.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            JSONFileParser parser = new JSONFileParser(fileName);
+            JSONObject data = null;
+            try {
+                data = parser.parseFile();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+            double stars = (double) ((JSONObject) data.get(name)).get("stars");
+            long n = (long) ((JSONObject) data.get(name)).get("nOfReviews");
+            double newStars = ((stars * n) + review) / (n + 1);
+            BigDecimal newStarsRounded = new BigDecimal(newStars).setScale(2, RoundingMode.UP);
+            ((JSONObject) data.get(name)).remove("stars");
+            ((JSONObject) data.get(name)).remove("nOfReviews");
+            ((JSONObject) data.get(name)).put("stars", newStarsRounded);
+            ((JSONObject) data.get(name)).put("nOfReviews", ++n);
+    
+            String json = data.toJSONString();
+    
+            // Rewrite the whole folder with the room removed.
+            try {
+                FileWriter writer = new FileWriter(fileName);
+                writer.write(json);
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+    
+            String contents = String.format("New review %.2f to hotel %s", review, name);
+            logger.setLevel("info");
+            logger.writeToLog(contents);
         }
-
-        String contents = String.format("New review %.2f to hotel %s", review, name);
-        logger.setLevel("info");
-        logger.writeToLog(contents);
     }
 }

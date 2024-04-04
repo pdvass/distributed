@@ -21,14 +21,39 @@ public class Server extends Thread {
         this.serverSocket = new ServerSocket(port);
         this.serverSocket.setReuseAddress(true);
 
+
         while(true){
             Socket client = serverSocket.accept();
- 
-            ClientHandler responseSocket = new ClientHandler(client);
-            Thread res = new Thread(responseSocket);
-            res.start();
+
+            Response res = new Response(client, null);
+
+            // Figure out type of connections made.
+            
+            String msg = res.readMessage();
+
+            
+            
+            if(msg.equals("user connection")){
+                res.changeContents("client connected");
+                res.sendMessage();
+
+                ClientHandler responseSocket = new ClientHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
+
+            } else if(msg.equals("worker connection")){
+                res.changeContents("worker connected");
+                res.sendMessage();
+            } else if(msg.equals("Manager connection")){
+                res.changeContents("manager connected");
+                res.sendMessage();
+
+                ManagerHandler responseSocket = new ManagerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
+
+            }
         }
-        
     }
 
     public void close() throws IOException {

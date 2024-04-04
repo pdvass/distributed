@@ -91,6 +91,12 @@ public class ClientTerminal {
                     break;
                 case "commands":
                     System.out.println(this.commands);
+                    break;
+                case "say":
+                    this.req.changeContents(msg);
+                    this.req.sendMessage();
+                    System.out.println("Message sent!");
+                    break;
                 default:
                     this.req.changeContents(msg);
                     this.req.sendMessage();
@@ -130,6 +136,8 @@ public class ClientTerminal {
                 return "book";
             case "commands":
                 return "commands";
+            case "say":
+                return "say";
             default:
                 return "";
         }
