@@ -149,6 +149,12 @@
               <mainClass>distributed.ServerApp</mainClass>
             </configuration>
           </execution>
+          <execution>
+            <id>reducer</id>
+            <configuration>
+              <mainClass>distributed.ReducerApp</mainClass>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
