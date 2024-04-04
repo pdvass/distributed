@@ -19,6 +19,7 @@ import distributed.Share.Filter;
  * @see Response
  * 
  * @author pdvass
+ * @author stellagianno
  */
 public class ClientHandler extends Thread {
     private Socket clienSocket = null;

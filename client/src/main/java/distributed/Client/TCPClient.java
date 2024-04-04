@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.io.Serializable;
 
 /**
  * TCPClient is used to communicate with the server and send GET requests for the Client.

@@ -2,6 +2,10 @@ package distributed;
 
 import java.io.Serializable;
 
+/**
+ * @author stellagianno
+ */
+
 public class Counter implements Serializable {
     private int counter;
     public Counter(int n){

@@ -3,6 +3,9 @@ package distributed.Server;
 import java.io.*;
 import java.net.*;
 
+/**
+ * @author stellagianno
+ */
 
 public class Server extends Thread {
     private ServerSocket serverSocket = null;

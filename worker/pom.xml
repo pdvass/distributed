@@ -86,7 +86,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>distributed.TCPClient</mainClass> 
+                <mainClass>distributed.WorkerApp</mainClass> 
               </manifest>
             </archive>
             <descriptorRefs>

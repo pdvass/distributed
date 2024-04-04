@@ -1,7 +1,10 @@
 package distributed;
 
-import distributed.Server.Server;
 
+import distributed.Server.Server;
+/**
+ * @author stellagianno
+ */
 public class ServerApp {
     public static void main( String[] args )
     {
