@@ -1,3 +1,2 @@
-&'..\..\..\..\..\..\..\Downloads\Sims downloads\apache-maven-4.0.0-alpha-13\bin\mvn' clean compile assembly:single
-&'..\..\..\..\..\..\..\Downloads\Sims downloads\apache-maven-4.0.0-alpha-13\bin\mvn' package
+&'..\..\..\..\..\..\..\Downloads\Sims downloads\apache-maven-4.0.0-alpha-13\bin\mvn' exec:java@manager
 echo "Jar file ready"

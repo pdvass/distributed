@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 public class Hotel {
     private ArrayList<Room> rooms;
-    private int stars;
+    private float stars;
     private int nOfReviews;
     private String region;
     private String name;
 
-    public Hotel(String name, String region, int stars, int nOfReviews){
+    public Hotel(String name, String region, float stars, int nOfReviews){
         this.name = name;
         this.region = region;
         this.stars = stars;
@@ -32,6 +32,22 @@ public class Hotel {
             availabity.add(room.isAvailable(from, to));
         }
         return availabity;
+    }
+
+    /**
+     * Create a room object and add it to rooms.
+     * 
+     * @param name Name of the hotel for creating the ID
+     * @param startDate Date first being available
+     * @param endDate Date last being available
+     * @param cost Cost per night
+     * @param nOfPeople Max people
+     * 
+     * @see Hotel#rooms
+     */
+    public void addRoom(String name, String startDate, String endDate, float cost, int nOfPeople){
+        Room room = new Room(name, startDate, endDate, cost, nOfPeople);
+        this.rooms.add(room);
     }
 
     /**
@@ -57,7 +73,7 @@ public class Hotel {
         return this.rooms;
     }
 
-    public int getStars(){
+    public float getStars(){
         return this.stars;
     }
 
@@ -71,6 +87,24 @@ public class Hotel {
 
     public String getName(){
         return this.name;
+    }
+
+    public void setHotelRoom(ArrayList<Room> rooms){
+        this.rooms = rooms;
+    }
+
+    public String toString(){
+        // NOTE: StringBuilder is more efficient than String concats
+        String repr = String.format("Name: %s. It is located in %s and averages %.2f stars from %d reviews. ", this.name, this.region, this.stars, this.nOfReviews);
+        repr += "Here is some info for its room" + (this.rooms.size() > 1 ? "s:\n" : ":\n");
+        for(Room room : this.rooms){
+            repr += String.format("- %s for %d people. It costs %.2f and it is available from %s to %s.\n", room.getName(), room.getNOfPeople(), room.getCost(), 
+                                        room.getStartDate(), room.getEndDate());
+        }
+        if(this.rooms.isEmpty()){
+            repr += "It has no rooms yet.";
+        }
+        return repr;
     }
     
 }

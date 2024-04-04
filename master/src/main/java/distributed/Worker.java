@@ -1,7 +1,14 @@
 package distributed;
 
 import distributed.Estate.*;
+import distributed.Share.*;
 
+import java.net.*;
+
+import java.io.*;
+import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +18,7 @@ import java.util.Map;
  * correspond to each worker.
  * 
  * @author panagou
+ * @author stella
  * @see Room
  */
 
@@ -19,38 +27,58 @@ public class Worker {
     private String name;
     private boolean isAlive;
     private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+    private Request rec = null;
 
     public Worker(String workerName) {
         this.name = workerName;
-        this.isAlive = true;
+        this.isAlive = false;
+    }
+
+    public void startWorker( ) throws IOException {
+        Socket socket = new Socket("localhost", 4555);
+
+        this.rec = new Request(socket, "worker connection");
+        this.rec.sendMessage();
+
+        System.out.println(rec.receiveMessage());
+
+        if(!(this.isAlive && this.rec == null)) {
+            this.isAlive = true;
+            runWorker();
+        }
+    }
+
+    public void runWorker() throws IOException {
+
     }
 
     public String getName() {
         return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Room getRoom(int roomId) {
-        return rooms.get(roomId);
+        return this.rooms.get(roomId);
     }
 
     public void addRoom(int roomId, Room room) {
-        rooms.put(roomId, room);
+        this.rooms.put(roomId, room);
     }
 
     public void removeRoom(int roomId) {
-        rooms.remove(roomId);
+        this.rooms.remove(roomId);
     }
 
     public boolean hasRoom(int roomId) {
         return (this.rooms).containsKey(roomId);
     }
 
-    public Map<Integer, Room> returnRooms() {
-        return this.rooms;
+    public ArrayList<Room> returnRooms() {
+        ArrayList<Room> requestedRooms = new ArrayList<>();
+        for(Room room: this.rooms.values()) {
+            requestedRooms.add(room);
+        }
+
+        return requestedRooms;
     }
 
     public boolean isAlive() {
@@ -62,7 +90,11 @@ public class Worker {
     }
 
     public void sendData(Object data) {
-        System.out.println(name + " is sending data: " + data);
+        System.out.println(this.name + " is sending data: " + data);
+    }
+
+    public void stop() throws IOException {
+        this.isAlive = false;
     }
 
 }

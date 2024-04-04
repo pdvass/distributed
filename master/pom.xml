@@ -12,13 +12,12 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>child</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>19</maven.compiler.source>
-    <maven.compiler.target>19</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -50,6 +49,13 @@
       <groupId>io.github.cdimascio</groupId>
       <artifactId>java-dotenv</artifactId>
       <version>5.2.2</version>
+      </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <!-- For Lenevshtein distance -->
+        <artifactId>commons-text</artifactId>
+        <version>1.11.0</version>
     </dependency>
 
   </dependencies>
@@ -109,7 +115,7 @@
         </plugin>
 
 
-        <plugin>
+        <!-- <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
             <archive>
@@ -130,7 +136,33 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
+        </plugin> -->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>manager</id>
+            <configuration>
+              <mainClass>distributed.App</mainClass>
+            </configuration>
+          </execution>
+          <execution>
+            <id>server</id>
+            <configuration>
+              <mainClass>distributed.ServerApp</mainClass>
+            </configuration>
+          </execution>
+          <execution>
+            <id>reducer</id>
+            <configuration>
+              <mainClass>distributed.ReducerApp</mainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       </plugins>
     </pluginManagement>

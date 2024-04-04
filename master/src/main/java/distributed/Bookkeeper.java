@@ -1,9 +1,12 @@
 package distributed;
 
 import distributed.Estate.*;
+import distributed.JSONFileSystem.JSONDirManager;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -11,49 +14,96 @@ import java.util.concurrent.Executors;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-//java -jar .\target\master-1.0-SNAPSHOT-jar-with-dependencies.jar debug
-
 /**
  * The Bookkeeper class generally holds the information that exists on workers. Essentially 
  * it should remember the rooms that each worker has, and check if the workers are "alive".
  * 
- * @author panagou
  * @see Worker
+ * @see Hotel
+ * 
+ * @author panagou
  */
 
 public class Bookkeeper {
 
-    private Map<String, Worker> workers;
+    private static volatile Map<String, Worker> workers = new HashMap<String, Worker>();
+    private static volatile ArrayList<Hotel> hotels = new ArrayList<>();
+    private static volatile ArrayList<String> users = new ArrayList<>();
 
-    public Bookkeeper() {
-        this.workers = new HashMap<String, Worker>();
-    }
+    public Bookkeeper() {}
 
     public Map<String, Worker> getWorkers() {
-        return this.workers;
+        return workers;
     }
 
-    public Worker getWorker(String workerName) {
-        return workers.get(workerName);
+    public Worker getWorker(String workerHashCode) {
+        return workers.get(workerHashCode);
     }
 
-    public void addWorker(String workerName, Worker worker) {
-        (this.workers).put(workerName, worker);
+    public void addWorker() {
+        String workerName = Integer.toString(workers.size());
+        Worker worker = new Worker(workerName);
+
+        String workerHashCode = Integer.toString(worker.hashCode());
+        workers.put(workerHashCode, worker);
     }
 
-    public void addRoom(String workerName, int roomId, Room room) {
-        (workers.get(workerName)).addRoom(roomId, room);
+    public void removeWorker(String workerHashCode) {
+        workers.remove(workerHashCode);
     }
 
-    public void removeRoom(String workerName, int roomId) {
-        (workers.get(workerName)).removeRoom(roomId);
+    public void addUser() {
+        String user = "User" + Integer.toString(users.size());
+        users.add(user);
+    }
+
+    public ArrayList<String> getUsers() {
+        return users;
+    }
+
+    public void removeUser() {
+        users.removeLast();
+    }
+
+    public ArrayList<Hotel> getHotels(JSONDirManager manager) throws FileNotFoundException, Exception {
+        setHotels(manager.getHotels());
+        return manager.getHotels();
+    }
+
+    public ArrayList<Hotel> getHotels() {
+        return hotels;
+    }
+
+    public void setHotels(ArrayList<Hotel> listOfHotels) {
+        hotels = listOfHotels;
+    }
+
+    public ArrayList<Room> getRooms(Hotel hotel) {
+        return hotel.getRooms();
+    }
+
+    public ArrayList<Room> getAllRooms() {
+        ArrayList<Room> rooms = new ArrayList<>();
+        for (Worker worker: workers.values()) {
+            rooms.addAll(worker.returnRooms());
+        }
+
+        return rooms;
+    }
+
+    public void addRoom(String workerHashCode, int roomId, Room room) {
+        (workers.get(workerHashCode)).addRoom(roomId, room);
+    }
+
+    public void removeRoom(String workerHashCode, int roomId) {
+        (workers.get(workerHashCode)).removeRoom(roomId);
     }
 
     /** 
      * This method reads the number of workers from an env file and creates the workers objects. 
      * It also creates a thread for each worker, which checks if the workers are "alive". 
     **/
-    public void createWorkers() {
+    public void checkWorkers() {
 
         Dotenv dotenv = Dotenv.load();
         String workersEnv = dotenv.get("WORKERS");
@@ -63,10 +113,7 @@ public class Bookkeeper {
         int nOfWorkers = Integer.parseInt(workersEnv);
 
         for (int i=1; i<=nOfWorkers; i++) {
-
-            Worker worker = new Worker("Worker " + i);
-            workers.put(worker.getName(), worker);
-
+            addWorker();
         }
 
         ExecutorService executor = Executors.newFixedThreadPool(nOfWorkers); // One Thread per Worker
@@ -78,7 +125,7 @@ public class Bookkeeper {
     
                     if (requestedWorker.isAlive()) {
                         executor.submit(() -> {
-                            System.out.println(requestedWorker.getName() + " is alive.");
+                            System.out.println("The workers with " + requestedWorker.hashCode() + " hashCode is alive.");
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -86,8 +133,10 @@ public class Bookkeeper {
                             }
                         });
                     } else {
-                        System.out.println("The worker with the name " +requestedWorker.getName()+ " is not alive");
-                        this.workers.remove(requestedWorker.getName());
+                        System.out.println("The worker with the name " +requestedWorker.hashCode()+ " is not alive");
+
+                        String workerHashCode = Integer.toString(requestedWorker.hashCode());
+                        removeWorker(workerHashCode);
                 
                         nOfWorkers--;
                             
@@ -112,7 +161,7 @@ public class Bookkeeper {
         ExecutorService executor = Executors.newFixedThreadPool(1);
 
         executor.submit(() -> {
-            worker.sendData("Data to Worker" + worker.getName());
+            worker.sendData("Data to Worker" + worker.hashCode());
         });
 
         
@@ -123,10 +172,10 @@ public class Bookkeeper {
      * @param worker representing the Worker object which has been lost.
      **/
     public void distributingRooms(Worker worker) {
-        Map<Integer, Room> rooms = worker.returnRooms();
+        ArrayList<Room> rooms = worker.returnRooms();
         int numberOfActiveWorkers = workers.size();
 
-        for (Room room: rooms.values()) {
+        for (Room room: rooms) {
             int roomId = room.getIntId();
             int workerIndex = roomId % numberOfActiveWorkers;  // Calculation of the worker's index
 

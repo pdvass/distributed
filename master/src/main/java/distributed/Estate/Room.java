@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.List;
 import java.util.TreeMap;
-//Should check another solution to completely omit concurrent library from project
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The room class mainly needed for keeping information about when a room object is 
@@ -31,9 +29,10 @@ public class Room {
     private Date endDate;
     // NOTE: Should add functionality for people
     private int nOfPeople;
+    private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
 
-    public Room(String name, String startDate, String endDate){
+    public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
         this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
@@ -58,7 +57,8 @@ public class Room {
         range.stream().forEach(i -> this.rangeMap.put(i, 0));
 
         // NOTE: Default 
-        this.nOfPeople = 3;
+        this.nOfPeople = nOfPeople;
+        this.cost = cost;
     }
 
     /**
@@ -82,17 +82,18 @@ public class Room {
      */
     protected boolean isAvailable(Date from, Date to){
         List<LocalDate> range = this.produceDateRange(from, to);
-        // Since we only need one value, instead of a wrapper we use an Atomic value. 
-        AtomicBoolean isFree = new AtomicBoolean(true);
-        range.stream()
-             .forEach(date -> {
+        var isFree = new Object(){boolean value = true;};
+        range.forEach(date -> {
                 if(this.rangeMap.get(date) == 1){
-                    isFree.set(false);
-                    return;
+                    isFree.value = false;
                 }
             });
-
-        return isFree.get();
+        
+        // If this works, return this instead of object
+        boolean testAnyMatch = range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
+        System.out.println(testAnyMatch);
+        // endif
+        return isFree.value;
     }
 
     /**
@@ -138,12 +139,12 @@ public class Room {
         return new BigInteger(this.id).intValue();
     }
 
-    public String getStartDate(){
-        return this.startDate.toString();
+    public Date getStartDate(){
+        return this.startDate;
     }
 
-    public String getEndDate(){
-        return this.endDate.toString();
+    public Date getEndDate(){
+        return this.endDate;
     }
 
     public int getNOfPeople(){
@@ -152,6 +153,10 @@ public class Room {
 
     public String getName(){
         return this.name;
+    }
+
+    public float getCost(){
+        return this.cost;
     }
 
 }
