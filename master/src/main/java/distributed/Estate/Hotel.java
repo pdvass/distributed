@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * and export Room capabilities. It, also, exports an API for client to use.
  * 
  * @author pdvass
- * @see Room
+ * @author panagou
  */
 
 public class Hotel {

@@ -1,11 +1,10 @@
 package distributed;
 
 import distributed.Estate.*;
-import distributed.Share.*;
+import distributed.Server.Response;
 
 import java.net.*;
 
-import java.io.*;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -22,38 +21,36 @@ import java.util.Map;
  * @see Room
  */
 
-public class Worker {
+public class Worker extends Thread {
 
     private String name;
-    private boolean isAlive;
     private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
-    private Request rec = null;
+    private ServerSocket workerSocket = null;
+    private final int PORT = 4555;
 
     public Worker(String workerName) {
         this.name = workerName;
-        this.isAlive = false;
     }
 
-    public void startWorker( ) throws IOException {
-        Socket socket = new Socket("localhost", 4555);
-
-        this.rec = new Request(socket, "worker connection");
-        this.rec.sendMessage();
-
-        System.out.println(rec.receiveMessage());
-
-        if(!(this.isAlive && this.rec == null)) {
-            this.isAlive = true;
-            runWorker();
+    public void run() {
+        try {
+            this.init(this.PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void runWorker() throws IOException {
+    public void init(int port) throws IOException {
+        this.workerSocket = new ServerSocket(port);
+        this.workerSocket.setReuseAddress(true);
 
-    }
 
-    public String getName() {
-        return this.name;
+        while(true) {
+            Socket worker = workerSocket.accept();
+
+            Response res = new Response(worker, null);
+    
+        }
     }
 
     public Room getRoom(int roomId) {
@@ -81,20 +78,12 @@ public class Worker {
         return requestedRooms;
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
     public void sendData(Object data) {
         System.out.println(this.name + " is sending data: " + data);
     }
 
-    public void stop() throws IOException {
-        this.isAlive = false;
+    public void close() throws IOException {
+        workerSocket.close();
     }
 
 }
