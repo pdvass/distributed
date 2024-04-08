@@ -57,7 +57,7 @@ public class Mailbox {
      * @param message The message for the handler.
      */
     protected synchronized void addMessage(HandlerTypes fromType, HandlerTypes toType, String message, Object contents){
-        String log = String.format("%s left a message from %s", fromType.toString(), toType.toString());
+        String log = String.format("%s left a message to %s", fromType.toString(), toType.toString());
         manager.logInfo(log);
         Tuple t = null;
         switch (message) {
