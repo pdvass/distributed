@@ -15,7 +15,7 @@ import java.net.Socket;
  * @author pdvass
  */
 public class Request {
-   private Socket connection = null;
+    private Socket connection = null;
     private Object contents;
     private ObjectInputStream ois = null;
     private ObjectOutputStream oos = null;
