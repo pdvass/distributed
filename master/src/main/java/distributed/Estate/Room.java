@@ -1,5 +1,6 @@
 package distributed.Estate;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -22,7 +23,9 @@ import java.util.TreeMap;
  * @author pdvass
  * @see Hotel
  */
-public class Room {
+public class Room implements Serializable {
+    private static final long serialVersionUID = 80420241743L;
+
     private String name;
     private byte[] id;
     private Date startDate;
@@ -32,7 +35,15 @@ public class Room {
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
 
-    public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
+    // Variables to use for providing workers with hotels' info
+    // Should not be used in master.
+    protected float hotelsStars;
+    @SuppressWarnings("unused")
+    private String hotelsRegion;
+    
+    
+
+    public Room(String name, String startDate, String endDate, float cost, int nOfPeople, String hotelsReg, float hotelsStars){
         this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
@@ -59,6 +70,8 @@ public class Room {
         // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
+        this.hotelsRegion = hotelsReg;
+        this.hotelsStars = hotelsStars;
     }
 
     /**
