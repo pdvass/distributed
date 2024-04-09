@@ -24,6 +24,7 @@ public class Mailbox {
     // private static volatile HashMap<String, ArrayList<String>> clientMessages = null;
     // private static volatile ArrayList<String> managerMessages                 = null;
     // private static volatile HashMap<String, ArrayList<String>> workerMessages = null;
+    private final static Object SHARED_LOCK = new Object();
     private JSONDirManager manager = new JSONDirManager();
 
     public Mailbox(){
@@ -56,25 +57,43 @@ public class Mailbox {
      * @param type The type of Handler 
      * @param message The message for the handler.
      */
-    protected synchronized void addMessage(HandlerTypes fromType, HandlerTypes toType, String message, Object contents){
-        String log = String.format("%s left a message to %s", fromType.toString(), toType.toString());
-        manager.logInfo(log);
-        Tuple t = null;
-        switch (message) {
-            case "Message":
-                t = new Tuple("Message", contents);
-                messages.get(toType).add(t);
-                break;
-            case "Filter":
-                t = new Tuple("Filter", contents);
-                messages.get(toType).add(t);
-                break;
-            default:
-                break;
-        }
+    protected void addMessage(HandlerTypes fromType, HandlerTypes toType, String message, Object contents){
+            synchronized (SHARED_LOCK){
+
+                String log = String.format("%s left a message to %s", fromType.toString(), toType.toString());
+                manager.logInfo(log);
+                Tuple t = null;
+                switch (message) {
+                    case "Message":
+                        t = new Tuple(message, contents);
+                        messages.get(toType).add(t);
+                        if(toType.equals(HandlerTypes.CLIENT)){
+                            System.out.println("Added a message for client");
+                            System.out.println(messages.get(HandlerTypes.CLIENT).size());
+                            notify();
+                        }
+                        break;
+                    case "Filter":
+                        t = new Tuple(message, contents);
+                        messages.get(toType).add(t);
+                        if(toType.equals(HandlerTypes.WORKER)){
+                            System.out.println("Added a filter for worker");
+                            System.out.println(messages.get(HandlerTypes.WORKER).size());
+                            notify();
+                        }
+                        break;
+                    case "Transaction":
+                        manager.logTransaction((String) contents);
+                    default:
+                        break;
+                }
+            }
+        SHARED_LOCK.notifyAll();
         return;
     }
 
-
+    protected Object getLock(){
+        return SHARED_LOCK;
+    }
 
 }

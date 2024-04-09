@@ -26,12 +26,14 @@ public class WorkerHandler extends Thread {
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
     private JSONDirManager manager = new JSONDirManager();
+    private Object lock;
 
     public WorkerHandler(Socket s, Response res){
         this.workerSocket = s;
         this.res = res;
         this.bookkeeper.addWorker();
         this.mailbox = new Mailbox();
+        this.lock = this.mailbox.getLock();
     }
 
     public void run(){
@@ -45,30 +47,51 @@ public class WorkerHandler extends Thread {
             for(Hotel hotel : hotels){
                 hotel.getRooms().iterator().forEachRemaining(room -> {
                     Tuple msg = new Tuple("room", room);
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Message", msg);
+                    Tuple send = new Tuple("populating", msg);
+                    this.res.changeContents(send);
+                    try {
+                        this.res.sendObject();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    };
                 });
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Filter f = new Filter(new String[]{"stars:3", "dates:[21/04/2024-30/04/2024]"});
-        Tuple msg = new Tuple("client1", f);
-        this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Filter", msg);
+        // Filter f = new Filter(new String[]{"stars:3", "dates:[21/04/2024-30/04/2024]"});
+        // Tuple msg = new Tuple("client1", f);
+        // String transactionMessage = String.format("Transaction opens from %s", HandlerTypes.CLIENT.toString());
+        // Tuple transaction = new Tuple("Transaction", transactionMessage);
+        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Transaction", transaction);
+        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Filter", msg);
     }
 
     private void sendMessagesToWorkers(){
-        ArrayList<Tuple> msgs = this.mailbox.checkMail(HandlerTypes.WORKER);
-        for(Tuple msg : msgs){
-            this.res.changeContents(msg);
-            try{
-                this.res.sendObject();
-            } catch (Exception e){
-                System.out.println(e.getMessage());
+        while(true){
+            synchronized (this.lock){
+                try{
+                    this.lock.wait();
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                ArrayList<Tuple> msgs = this.mailbox.checkMail(HandlerTypes.WORKER);
+                if(!msgs.isEmpty()){
+                    System.out.println("Got a message size->" + msgs.size());
+                    for(Tuple msg : msgs){
+                        this.res.changeContents(msg);
+                        try{
+                            this.res.sendObject();
+                        } catch (Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                        Tuple response = (Tuple) this.res.readObject();
+                        Tuple toClient = new Tuple(response.getFirst(), response.getSecond());
+                        this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, "Message", toClient);
+                    }
+                }
             }
         }
-        Tuple response = (Tuple) this.res.readObject();
-        Tuple toClient = new Tuple(response.getFirst(), response.getSecond());
-        this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, "Message", toClient);
     }
 
     public void getWorkers(){

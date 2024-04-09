@@ -50,6 +50,7 @@ public class Worker extends Thread{
 
             while (true) {
                 String message = incoming.getFirst();
+                // System.out.println(message);
     
                 if(message.equals("room")){
                     Room room = (Room) incoming.getSecond();
@@ -63,6 +64,7 @@ public class Worker extends Thread{
                         System.out.println(e.getMessage());
                     }
                     if(f != null){
+                        System.out.println("Applying filters to my room list");
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         Tuple response = new Tuple(message, filteredRoms);
                         this.req.changeContents(response);
@@ -70,6 +72,10 @@ public class Worker extends Thread{
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + message + " asked for hotels");
+                        for(Room room : this.rooms){
+                            this.req.changeContents(room);
+                            this.req.sendRequestObject();
+                        }
                     }
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");
