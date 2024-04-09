@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import distributed.Bookkeeper;
 import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
-import distributed.Share.Filter;
+// import distributed.Share.Filter;
 import distributed.Share.Tuple;
 
 /**
@@ -26,14 +26,12 @@ public class WorkerHandler extends Thread {
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
     private JSONDirManager manager = new JSONDirManager();
-    private Object lock;
 
     public WorkerHandler(Socket s, Response res){
         this.workerSocket = s;
         this.res = res;
         this.bookkeeper.addWorker();
         this.mailbox = new Mailbox();
-        this.lock = this.mailbox.getLock();
     }
 
     public void run(){
@@ -69,28 +67,25 @@ public class WorkerHandler extends Thread {
 
     private void sendMessagesToWorkers(){
         while(true){
-            synchronized (this.lock){
-                try{
-                    this.lock.wait();
-                } catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-                ArrayList<Tuple> msgs = this.mailbox.checkMail(HandlerTypes.WORKER);
-                if(!msgs.isEmpty()){
-                    System.out.println("Got a message size->" + msgs.size());
-                    for(Tuple msg : msgs){
-                        this.res.changeContents(msg);
-                        try{
-                            this.res.sendObject();
-                        } catch (Exception e){
-                            System.out.println(e.getMessage());
-                        }
-                        Tuple response = (Tuple) this.res.readObject();
-                        Tuple toClient = new Tuple(response.getFirst(), response.getSecond());
-                        this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, "Message", toClient);
+            
+            ArrayList<Tuple> msgs = this.mailbox.checkMail(HandlerTypes.WORKER);
+            // System.out.println("hi");
+            if(!msgs.isEmpty()){
+                System.out.println("Got a message size->" + msgs.size());
+                for(Tuple msg : msgs){
+                    this.res.changeContents(msg);
+                    try{
+                        this.res.sendObject();
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
                     }
+                    Tuple response = (Tuple) this.res.readObject();
+                    System.out.println("Received object");
+                    Tuple toClient = new Tuple(response.getFirst(), response.getSecond());
+                    this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, "Message", toClient);
                 }
             }
+            
         }
     }
 

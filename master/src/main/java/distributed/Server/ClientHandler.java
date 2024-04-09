@@ -29,14 +29,12 @@ public class ClientHandler extends Thread {
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
     private HandlerTypes type = HandlerTypes.CLIENT;
-    private Object lock;
 
     public ClientHandler(Socket socket, Response res){
         this.clienSocket = socket;
         this.res = res;
         this.bookkeeper.addUser();
         this.mailbox = new Mailbox();
-        this.lock = this.mailbox.getLock();
         if(totalUsers == Long.MAX_VALUE){
             totalUsers = 0;
         }
@@ -79,21 +77,10 @@ public class ClientHandler extends Thread {
                     // List<String> filteredHotelsStrings = new ArrayList<>();
                     // filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
                     String contents = String.format("Transaction opens from client%d", this.id);
-                    synchronized (this.lock){
-                        try{
-                            this.lock.wait();
-                        } catch (InterruptedException e){
-                            e.printStackTrace();
-                        }
-                        this.mailbox.addMessage(this.type, HandlerTypes.WORKER, "Transaction", contents);
-    
-                        try{
-                            this.lock.wait();
-                        } catch (InterruptedException e){
-                            e.printStackTrace();
-                        }
-                        this.mailbox.addMessage(this.type, HandlerTypes.WORKER, "Filter", request);
-                    }
+                    
+                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, "Transaction", contents);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, "Filter", request);
+                    
                     // this.sendObject(filteredHotelsStrings);
                     // this.res.changeContents(filteredHotelsStrings);
                     // this.res.sendObject();
@@ -110,15 +97,10 @@ public class ClientHandler extends Thread {
                     this.res.changeContents(hotels);
                     this.res.sendObject();
                 } else if(greeting.contains("say")) {
-                    synchronized (this.lock){
-                        try{
-                            this.lock.wait();
-                        } catch (InterruptedException e){
-                            e.printStackTrace();
-                        }
-                        this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Message",
-                                    "Client" + this.id + " says: " + greeting.substring(4));
-                    }
+                    
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Message",
+                                "Client" + this.id + " says: " + greeting.substring(4));
+                    
                 } else {
                     // System.out.println(greeting);
                     // this.sendMessage(greeting);
@@ -139,18 +121,11 @@ public class ClientHandler extends Thread {
 
     public void checkMail(){
         while (true) {
-            synchronized (this.lock){
-                try{
-                    this.lock.wait();
-                } catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-                ArrayList<Tuple> msgs = this.mailbox.checkMail(this.type);
-                if(!msgs.isEmpty()){
-                    System.out.println("Got a message for client size->" + msgs.size());
-                    for(Tuple msg : msgs){
-                        System.out.println(msg.getFirst());
-                    }
+            ArrayList<Tuple> msgs = this.mailbox.checkMail(this.type);
+            if(!msgs.isEmpty()){
+                System.out.println("Got a message for client size->" + msgs.size());
+                for(Tuple msg : msgs){
+                    System.out.println(msg.getFirst());
                 }
             }
         }
