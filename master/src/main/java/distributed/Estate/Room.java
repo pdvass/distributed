@@ -172,4 +172,19 @@ public class Room implements Serializable {
         return this.cost;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        String hotelName = this.name.replaceFirst("Room\\d", "");
+        hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
+        String intro = String.format("Room %s belongs to hotel %s. ", this.name, hotelName);
+        sb.append(intro);
+        String info = String.format("It costs %.2f per night and it is available from %tD%n to %tD%n. It can host up to %d people. ",  
+                            this.cost, this.startDate, this.endDate, this.nOfPeople );
+        sb.append(info);
+        String bookInfo = String.format("To book it enter code %d with the date range you want to book it.", this.getIntId());
+        sb.append(bookInfo);
+        return sb.toString();
+    }
+
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import distributed.Estate.Room;
 import distributed.Share.Filter;
 import distributed.Share.Request;
-import distributed.Share.Tuple;
+import distributed.Share.Mail;
 
 public class Worker extends Thread{
     private ArrayList<Room> rooms = null;
@@ -45,18 +45,18 @@ public class Worker extends Thread{
 
     public void init(){
         try{
-            Tuple incomingTuple = (Tuple) this.req.receiveRequestObject();
-            Tuple incoming = (Tuple) incomingTuple.getSecond();
+            Mail incoming = (Mail) this.req.receiveRequestObject();
+            // Mail incoming = (Mail) incomingTuple.getSecond();
 
             while (true) {
-                String message = incoming.getFirst();
-                // System.out.println(message);
+                String message = incoming.getSubject();
+                System.out.println(message);
     
                 if(message.equals("room")){
-                    Room room = (Room) incoming.getSecond();
+                    Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
-                } else if (message.contains("client")){
-                    Object typeOfRequest = incoming.getSecond();
+                } else if (incoming.getSender().contains("client")){
+                    Object typeOfRequest = incoming.getContents();
                     Filter f = null;
                     try {
                         f = (Filter) typeOfRequest;
@@ -66,8 +66,10 @@ public class Worker extends Thread{
                     if(f != null){
                         System.out.println("Applying filters to my room list");
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
-                        Tuple response = new Tuple(message, filteredRoms);
-                        this.req.changeContents(response);
+                        // Mail response = new Mail(message, filteredRoms);
+                        incoming.respond();
+                        incoming.setContents(filteredRoms);
+                        this.req.changeContents(incoming);
                         this.req.sendRequestObject();
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
@@ -81,8 +83,8 @@ public class Worker extends Thread{
                     System.out.println("Request received from manager");
                 }
     
-                incomingTuple = (Tuple) this.req.receiveRequestObject();
-                incoming = (Tuple) incomingTuple.getSecond();
+                incoming = (Mail) this.req.receiveRequestObject();
+                // incoming = (Mail) incomingTuple.getSecond();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

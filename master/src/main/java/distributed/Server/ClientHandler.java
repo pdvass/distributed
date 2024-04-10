@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import distributed.Bookkeeper;
+import distributed.Estate.Room;
 // import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
-import distributed.Share.Tuple;
+import distributed.Share.Mail;
 
 /**
  * Client Handler is responsible for managing the connection between
@@ -23,7 +24,7 @@ import distributed.Share.Tuple;
  */
 public class ClientHandler extends Thread {
     private static volatile long totalUsers = 0;
-    private long id;
+    private String id;
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
@@ -38,7 +39,7 @@ public class ClientHandler extends Thread {
         if(totalUsers == Long.MAX_VALUE){
             totalUsers = 0;
         }
-        this.id = totalUsers++;
+        this.id = "client" + totalUsers++;
     }
 
     public void run(){
@@ -70,16 +71,17 @@ public class ClientHandler extends Thread {
                 if(greeting.equals("filter")) {
 
                     Filter f = (Filter) this.res.readObject();
-                    System.out.println("Got a filter");
-
-                    Tuple request = new Tuple("client" + this.id, f);
+                    // System.out.println("Got a filter");
+                    
+                    Mail request = new Mail(this.id, "worker", "Filter", f);
                     // List<Hotel> filteredHotels =  f.applyFilter();
                     // List<String> filteredHotelsStrings = new ArrayList<>();
                     // filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
-                    String contents = String.format("Transaction opens from client%d", this.id);
+                    String contents = String.format("Transaction opens from %s", this.id);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
                     
-                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, "Transaction", contents);  
-                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, "Filter", request);
+                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, transaction);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, request);
                     
                     // this.sendObject(filteredHotelsStrings);
                     // this.res.changeContents(filteredHotelsStrings);
@@ -97,9 +99,9 @@ public class ClientHandler extends Thread {
                     this.res.changeContents(hotels);
                     this.res.sendObject();
                 } else if(greeting.contains("say")) {
-                    
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Message",
-                                "Client" + this.id + " says: " + greeting.substring(4));
+                    String said = this.id + " says: " + greeting.substring(4);
+                    Mail request = new Mail(this.id, "manger", "Message", said);
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, request);
                     
                 } else {
                     // System.out.println(greeting);
@@ -121,11 +123,20 @@ public class ClientHandler extends Thread {
 
     public void checkMail(){
         while (true) {
-            ArrayList<Tuple> msgs = this.mailbox.checkMail(this.type);
+            ArrayList<Mail> msgs = this.mailbox.checkMail(this.type, this.id);
             if(!msgs.isEmpty()){
-                System.out.println("Got a message for client size->" + msgs.size());
-                for(Tuple msg : msgs){
-                    System.out.println(msg.getFirst());
+                // System.out.println("Got a message for client size->" + msgs.size());
+                for(Mail msg : msgs){
+                    @SuppressWarnings("unchecked")
+                    List<Room> response = (List<Room>) msg.getContents();
+                    ArrayList<String> toClient = new ArrayList<String>();
+                    response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
+                    this.res.changeContents(toClient);
+                    try {
+                        this.res.sendObject();
+                    } catch (IOException e) {
+                        System.out.println("Could not send results to client" + this.id);
+                    }
                 }
             }
         }
