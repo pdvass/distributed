@@ -13,9 +13,11 @@ import distributed.Share.Mail;
 /**
  * Worker Handler is responsible for managing the connection between
  * the server and the worker, by exchanging Requests and Responses. Each 
- * worker has its own WorkerHandler.
+ * worker has its own WorkerHandler. t communicates with other handlers
+ * through Mailbox.
  * 
  * @see distributed.Share.Request
+ * @see Mailbox
  * @see Response
  * 
  * @author pdvass
@@ -45,6 +47,8 @@ public class WorkerHandler extends Thread {
         this.sendMessagesToWorkers();
     }
 
+    ////////////////////////////////
+    // Should remove this after Bookkeeper's completion.
     private void populatedMessages(){
         try {
             ArrayList<Hotel> hotels = manager.getHotels();
@@ -63,17 +67,16 @@ public class WorkerHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Filter f = new Filter(new String[]{"stars:3", "dates:[21/04/2024-30/04/2024]"});
-        // Tuple msg = new Tuple("client1", f);
-        // String transactionMessage = String.format("Transaction opens from %s", HandlerTypes.CLIENT.toString());
-        // Tuple transaction = new Tuple("Transaction", transactionMessage);
-        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Transaction", transaction);
-        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Filter", msg);
     }
+    ////////////////////////////////
 
+    /**
+     * Check if there are mails for the workers in the mailbox and
+     * if there are, forward them to the assigned wokrer.
+     * 
+     */
     private void sendMessagesToWorkers(){
         while(true){
-            
             ArrayList<Mail> msgs = this.mailbox.checkMail(HandlerTypes.WORKER, this.id);
             // System.out.println("hi");
             if(!msgs.isEmpty()){
@@ -86,8 +89,6 @@ public class WorkerHandler extends Thread {
                         System.out.println(e.getMessage());
                     }
                     Mail response = (Mail) this.res.readObject();
-                    // System.out.println("Received object");
-                    // Mail toClient = new Mail(response.getFirst(), response.getSecond());
                     this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
                 }
             }

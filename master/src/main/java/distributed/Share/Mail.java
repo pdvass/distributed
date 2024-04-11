@@ -2,6 +2,12 @@ package distributed.Share;
 
 import java.io.Serializable;
 
+
+/**
+ * Mail encapsulates the information that different handlers send to
+ * each other and their respective parties (Client, Wokrer, etc)
+ * 
+ */
 public class Mail implements Serializable{
     private static final long serialVersionUID = 040420242020L;
 
@@ -37,6 +43,10 @@ public class Mail implements Serializable{
         this.contents = newContents;
     }
 
+    /**
+     * Swaps recipient with the sender,
+     * to avoid creating new object for each response.
+     */
     public void respond(){
         String temp = this.sender;
         this.sender = this.recipient;

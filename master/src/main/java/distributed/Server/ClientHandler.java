@@ -15,9 +15,11 @@ import distributed.Share.Mail;
 /**
  * Client Handler is responsible for managing the connection between
  * the server and the client, by exchanging Requests and Responses. Each 
- * client has its own ClientHandler.
+ * client has its own ClientHandler. It communicates with other handlers
+ * through Mailbox.
  * 
  * @see distributed.Share.Request
+ * @see Mailbox
  * @see Response
  * 
  * @author pdvass
@@ -43,6 +45,9 @@ public class ClientHandler extends Thread {
     }
 
     public void run(){
+        // Since the class extends Thread, we can create two
+        // runnnable lambdas to act as internal threads for 
+        // this class.
         Runnable task = () -> {this.send();};
         Runnable task1 = () -> {this.checkMail();};
         Thread t = new Thread(task);
@@ -74,12 +79,11 @@ public class ClientHandler extends Thread {
                     // System.out.println("Got a filter");
                     
                     Mail request = new Mail(this.id, "worker", "Filter", f);
-                    // List<Hotel> filteredHotels =  f.applyFilter();
-                    // List<String> filteredHotelsStrings = new ArrayList<>();
-                    // filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
+                    
                     String contents = String.format("Transaction opens from %s", this.id);
                     Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
                     
+                    // Always run the transaction first.
                     this.mailbox.addMessage(this.type, HandlerTypes.WORKER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.WORKER, request);
                     
@@ -127,6 +131,7 @@ public class ClientHandler extends Thread {
             if(!msgs.isEmpty()){
                 // System.out.println("Got a message for client size->" + msgs.size());
                 for(Mail msg : msgs){
+                    // We know that the workers send Lists of Rooms.
                     @SuppressWarnings("unchecked")
                     List<Room> response = (List<Room>) msg.getContents();
                     ArrayList<String> toClient = new ArrayList<String>();

@@ -175,7 +175,11 @@ public class Room implements Serializable {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        // Figure out hotel name by removing room number and putting a space before every capital letter.
         String hotelName = this.name.replaceFirst("Room\\d", "");
+        // The way this regex works is by using regex's unicode capabilities.
+        // Source: https://www.regular-expressions.info/unicode.html#category
+        // Try this regex: https://regex101.com/r/o02se4/1
         hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
         String intro = String.format("Room %s belongs to hotel %s. ", this.name, hotelName);
         sb.append(intro);
