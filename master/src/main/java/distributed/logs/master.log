@@ -5,69 +5,26 @@
 [ERROR] Error occured during master working time: Hotel not found 04/04/2024 13:55:01
 [INFO] New review 5.00 to hotel HotelCalifornia 04/04/2024 13:55:31[INFO] CLIENT left a message to WORKER 09/04/2024 13:31:58
 [TRANSACTION] Transaction opens from client0 09/04/2024 13:31:58
-[INFO] CLIENT left a message to WORKER 09/04/2024 13:31:58[INFO] CLIENT left a message to WORKER 11/04/2024 14:47:58
-[TRANSACTION] Transaction opens from client0 11/04/2024 14:47:58
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:47:58
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:47:58
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:48:21
-[TRANSACTION] Transaction opens from client0 11/04/2024 14:48:21
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:48:21
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:48:21
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:52:47
-[TRANSACTION] Transaction opens from client0 11/04/2024 14:52:47
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:52:47
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:52:47
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:56:42
-[TRANSACTION] Transaction opens from client0 11/04/2024 14:56:42
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:56:42
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:56:42
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:57:30
-[TRANSACTION] Transaction opens from client1 11/04/2024 14:57:30
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:57:30
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:57:30
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:58:20
-[TRANSACTION] Transaction opens from client0 11/04/2024 14:58:20
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:58:20
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:58:20
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:59:27
-[TRANSACTION] Transaction opens from client0 11/04/2024 14:59:27
-[INFO] CLIENT left a message to WORKER 11/04/2024 14:59:27
-[INFO] WORKER left a message to CLIENT 11/04/2024 14:59:27
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:00:16
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:00:16
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:00:16
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:00:16
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:27:55
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:27:55
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:27:55
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:27:55
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:30:04
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:30:04
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:30:04
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:30:04
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:32:58
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:32:58
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:32:58
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:32:58
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:33:35
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:33:35
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:33:35
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:33:35
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:34:30
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:34:30
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:34:30
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:34:30
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:35:07
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:35:07
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:35:07
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:35:07
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:37:03
-[TRANSACTION] Transaction opens from client0 11/04/2024 15:37:03
-[INFO] CLIENT left a message to WORKER 11/04/2024 15:37:03
-[INFO] WORKER left a message to CLIENT 11/04/2024 15:37:03
-[INFO] CLIENT left a message to WORKER 12/04/2024 19:57:25
-[TRANSACTION] Transaction opens from client0 12/04/2024 19:57:25
-[INFO] CLIENT left a message to WORKER 12/04/2024 19:57:25
-[INFO] CLIENT left a message to WORKER 12/04/2024 20:00:45
-[TRANSACTION] Transaction opens from client0 12/04/2024 20:00:45
-[INFO] CLIENT left a message to WORKER 12/04/2024 20:00:45
+[INFO] CLIENT left a message to WORKER 09/04/2024 13:31:58
+[INFO] CLIENT left a message to WORKER 09/04/2024 13:32:43
+[TRANSACTION] Transaction opens from client0 09/04/2024 13:32:43
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:00
+[INFO] CLIENT left a message to BOOKKEEPER 13/04/2024 02:38:23
+[TRANSACTION] Transaction opens from client0 13/04/2024 02:38:23
+[INFO] CLIENT left a message to BOOKKEEPER 13/04/2024 02:38:23
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:23
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:23
+[INFO] BOOKKEEPER left a message to WORKER 13/04/2024 02:38:23

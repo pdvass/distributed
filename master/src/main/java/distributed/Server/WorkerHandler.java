@@ -2,12 +2,10 @@ package distributed.Server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import distributed.Bookkeeper;
-import distributed.Estate.Hotel;
-import distributed.JSONFileSystem.JSONDirManager;
-// import distributed.Share.Filter;
 import distributed.Share.Mail;
 
 /**
@@ -23,13 +21,14 @@ import distributed.Share.Mail;
 public class WorkerHandler extends Thread {
     private static volatile long totalWorkers = 0;
     private String id;
+    @SuppressWarnings("unused")
     private Socket workerSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
-    private JSONDirManager manager = new JSONDirManager();
 
-    public WorkerHandler(Socket s, Response res){
+
+    public WorkerHandler(Socket s, Response res) throws UnknownHostException, IOException {
         this.workerSocket = s;
         this.res = res;
         this.bookkeeper.addWorker();
@@ -38,37 +37,11 @@ public class WorkerHandler extends Thread {
             totalWorkers = 0;
         }
         this.id = "worker" + totalWorkers++;
+        System.out.println("Worker with id " + this.id + " came.");
     }
 
     public void run(){
-        this.populatedMessages();
         this.sendMessagesToWorkers();
-    }
-
-    private void populatedMessages(){
-        try {
-            ArrayList<Hotel> hotels = manager.getHotels();
-            for(Hotel hotel : hotels){
-                hotel.getRooms().iterator().forEachRemaining(room -> {
-                    Mail msg = new Mail("manager", this.id, "room", room);
-                    // Mail send = new Mail("manager", this.id, "populating", msg);
-                    this.res.changeContents(msg);
-                    try {
-                        this.res.sendObject();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    };
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Filter f = new Filter(new String[]{"stars:3", "dates:[21/04/2024-30/04/2024]"});
-        // Tuple msg = new Tuple("client1", f);
-        // String transactionMessage = String.format("Transaction opens from %s", HandlerTypes.CLIENT.toString());
-        // Tuple transaction = new Tuple("Transaction", transactionMessage);
-        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Transaction", transaction);
-        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Filter", msg);
     }
 
     private void sendMessagesToWorkers(){
@@ -79,40 +52,22 @@ public class WorkerHandler extends Thread {
             if(!msgs.isEmpty()){
                 // System.out.println("Got a message size->" + msgs.size());
                 for(Mail msg : msgs){
+                    System.out.println(msg.getSubject());
                     this.res.changeContents(msg);
                     try{
                         this.res.sendObject();
                     } catch (Exception e){
                         System.out.println(e.getMessage());
                     }
-                    Mail response = (Mail) this.res.readObject();
-                    // System.out.println("Received object");
-                    // Mail toClient = new Mail(response.getFirst(), response.getSecond());
+                }
+                Mail response = (Mail) this.res.readObject();
+                System.out.println("Received object");
+                // Mail toClient = new Mail(response.getFirst(), response.getSecond());
+                if(!response.getSubject().equals("dummy")){
                     this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
                 }
             }
-
-            try{
-                this.res.readMessage();
-            } catch (Exception e){
-                System.out.println("Worker died");
-                try {
-                    this.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                break;
-            }
-            
         }
     }
 
-    public void getWorkers(){
-        this.bookkeeper.getWorker().size();
-    }
-
-    public void close() throws IOException{
-        this.res.close();
-        this.workerSocket.close();
-    }
 }

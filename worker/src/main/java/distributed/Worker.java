@@ -11,7 +11,7 @@ import distributed.Share.Filter;
 import distributed.Share.Request;
 import distributed.Share.Mail;
 
-public class Worker extends Thread{
+public class Worker extends Thread {
     private ArrayList<Room> rooms = null;
     private Socket conn = null;
     private Request req = null;
@@ -46,21 +46,30 @@ public class Worker extends Thread{
     public void init(){
         try{
             Mail incoming = (Mail) this.req.receiveRequestObject();
+            // System.out.println("hi");
             // Mail incoming = (Mail) incomingTuple.getSecond();
 
             while (true) {
                 String message = incoming.getSubject();
+                System.out.println(incoming.getSender());
     
                 if(message.equals("room")){
+                    System.out.println("Got a room");
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
-                } else if (incoming.getSender().contains("client")){
+
+                    Mail dummy = new Mail("", "", "dummy", null);
+
+                    this.req.changeContents(dummy);
+                    this.req.sendRequestObject();
+
+                } else if (incoming.getSender().contains("client")) {
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
                     try {
                         f = (Filter) typeOfRequest;
                     } catch (Exception e){
-                        System.out.println(e.getMessage());
+                        System.out.println("Error during casting " + e.getMessage());
                     }
                     if(f != null){
                         System.out.println("Applying filters to my room list");
@@ -72,11 +81,11 @@ public class Worker extends Thread{
                         this.req.sendRequestObject();
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
-                        System.out.println("Client " + message + " asked for hotels");
-                        for(Room room : this.rooms){
-                            this.req.changeContents(room);
-                            this.req.sendRequestObject();
-                        }
+                        System.out.println("Client " + incoming.getSender() + " asked for hotels");
+                        incoming.respond();
+                        incoming.setContents(this.rooms);
+                        this.req.changeContents(incoming);
+                        this.req.sendRequestObject();
                     }
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");
@@ -86,7 +95,11 @@ public class Worker extends Thread{
                 // incoming = (Mail) incomingTuple.getSecond();
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
+
 }
+
+
+

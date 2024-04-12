@@ -7,7 +7,6 @@ import java.util.List;
 
 import distributed.Bookkeeper;
 import distributed.Estate.Room;
-import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
 import distributed.Share.Mail;
 
@@ -73,31 +72,22 @@ public class ClientHandler extends Thread {
                     Filter f = (Filter) this.res.readObject();
                     // System.out.println("Got a filter");
                     
-                    Mail request = new Mail(this.id, "worker", "Filter", f);
-                    // List<Hotel> filteredHotels =  f.applyFilter();
-                    // List<String> filteredHotelsStrings = new ArrayList<>();
-                    // filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
+                    Mail request = new Mail(this.id, "bookkeeper", "Filter", f);
+                    
                     String contents = String.format("Transaction opens from %s", this.id);
                     Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
                     
-                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, transaction);  
-                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, request);
-                    
-                    // this.sendObject(filteredHotelsStrings);
-                    // this.res.changeContents(filteredHotelsStrings);
-                    // this.res.sendObject();
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
+
                 } else if (greeting.equals("hotels")){
-                    JSONDirManager manager = new JSONDirManager();
-                    List<String> hotels = new ArrayList<>();
-                    try {
-                        manager.getHotels().stream().forEach(hotel -> hotels.add(hotel.toString()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        // System.out.println(e.getMessage());
-                    } 
-                    // this.sendObject(hotels);
-                    this.res.changeContents(hotels);
-                    this.res.sendObject();
+                    Mail request = new Mail(this.id, "bookkeeper", "Message", "hotels");
+                    String contents = String.format("Transaction opens from %s", this.id);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
+                    
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
+                    
                 } else if(greeting.contains("say")) {
                     String said = this.id + " says: " + greeting.substring(4);
                     Mail request = new Mail(this.id, "manger", "Message", said);

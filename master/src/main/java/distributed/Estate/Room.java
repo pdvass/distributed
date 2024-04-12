@@ -81,7 +81,8 @@ public class Room implements Serializable {
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    protected void book(Date from, Date to){
+    protected void book(Date from, Date to) {
+        // NOTE: Should be synchronized
         List<LocalDate> range = this.produceDateRange(from, to);
 
         range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));

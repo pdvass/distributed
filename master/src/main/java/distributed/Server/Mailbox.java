@@ -45,7 +45,7 @@ public class Mailbox extends Thread {
      * @param type Type of handler trying to access the mail.
      * @return The mails directed to the handler.
      */
-    protected  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+    public  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
         synchronized (messages){
             while(!read_lock){
                 try {
@@ -59,23 +59,21 @@ public class Mailbox extends Thread {
             ArrayList<Mail> mails = (ArrayList<Mail>) messages.get(type).clone();
             ArrayList<Mail> directedTo = new ArrayList<>();
             ArrayList<Mail> notDirectedTo = new ArrayList<>();
-            if(!mails.isEmpty() && type.equals(HandlerTypes.CLIENT)){
-                for(Mail mail : mails){
-                    if(mail.getRecipient().equals(callerID)){
-                        directedTo.add(mail);
-                    } else {
-                        notDirectedTo.add(mail);
-                    }
-                    
+            
+            for(Mail mail : mails){
+                if(mail.getRecipient().equals(callerID)){
+                    directedTo.add(mail);
+                } else {
+                    notDirectedTo.add(mail);
                 }
-            } else {
-                directedTo = mails;
+                
             }
+
             messages.get(type).clear();
             messages.get(type).addAll(notDirectedTo);
             read_lock = true;
             messages.notifyAll();
-            // return mails;
+
             return directedTo;
         }
     }
@@ -86,7 +84,7 @@ public class Mailbox extends Thread {
      * @param type The type of Handler 
      * @param message The message for the handler.
      */
-    protected void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
+    public void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
         synchronized (messages){
             while(!write_lock){
                 try {
@@ -102,6 +100,7 @@ public class Mailbox extends Thread {
             switch (mail.getSubject()) {
                 case "Message":
                 case "Filter":
+                case "room":
                     messages.get(toType).add(mail);
                     break;
                 case "Transaction":
