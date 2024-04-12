@@ -45,7 +45,7 @@ public class Mailbox extends Thread {
      * @param type Type of handler trying to access the mail.
      * @return The mails directed to the handler.
      */
-    protected  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+    public  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
         synchronized (messages){
             while(!read_lock){
                 try {
@@ -59,24 +59,21 @@ public class Mailbox extends Thread {
             ArrayList<Mail> mails = (ArrayList<Mail>) messages.get(type).clone();
             ArrayList<Mail> directedTo = new ArrayList<>();
             ArrayList<Mail> notDirectedTo = new ArrayList<>();
-            // NOTE: MUST CHANGE 
-            // if(!mails.isEmpty() && type.equals(HandlerTypes.CLIENT)){
-                for(Mail mail : mails){
-                    if(mail.getRecipient().equals(callerID)){
-                        directedTo.add(mail);
-                    } else {
-                        notDirectedTo.add(mail);
-                    }
-                    
+            
+            for(Mail mail : mails){
+                if(mail.getRecipient().equals(callerID)){
+                    directedTo.add(mail);
+                } else {
+                    notDirectedTo.add(mail);
                 }
-            // } else {
-            //     directedTo = mails;
-            // }
+                
+            }
+
             messages.get(type).clear();
             messages.get(type).addAll(notDirectedTo);
             read_lock = true;
             messages.notifyAll();
-            // return mails;
+
             return directedTo;
         }
     }

@@ -6,9 +6,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import distributed.Bookkeeper;
-import distributed.Estate.Hotel;
-import distributed.JSONFileSystem.JSONDirManager;
-// import distributed.Share.Filter;
 import distributed.Share.Mail;
 
 /**
@@ -24,11 +21,12 @@ import distributed.Share.Mail;
 public class WorkerHandler extends Thread {
     private static volatile long totalWorkers = 0;
     private String id;
+    @SuppressWarnings("unused")
     private Socket workerSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
-    private JSONDirManager manager = new JSONDirManager();
+
 
     public WorkerHandler(Socket s, Response res) throws UnknownHostException, IOException {
         this.workerSocket = s;
@@ -43,34 +41,7 @@ public class WorkerHandler extends Thread {
     }
 
     public void run(){
-        // this.populatedMessages();
         this.sendMessagesToWorkers();
-    }
-
-    private void populatedMessages(){
-        try {
-            ArrayList<Hotel> hotels = manager.getHotels();
-            for(Hotel hotel : hotels){
-                hotel.getRooms().iterator().forEachRemaining(room -> {
-                    Mail msg = new Mail("manager", this.id, "room", room);
-                    // Mail send = new Mail("manager", this.id, "populating", msg);
-                    this.res.changeContents(msg);
-                    try {
-                        this.res.sendObject();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    };
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Filter f = new Filter(new String[]{"stars:3", "dates:[21/04/2024-30/04/2024]"});
-        // Tuple msg = new Tuple("client1", f);
-        // String transactionMessage = String.format("Transaction opens from %s", HandlerTypes.CLIENT.toString());
-        // Tuple transaction = new Tuple("Transaction", transactionMessage);
-        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Transaction", transaction);
-        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Filter", msg);
     }
 
     private void sendMessagesToWorkers(){
@@ -81,6 +52,7 @@ public class WorkerHandler extends Thread {
             if(!msgs.isEmpty()){
                 // System.out.println("Got a message size->" + msgs.size());
                 for(Mail msg : msgs){
+                    System.out.println(msg.getSubject());
                     this.res.changeContents(msg);
                     try{
                         this.res.sendObject();
@@ -88,22 +60,14 @@ public class WorkerHandler extends Thread {
                         System.out.println(e.getMessage());
                     }
                 }
-            }
-            Mail response = (Mail) this.res.readObject();
-            // System.out.println("Received object");
-            // Mail toClient = new Mail(response.getFirst(), response.getSecond());
-            if(!response.getSubject().equals("dummy")){
-                this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
+                Mail response = (Mail) this.res.readObject();
+                System.out.println("Received object");
+                // Mail toClient = new Mail(response.getFirst(), response.getSecond());
+                if(!response.getSubject().equals("dummy")){
+                    this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
+                }
             }
         }
     }
 
-    public boolean isWorkerAlive(){
-        return this.workerSocket.isConnected();
-    }
-
-    public void close() throws IOException{
-        this.res.close();
-        this.workerSocket.close();
-    }
 }

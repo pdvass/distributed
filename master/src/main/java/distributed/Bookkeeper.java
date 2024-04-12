@@ -20,10 +20,11 @@ import io.github.cdimascio.dotenv.Dotenv;
  * @see Worker
  * @see Hotel
  * 
+ * @author pdvass
  * @author panagou
  */
 
-public class Bookkeeper {
+public class Bookkeeper extends Thread {
 
     private static volatile Map<String, ArrayList<Room>> workers = new HashMap<>();
     private static volatile ArrayList<Hotel> hotels = new ArrayList<>();
@@ -112,7 +113,7 @@ public class Bookkeeper {
 
         int nOfWorkers = Integer.parseInt(workersEnv);
 
-        for(int i=0; i<nOfWorkers; i++) {
+        for(int i = 0; i < nOfWorkers; i++) {
             this.addWorker();
         }
 
@@ -126,6 +127,27 @@ public class Bookkeeper {
         }
 
         this.distributingRooms(rooms);
+
+        Runnable task = () -> {this.checkMail(nOfWorkers);};
+        Thread t = new Thread(task);
+        t.start();
+    }
+
+
+    private void checkMail(int nOfWorkers){
+        while (true) {
+            ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "bookkeeper");
+            if(!mails.isEmpty()){
+                for(Mail mail : mails){
+                    for(int i = 0; i < nOfWorkers; i++){
+                        Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+                        clonedMail.setRecipient("worker" + i);
+                        System.out.println(clonedMail.getSubject() );
+                        this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -143,13 +165,7 @@ public class Bookkeeper {
             int workerIndex = Math.abs(roomId % numberOfActiveWorkers);  // Calculation of the worker's index
 
             String targetWorkerName = "worker" + workerIndex;
-            // try{
-            //     workers.get(targetWorkerName).add(room);
-            // } catch (Exception e){
-            //     System.out.println("No active workers");
-            //     return;
-            // }
-            // System.out.println(targetWorkerName);
+           
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
 
