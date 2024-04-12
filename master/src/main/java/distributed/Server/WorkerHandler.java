@@ -1,10 +1,15 @@
 package distributed.Server;
 
-import distributed.Bookkeeper;
-
-import java.util.ArrayList;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+import distributed.Bookkeeper;
+import distributed.Estate.Hotel;
+import distributed.JSONFileSystem.JSONDirManager;
+// import distributed.Share.Filter;
+import distributed.Share.Mail;
 
 /**
  * Worker Handler is responsible for managing the connection between
@@ -15,66 +20,84 @@ import java.net.Socket;
  * @see Response
  * 
  * @author pdvass
- * @author panagou
  */
-
 public class WorkerHandler extends Thread {
+    private static volatile long totalWorkers = 0;
+    private String id;
     private Socket workerSocket = null;
     private Response res = null;
-    private Mailbox mailbox = null;
-    private HandlerTypes type = HandlerTypes.WORKER;
     private Bookkeeper bookkeeper = new Bookkeeper();
+    private Mailbox mailbox = null;
+    private JSONDirManager manager = new JSONDirManager();
 
-    public WorkerHandler(Socket s, Response res) {
+    public WorkerHandler(Socket s, Response res) throws UnknownHostException, IOException {
         this.workerSocket = s;
         this.res = res;
+        this.bookkeeper.addWorker();
         this.mailbox = new Mailbox();
+        if(totalWorkers == Long.MAX_VALUE){
+            totalWorkers = 0;
+        }
+        this.id = "worker" + totalWorkers++;
     }
 
-    public void run() {
+    public void run(){
+        this.populatedMessages();
+        this.sendMessagesToWorkers();
+    }
 
+    private void populatedMessages(){
         try {
-
-            String greeting;
-            // greeting = this.ois.readUTF();
-            greeting = this.res.readMessage();
-
-            while(!greeting.equals("q")) {
-
-                bookkeeper.checkWorkers();
-
-                if(greeting.equals("hotels")) {
-                    res.changeContents(this.bookkeeper.getHotels());
-                    res.sendObject();
-        
-                } else if(greeting.equals("filter")) { 
-
-                }
-
-                ArrayList<String> mails = mailbox.checkMail(this.type);
-                if(!mails.isEmpty()) {
-                    for(String mail : mails) {
-                        System.out.println(mail);
-                    }
-                }
-
-                // greeting = this.ois.readUTF();
-                greeting = this.res.readMessage();
+            ArrayList<Hotel> hotels = manager.getHotels();
+            for(Hotel hotel : hotels){
+                hotel.getRooms().iterator().forEachRemaining(room -> {
+                    Mail msg = new Mail("manager", this.id, "room", room);
+                    // Mail send = new Mail("manager", this.id, "populating", msg);
+                    this.res.changeContents(msg);
+                    try {
+                        this.res.sendObject();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    };
+                });
             }
-
-            this.close();
-
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
+        // Filter f = new Filter(new String[]{"stars:3", "dates:[21/04/2024-30/04/2024]"});
+        // Tuple msg = new Tuple("client1", f);
+        // String transactionMessage = String.format("Transaction opens from %s", HandlerTypes.CLIENT.toString());
+        // Tuple transaction = new Tuple("Transaction", transactionMessage);
+        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Transaction", transaction);
+        // this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.WORKER, "Filter", msg);
     }
 
-    public void close() throws IOException {
+    private void sendMessagesToWorkers(){
+        while(true){
+            
+            ArrayList<Mail> msgs = this.mailbox.checkMail(HandlerTypes.WORKER, this.id);
+            // System.out.println("hi");
+            if(!msgs.isEmpty()){
+                // System.out.println("Got a message size->" + msgs.size());
+                for(Mail msg : msgs){
+                    this.res.changeContents(msg);
+                    try{
+                        this.res.sendObject();
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    Mail response = (Mail) this.res.readObject();
+                    // System.out.println("Received object");
+                    // Mail toClient = new Mail(response.getFirst(), response.getSecond());
+                    this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
+                }
+            }
+            
+        }
+    }
+
+    public void close() throws IOException{
         this.res.close();
         this.workerSocket.close();
     }
-
 }
-
-

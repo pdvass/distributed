@@ -25,7 +25,7 @@ import java.util.TreeMap;
  */
 public class Room implements Serializable {
     private static final long serialVersionUID = 80420241743L;
-
+    
     private String name;
     private byte[] id;
     private Date startDate;
@@ -35,15 +35,10 @@ public class Room implements Serializable {
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
 
-    // Variables to use for providing workers with hotels' info
-    // Should not be used in master.
-    protected float hotelsStars;
-    @SuppressWarnings("unused")
     private String hotelsRegion;
-    
-    
+    private float hotelsStars;
 
-    public Room(String name, String startDate, String endDate, float cost, int nOfPeople, String hotelsReg, float hotelsStars){
+    public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
         this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
@@ -70,8 +65,6 @@ public class Room implements Serializable {
         // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
-        this.hotelsRegion = hotelsReg;
-        this.hotelsStars = hotelsStars;
     }
 
     /**
@@ -81,8 +74,7 @@ public class Room implements Serializable {
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    protected void book(Date from, Date to) {
-        // NOTE: Should be synchronized
+    protected void book(Date from, Date to){
         List<LocalDate> range = this.produceDateRange(from, to);
 
         range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
@@ -173,19 +165,19 @@ public class Room implements Serializable {
         return this.cost;
     }
 
-    @Override
+    public String getHotelsRegion(){
+        return this.hotelsRegion;
+    }
+
+    public float getHotelsStars(){
+        return this.hotelsStars;
+    }
+
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        String hotelName = this.name.replaceFirst("Room\\d", "");
-        hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
-        String intro = String.format("Room %s belongs to hotel %s. ", this.name, hotelName);
-        sb.append(intro);
-        String info = String.format("It costs %.2f per night and it is available from %tD%n to %tD%n. It can host up to %d people. ",  
-                            this.cost, this.startDate, this.endDate, this.nOfPeople );
-        sb.append(info);
-        String bookInfo = String.format("To book it enter code %d with the date range you want to book it.", this.getIntId());
-        sb.append(bookInfo);
-        return sb.toString();
+        String r = String.format("Hotel %s: room %d. Has a capacity of %d people, costs %.2f per night and is located in %s.", 
+                    this.name, this.getIntId(), this.nOfPeople, this.cost, this.hotelsRegion);
+        return r;
+         
     }
 
 }

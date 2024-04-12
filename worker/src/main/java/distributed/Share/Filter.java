@@ -1,17 +1,14 @@
 package distributed.Share;
 
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import distributed.Estate.Hotel;
 import distributed.Estate.Room;
-import distributed.JSONFileSystem.JSONDirManager;
 
 /**
  * Filter is used to create predicates that hotels must fulfill to qualify for
@@ -92,7 +89,7 @@ public class Filter implements Serializable {
 
     ////////////////////////// GETTERS //////////////////////////
 
-    ////////////// UNIQUE TO SERVER //////////////
+    ////////////// UNIQUE TO WORKER //////////////
 
     /**
      * Applies filters to Hotel List.
@@ -100,51 +97,24 @@ public class Filter implements Serializable {
      * @return A list of all the hotels.
      * 
      * @see Hotel
-     * @see JSONDirManager
      */
-    public final List<Hotel> applyFilter(){
-        JSONDirManager manager = new JSONDirManager();
-        ArrayList<Hotel> hotels = new ArrayList<>();
-        try {
-            hotels = manager.getHotels();
-        } catch (FileNotFoundException e) {
-            System.out.println("No hotels yet, try adding some first. Returning empty list.");
-            return hotels;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public final List<Room> applyFilter(List<Room> hotels){
         // We use a more fuctional way of creating list, by initializing a stable state hotel list
         // and creating a new one first by which hotel satisfies the filter predicates, if there are any.
-        List<Hotel> filteredHotels = hotels.stream()
-                        .filter(hotel -> (hotel.getRegion().equals(this.region) || this.region.equals("")))
-                        .filter(hotel -> (hotel.getStars() >= this.stars || this.stars == -1))
+        List<Room> filteredHotels = hotels.stream()
+                        .filter(hotel -> (hotel.getHotelsRegion().equals(this.region) || this.region.equals("")))
+                        .filter(hotel -> (hotel.getHotelsStars() >= this.stars || this.stars == -1))
+                        .filter( room -> (
+                                (    
+                                        room.getStartDate().before(this.dateRange[0])  
+                                    || room.getStartDate().equals(this.dateRange[0])
+                                )
+                                    && room.getEndDate().after(this.dateRange[1])
+                                ))
+                        .filter(room -> (room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1))
                         .collect(Collectors.toList());
-
-        // and finally by keeping in each hotel the rooms that satisfies the filter predicates, if there are any.
-        filteredHotels.iterator().forEachRemaining(
-            hotel -> {
-                ArrayList<Room> rooms = hotel.getRooms().stream()
-                                    .filter(room -> (
-                                        (    
-                                             room.getStartDate().before(this.dateRange[0])  
-                                          || room.getStartDate().equals(this.dateRange[0])
-                                        )
-                                          && room.getEndDate().after(this.dateRange[1])
-                                        ))
-                                    .filter(room -> (room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1))
-                                    .collect(Collectors.toCollection(ArrayList::new));
-                hotel.setHotelRoom(rooms);
-            }
-        );
-
-        // Finally, filter any hotel that might comply with a hotel filter, but none
-        // of its rooms does with the room filters.
-        filteredHotels = filteredHotels.stream()
-                                    .filter(hotel -> hotel.getRooms().size() != 0)
-                                    .collect(Collectors.toList());
 
         return filteredHotels;
     }
-    ////////////// UNIQUE TO SERVER //////////////
+    ////////////// UNIQUE TO WORKER //////////////
 }

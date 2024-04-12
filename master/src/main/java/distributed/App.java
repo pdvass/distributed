@@ -8,10 +8,12 @@ public class App
    public static void main( String[] args )
     {
 
-        Terminal term = new Terminal();
-        Thread termThread = new Thread(term);
+        // Terminal term = new Terminal();
+        // Thread termThread = new Thread(term);
 
-        termThread.start();
+        // termThread.start();
+
+        Bookkeeper bookkeeper = new Bookkeeper();
 
     }
 }

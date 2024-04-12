@@ -2,6 +2,7 @@ package distributed;
 
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Request;
+import distributed.Share.Mail;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -127,12 +128,14 @@ public class Terminal extends Thread {
                     this.req.changeContents("check");
                     try {
                         this.req.sendMessage();
-                        String msg = this.req.receiveMessage();
-                        while(!msg.equals("-1")){
-                            System.out.println(msg);
-                            msg = this.req.receiveMessage();
+                        Mail msg = (Mail) this.req.receiveRequestObject();
+                        while(!(msg.getSubject().equals("Message") && msg.getContents().equals("-1"))){
+                            if(msg.getSubject().equals("Message")){
+                                System.out.println(msg.getContents());
+                            }
+                            msg = (Mail) this.req.receiveRequestObject();
                         }
-                    } catch (IOException e) {
+                    } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -223,8 +226,8 @@ public class Terminal extends Thread {
                     float cost = Float.parseFloat(hotelInfo.get(3));
                     int nOfPeople = Integer.parseInt(hotelInfo.getLast());
                     manager.addRoom(hotelInfo.get(0), hotelInfo.get(1), hotelInfo.get(2), cost, nOfPeople);
-                    System.out.printf("Added to hotel %s date range %s to %s. It costs %.2f$ and it is for %d %s\n", 
-                                hotelInfo.get(0), startDate.toString(), 
+                    System.out.printf("Added to hotel %s date range %s to %s. It costs %.2f$ and it is for %d %s\n",
+                                hotelInfo.get(0), startDate.toString(),
                                 endDate.toString(), cost, nOfPeople,
                                 (nOfPeople > 1) ? "people" : "person");
                     

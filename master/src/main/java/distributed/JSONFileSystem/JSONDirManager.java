@@ -258,6 +258,30 @@ public class JSONDirManager {
         return hotels;
     }
 
+    /**
+     * Get the hotel that is saved in {@link #fileList} at the moment this
+     * method is beign invoked.
+     * 
+     * @param name The name of the hotel.
+     * @return The hotel object corresponding to the name.
+     * 
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
+    public Hotel getHotel(String name) throws FileNotFoundException, Exception {
+        Hotel hotel = null;
+        String hotelPath = this.path + name + ".json";
+        
+        for(File f : fileList) {
+            JSONFileParser parser = new JSONFileParser(hotelPath + f.getName());
+            JSONObject data = parser.parseFile();
+            hotel = parser.iterateJSON(data);
+        }
+        return hotel;
+    }
+
+    ///////////////////////////// LOGGING /////////////////////////////
+
     public void logError(String contents){
         logger.setLevel("danger");
         logger.writeToLog("Error occured during master working time: " + contents);
@@ -267,6 +291,13 @@ public class JSONDirManager {
         logger.setLevel("info");
         logger.writeToLog(contents);
     }
+
+    public void logTransaction(String contents){
+        logger.setLevel("transaction");
+        logger.writeToLog(contents);
+    }
+
+    ///////////////////////////// LOGGING /////////////////////////////
 
     public void printAllHotels(){
         try {

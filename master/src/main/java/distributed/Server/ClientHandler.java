@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import distributed.Bookkeeper;
-import distributed.Estate.Hotel;
+import distributed.Estate.Room;
+// import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
+import distributed.Share.Mail;
 
 /**
  * Client Handler is responsible for managing the connection between
@@ -20,8 +22,9 @@ import distributed.Share.Filter;
  * 
  * @author pdvass
  */
-
 public class ClientHandler extends Thread {
+    private static volatile long totalUsers = 0;
+    private String id;
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
@@ -33,10 +36,29 @@ public class ClientHandler extends Thread {
         this.res = res;
         this.bookkeeper.addUser();
         this.mailbox = new Mailbox();
+        if(totalUsers == Long.MAX_VALUE){
+            totalUsers = 0;
+        }
+        this.id = "client" + totalUsers++;
     }
 
-    public void run() {
-       
+    public void run(){
+        Runnable task = () -> {this.send();};
+        Runnable task1 = () -> {this.checkMail();};
+        Thread t = new Thread(task);
+        Thread t1 = new Thread(task1);
+        t.start();
+        t1.start();
+
+        try{
+            t.join();
+            t1.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void send() {
         try {
             String greeting;
             // greeting = this.ois.readUTF();
@@ -47,14 +69,23 @@ public class ClientHandler extends Thread {
 
                 // NOTE: better if refactored to switch
                 if(greeting.equals("filter")) {
-                    Filter f = (Filter) this.res.readObject();
-                    List<Hotel> filteredHotels =  f.applyFilter();
-                    List<String> filteredHotelsStrings = new ArrayList<>();
-                    filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
 
+                    Filter f = (Filter) this.res.readObject();
+                    // System.out.println("Got a filter");
+                    
+                    Mail request = new Mail(this.id, "worker", "Filter", f);
+                    // List<Hotel> filteredHotels =  f.applyFilter();
+                    // List<String> filteredHotelsStrings = new ArrayList<>();
+                    // filteredHotels.forEach(hotel -> filteredHotelsStrings.add(hotel.toString()));
+                    String contents = String.format("Transaction opens from %s", this.id);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
+                    
+                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, transaction);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, request);
+                    
                     // this.sendObject(filteredHotelsStrings);
-                    this.res.changeContents(filteredHotelsStrings);
-                    this.res.sendObject();
+                    // this.res.changeContents(filteredHotelsStrings);
+                    // this.res.sendObject();
                 } else if (greeting.equals("hotels")){
                     JSONDirManager manager = new JSONDirManager();
                     List<String> hotels = new ArrayList<>();
@@ -68,20 +99,17 @@ public class ClientHandler extends Thread {
                     this.res.changeContents(hotels);
                     this.res.sendObject();
                 } else if(greeting.contains("say")) {
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, "Client says: " + greeting.substring(4));
-                }else {
+                    String said = this.id + " says: " + greeting.substring(4);
+                    Mail request = new Mail(this.id, "manger", "Message", said);
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, request);
+                    
+                } else {
                     // System.out.println(greeting);
                     // this.sendMessage(greeting);
                     this.res.changeContents(greeting);
                     this.res.sendMessage();
                 }
 
-                ArrayList<String> mails = mailbox.checkMail(this.type);
-                if(!mails.isEmpty()){
-                    for(String mail : mails){
-                        System.out.println(mail);
-                    }
-                }
                 // greeting = this.ois.readUTF();
                 greeting = this.res.readMessage();
             }
@@ -90,6 +118,27 @@ public class ClientHandler extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void checkMail(){
+        while (true) {
+            ArrayList<Mail> msgs = this.mailbox.checkMail(this.type, this.id);
+            if(!msgs.isEmpty()){
+                // System.out.println("Got a message for client size->" + msgs.size());
+                for(Mail msg : msgs){
+                    @SuppressWarnings("unchecked")
+                    List<Room> response = (List<Room>) msg.getContents();
+                    ArrayList<String> toClient = new ArrayList<String>();
+                    response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
+                    this.res.changeContents(toClient);
+                    try {
+                        this.res.sendObject();
+                    } catch (IOException e) {
+                        System.out.println("Could not send results to client" + this.id);
+                    }
+                }
+            }
         }
     }
 
