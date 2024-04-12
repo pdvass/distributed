@@ -11,11 +11,7 @@
   <artifactId>worker</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-<<<<<<< HEAD
-  <name>child</name>
-=======
   <name>client</name>
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -29,7 +25,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-<<<<<<< HEAD
       <version>4.13</version>
       <scope>test</scope>
     </dependency>
@@ -41,11 +36,6 @@
         <version>1.1.1</version>
     </dependency>
 
-=======
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
   </dependencies>
 
   <build>
@@ -65,17 +55,10 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
-<<<<<<< HEAD
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
         </plugin>
-=======
-        <!-- <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin> -->
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
@@ -99,30 +82,11 @@
         </plugin>
 
         <plugin>
-<<<<<<< HEAD
-=======
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.5</version>
-          <configuration>
-            <includes>
-              <include>**/*Test.java</include>
-            </includes>
-          </configuration>
-        </plugin>
-
-
-        <plugin>
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
             <archive>
               <manifest>
-<<<<<<< HEAD
                 <mainClass>distributed.WorkerApp</mainClass> 
-=======
-                <mainClass>distributed.App</mainClass> 
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
               </manifest>
             </archive>
             <descriptorRefs>

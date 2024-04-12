@@ -65,3 +65,9 @@
 [TRANSACTION] Transaction opens from client0 11/04/2024 15:37:03
 [INFO] CLIENT left a message to WORKER 11/04/2024 15:37:03
 [INFO] WORKER left a message to CLIENT 11/04/2024 15:37:03
+[INFO] CLIENT left a message to WORKER 12/04/2024 19:57:25
+[TRANSACTION] Transaction opens from client0 12/04/2024 19:57:25
+[INFO] CLIENT left a message to WORKER 12/04/2024 19:57:25
+[INFO] CLIENT left a message to WORKER 12/04/2024 20:00:45
+[TRANSACTION] Transaction opens from client0 12/04/2024 20:00:45
+[INFO] CLIENT left a message to WORKER 12/04/2024 20:00:45
