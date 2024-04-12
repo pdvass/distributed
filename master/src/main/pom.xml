@@ -8,15 +8,10 @@
   </parent>
 
   <groupId>distributed</groupId>
-  <artifactId>worker</artifactId>
+  <artifactId>master</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-<<<<<<< HEAD
   <name>child</name>
-=======
-  <name>client</name>
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
@@ -26,13 +21,21 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-<<<<<<< HEAD
-      <version>4.13</version>
-      <scope>test</scope>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.10.2</version>
+        <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+        </dependency>
+
     
     <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
     <dependency>
@@ -41,11 +44,22 @@
         <version>1.1.1</version>
     </dependency>
 
-=======
-      <version>4.11</version>
-      <scope>test</scope>
+    <!-- https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv -->
+    <dependency>
+        <groupId>io.github.cdimascio</groupId>
+        <artifactId>java-dotenv</artifactId>
+        <version>5.2.2</version>
     </dependency>
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
+
+
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <!-- For Lenevshtein distance -->
+        <artifactId>commons-text</artifactId>
+        <version>1.11.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -65,17 +79,10 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
-<<<<<<< HEAD
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-=======
         <!-- <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
         </plugin> -->
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
@@ -99,8 +106,6 @@
         </plugin>
 
         <plugin>
-<<<<<<< HEAD
-=======
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.2.5</version>
@@ -112,17 +117,12 @@
         </plugin>
 
 
-        <plugin>
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
+        <!-- <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
             <archive>
               <manifest>
-<<<<<<< HEAD
-                <mainClass>distributed.WorkerApp</mainClass> 
-=======
                 <mainClass>distributed.App</mainClass> 
->>>>>>> cbede6a19835796d1c4e4a418a303c8db9fc4627
               </manifest>
             </archive>
             <descriptorRefs>
@@ -138,7 +138,33 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
+        </plugin> -->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>manager</id>
+            <configuration>
+              <mainClass>distributed.App</mainClass>
+            </configuration>
+          </execution>
+          <execution>
+            <id>server</id>
+            <configuration>
+              <mainClass>distributed.ServerApp</mainClass>
+            </configuration>
+          </execution>
+          <execution>
+            <id>reducer</id>
+            <configuration>
+              <mainClass>distributed.ReducerApp</mainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       </plugins>
     </pluginManagement>

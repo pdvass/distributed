@@ -1,5 +1,6 @@
 package distributed.Estate;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -22,7 +23,9 @@ import java.util.TreeMap;
  * @author pdvass
  * @see Hotel
  */
-public class Room {
+public class Room implements Serializable {
+    private static final long serialVersionUID = 80420241743L;
+    
     private String name;
     private byte[] id;
     private Date startDate;
@@ -31,6 +34,9 @@ public class Room {
     private int nOfPeople;
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
+
+    private String hotelsRegion;
+    private float hotelsStars;
 
     public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
         this.name = name;
@@ -157,6 +163,21 @@ public class Room {
 
     public float getCost(){
         return this.cost;
+    }
+
+    public String getHotelsRegion(){
+        return this.hotelsRegion;
+    }
+
+    public float getHotelsStars(){
+        return this.hotelsStars;
+    }
+
+    public String toString(){
+        String r = String.format("Hotel %s: room %d. Has a capacity of %d people, costs %.2f per night and is located in %s.", 
+                    this.name, this.getIntId(), this.nOfPeople, this.cost, this.hotelsRegion);
+        return r;
+         
     }
 
 }

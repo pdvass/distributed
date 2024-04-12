@@ -2,7 +2,7 @@ package distributed;
 
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Request;
-import distributed.Share.Tuple;
+import distributed.Share.Mail;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -127,12 +127,12 @@ public class Terminal extends Thread {
                     this.req.changeContents("check");
                     try {
                         this.req.sendMessage();
-                        Tuple msg = (Tuple) this.req.receiveRequestObject();
-                        while(!(msg.getFirst().equals("Message") && msg.getSecond().equals("-1"))){
-                            if(msg.getFirst().equals("Message")){
-                                System.out.println(msg.getSecond());
+                        Mail msg = (Mail) this.req.receiveRequestObject();
+                        while(!(msg.getSubject().equals("Message") && msg.getContents().equals("-1"))){
+                            if(msg.getSubject().equals("Message")){
+                                System.out.println(msg.getContents());
                             }
-                            msg = (Tuple) this.req.receiveRequestObject();
+                            msg = (Mail) this.req.receiveRequestObject();
                         }
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();

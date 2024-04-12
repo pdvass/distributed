@@ -1,4 +1,4 @@
-package distributed;
+package distributed.Reducer;
 
 import java.io.*;
 import java.net.*;
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import distributed.Response;
 
-public class Reducer extends Thread{
+public class ReducerServer extends Thread{
     private ServerSocket reducerSocket = null;
 
-    private final int PORT = 4555;
+    private final int PORT = 25565;
 
     public void run(){
         try {
@@ -18,16 +18,15 @@ public class Reducer extends Thread{
             e.printStackTrace();
         }
     }
+
     public void init(int port) throws IOException{
         this.reducerSocket = new ServerSocket(port);
         this.reducerSocket.setReuseAddress(true);
-        int n=1;
-        ArrayList ResultList = new ArrayList<>();
 
-        //The reducer accepts results from worker n of the 3 workers
-        while(!(n==4)){
-            n++;
-            
+        // The reducer accepts results from worker i of the n workers
+        // where i= the id of the worker.
+        while(true){
+
             Socket workerSocket = reducerSocket.accept();
             ObjectInputStream in = new ObjectInputStream(workerSocket.getInputStream());
             ObjectOutputStream out = new ObjectOutputStream(workerSocket.getOutputStream());
@@ -35,19 +34,21 @@ public class Reducer extends Thread{
 
             // Send message of connection.
             String msg = res.readMessage();
-            res.changeContents("worker" + n + " connected to reducer");
-            res.sendMessage();
 
-            // Read tuple from client
-            Tuple tuple = (Tuple) in.readObject();
-            System.out.println("Received tuple from client: " + tuple);
+            if(msg.equals("worker connection")){
+                res.changeContents("worker connected to reducer"); 
+                res.sendMessage();
 
-            int workerId = tuple.getFirst();
-            ArrayList list = tuple.getSecond();
-
-            ResultList.add(list);
+                ReducerHandler responseSocket = new ReducerHandler(workerSocket, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
+            }
 
         }
          
+    }
+
+    public void close() throws IOException {
+        serverSocket.close();
     }
 }

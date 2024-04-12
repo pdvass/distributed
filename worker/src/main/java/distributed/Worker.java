@@ -1,116 +1,93 @@
 package distributed;
 
-import distributed.Estate.*;
-import distributed.Share.*;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.net.*;
+import distributed.Estate.Room;
+import distributed.Share.Filter;
+import distributed.Share.Request;
+import distributed.Share.Mail;
 
-import java.io.*;
-import java.io.Serializable;
+public class Worker extends Thread{
+    private ArrayList<Room> rooms = null;
+    private Socket conn = null;
+    private Request req = null;
 
-import java.util.Scanner;
-import java.util.Map;
-import java.util.HashMap;
-
-/** The Worker class mainly needed for keeping information about the Room objects which
- * correspond to each worker.
- * 
- * @author panagou
- * @see Room
- */
-
-public class Worker {
-
-    private String name;
-    private boolean isAlive;
-    private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
-    private Request rec = null;
-
-    public Worker(String workerName) {
-        this.name = workerName;
-        this.isAlive = false;
+    public Worker() throws UnknownHostException, IOException{
+        this.conn = new Socket("localhost", 4555);
+        this.req = new Request(this.conn, "worker connection");
+        this.rooms = new ArrayList<>();
     }
 
-    public void startWorker() throws IOException {
-        Socket socket = new Socket("localhost",4555);
-
-        this.rec = new Request(socket,"worker connection");
-        this.rec.sendMessage();
-
-        System.out.println(rec.receiveMessage());
-
-        if(!(this.isAlive && this.rec == null)) {
-            this.isAlive = true ;
-            runWorker();
-        }
+    public void run(){
+        this.connect();
+        this.init();
     }
 
-    public void runWorker() throws IOException{
-        
-        ArrayList<Rooms> filteredRooms = new ArrayList<>();
-        ArrayList<Room> RequestedRooms = new ArraList<>();
-
-        while (this.isAlive) {
-            // System.out.println("Worker is working...");
-            String msg = this.rec.receiveMessage();
-            try {
-                System.out.println(msg);
-                if (msg.equals("filters")){
-                    filteredRooms = rooms.applyFilter();
-
-                } else if (msg.equals("get hotels")){
-                    RequestedRooms = rooms.returnRooms();
-                } else if (msg.equals("booking")){
-
-                }
-            } catch (Exception e){
-                System.out.println(e.getMessage());
+    public void connect(){
+        try {
+            this.req.sendMessage();
+            System.out.println("Sent!");
+            String isConnected = this.req.receiveMessage();
+            if(!isConnected.equals("worker connected")){
+                throw new Exception();
             }
+            System.out.println("Connected to server");
+        } catch (Exception e) {
+            System.out.println("Could not reach server.");
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
-    public String getName() {
-        return this.name;
-    }
+    public void init(){
+        try{
+            Mail incoming = (Mail) this.req.receiveRequestObject();
+            // Mail incoming = (Mail) incomingTuple.getSecond();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+            while (true) {
+                String message = incoming.getSubject();
+                System.out.println(message);
+    
+                if(message.equals("room")){
+                    Room room = (Room) incoming.getContents();
+                    this.rooms.add(room);
+                } else if (incoming.getSender().contains("client")){
+                    Object typeOfRequest = incoming.getContents();
+                    Filter f = null;
+                    try {
+                        f = (Filter) typeOfRequest;
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    if(f != null){
+                        System.out.println("Applying filters to my room list");
+                        List<Room> filteredRoms = f.applyFilter(this.rooms);
+                        // Mail response = new Mail(message, filteredRoms);
+                        incoming.respond();
+                        incoming.setContents(filteredRoms);
+                        this.req.changeContents(incoming);
+                        this.req.sendRequestObject();
 
-    public Room getRoom(int roomId) {
-        return this.rooms.get(roomId);
-    }
-
-    public void addRoom(int roomId, Room room) {
-        this.rooms.put(roomId, room);
-    }
-
-    public void removeRoom(int roomId) {
-        this.rooms.remove(roomId);
-    }
-
-    public boolean hasRoom(int roomId) {
-        return (this.rooms).containsKey(roomId);
-    }
-
-    public Map<Integer, Room> returnRooms() {
-        ArrayList<Room> requestedRooms = new ArraList<>();
-        for(Room room: this.rooms.values()) {
-            requestedRooms.add(room);
+                    } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
+                        System.out.println("Client " + message + " asked for hotels");
+                        for(Room room : this.rooms){
+                            this.req.changeContents(room);
+                            this.req.sendRequestObject();
+                        }
+                    }
+                } else if (message.equals("manager")){
+                    System.out.println("Request received from manager");
+                }
+    
+                incoming = (Mail) this.req.receiveRequestObject();
+                // incoming = (Mail) incomingTuple.getSecond();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-        return requestedRooms;
-    }
-
-    public boolean isAlive() {
-        return this.isAlive;
-    }
-
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
-        public void stop() throws IOException{
-        this.isAlive = false ;
     }
 }

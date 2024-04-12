@@ -45,7 +45,7 @@ public class Hotel {
      * @see Hotel#rooms
      */
     public void addRoom(String name, String startDate, String endDate, float cost, int nOfPeople){
-        Room room = new Room(name, startDate, endDate, cost, nOfPeople);
+        Room room = new Room(name, startDate, endDate, cost, nOfPeople, this.region, this.stars);
         this.rooms.add(room);
     }
 
@@ -79,6 +79,13 @@ public class Hotel {
         this.rooms = rooms;
     }
 
+    public void updateReviews(float newStars, int newNOfReviews){
+        this.stars = newStars;
+        this.nOfReviews = newNOfReviews;
+        for(Room room : this.rooms){
+            room.hotelsStars = this.stars;
+        }
+    }
     public String toString(){
         // NOTE: StringBuilder is more efficient than String concats
         String repr = String.format("Name: %s. It is located in %s and averages %.2f stars from %d reviews. ", this.name, this.region, this.stars, this.nOfReviews);

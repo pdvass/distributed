@@ -47,6 +47,11 @@ public class Server extends Thread {
             } else if(msg.equals("worker connection")){
                 res.changeContents("worker connected");
                 res.sendMessage();
+
+                WorkerHandler responseSocket = new WorkerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
+                
             } else if(msg.equals("Manager connection")){
                 res.changeContents("manager connected");
                 res.sendMessage();

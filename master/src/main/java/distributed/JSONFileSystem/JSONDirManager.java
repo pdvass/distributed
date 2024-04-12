@@ -258,6 +258,8 @@ public class JSONDirManager {
         return hotels;
     }
 
+    ///////////////////////////// LOGGING /////////////////////////////
+
     public void logError(String contents){
         logger.setLevel("danger");
         logger.writeToLog("Error occured during master working time: " + contents);
@@ -267,6 +269,13 @@ public class JSONDirManager {
         logger.setLevel("info");
         logger.writeToLog(contents);
     }
+
+    public void logTransaction(String contents){
+        logger.setLevel("transaction");
+        logger.writeToLog(contents);
+    }
+
+    ///////////////////////////// LOGGING /////////////////////////////
 
     public void printAllHotels(){
         try {

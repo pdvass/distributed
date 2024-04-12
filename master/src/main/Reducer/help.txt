@@ -1,0 +1,37 @@
+    public Mail Merge(Mail... receivedMails){
+        this.receivedMails = receivedMails;
+
+        ArrayList<> MergedList = new ArrayList<>();
+        Map<String, Integer> MergedHashMap = new HashMap<>();
+        
+        
+        System.out.println("Number of mails received: "+ receivedMails.length);
+ 
+        // using for each loop to display contents of receivedMails
+        for (Mail mail : receivedMails){
+            
+            System.out.print(mail + " ");
+            if (mail.getRecipient().contains("client")){
+                //we have to merge arraylists
+
+                for (ArrayList<Room> y  : mail.getContents()) {
+                    MergedList.addAll(y);
+                }
+                //Creating the new object to send 
+                Mail newMail = new Mail(receivedMails[0].sender(), receivedMails[0].getRecipient(), receivedMails[0].getSubject(), MergedList);
+                return newMail ;
+            }   
+            else if (mail.getRecipient().equals("manager")){
+                //we have to merge hashmaps
+
+                for (Map<String, Integer> y  : mail.getContents()) {
+                    mergedMap.putAll(y);
+                }
+                //Creating the new object to send 
+                Mail newMail = new Mail(receivedMails[0].sender(), receivedMails[0].getRecipient(), receivedMails[0].getSubject(), MergedHashMap);
+                return newMail ;
+            } 
+        }   
+        return null;
+        //if no appropriate recipient found
+    }
