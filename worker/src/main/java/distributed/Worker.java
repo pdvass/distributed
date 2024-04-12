@@ -50,7 +50,6 @@ public class Worker extends Thread{
 
             while (true) {
                 String message = incoming.getSubject();
-                System.out.println(message);
     
                 if(message.equals("room")){
                     Room room = (Room) incoming.getContents();
@@ -64,7 +63,7 @@ public class Worker extends Thread{
                         System.out.println(e.getMessage());
                     }
                     if(f != null){
-                        System.out.println("Applying filters to my room list");
+                        // System.out.println("Applying filters to my room list");
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();

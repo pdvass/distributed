@@ -7,7 +7,6 @@ import java.util.List;
 
 import distributed.Bookkeeper;
 import distributed.Estate.Room;
-// import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
 import distributed.Share.Mail;

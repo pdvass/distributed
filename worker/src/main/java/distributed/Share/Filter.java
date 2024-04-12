@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import distributed.Estate.Hotel;
 import distributed.Estate.Room;
 
 /**
@@ -92,11 +91,11 @@ public class Filter implements Serializable {
     ////////////// UNIQUE TO WORKER //////////////
 
     /**
-     * Applies filters to Hotel List.
+     * Applies filters to Room List.
      * 
-     * @return A list of all the hotels.
+     * @return A list of all the rooms.
      * 
-     * @see Hotel
+     * @see Room
      */
     public final List<Room> applyFilter(List<Room> hotels){
         // We use a more fuctional way of creating list, by initializing a stable state hotel list

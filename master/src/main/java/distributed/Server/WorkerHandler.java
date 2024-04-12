@@ -91,6 +91,18 @@ public class WorkerHandler extends Thread {
                     this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
                 }
             }
+
+            try{
+                this.res.readMessage();
+            } catch (Exception e){
+                System.out.println("Worker died");
+                try {
+                    this.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                break;
+            }
             
         }
     }
