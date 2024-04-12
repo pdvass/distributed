@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.io.Serializable;
 
 /**
  * ReducerClient is used to communicate with the manager and server and receives objects from the Workers.
@@ -13,7 +12,7 @@ import java.io.Serializable;
  * @author pdvass
  */
 public class ReducerClient {
-    private Socket serverSocket = null;
+    private Socket clientSocket = null;
     private ObjectInputStream ois = null;
     private ObjectOutputStream oos = null;
 
@@ -100,7 +99,7 @@ public class ReducerClient {
     public void stop() throws IOException{
         this.oos.close();
         this.ois.close();
-        serverSocket.close();
+        clientSocket.close();
     }
 
 
