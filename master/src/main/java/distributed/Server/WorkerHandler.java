@@ -39,6 +39,7 @@ public class WorkerHandler extends Thread {
             totalWorkers = 0;
         }
         this.id = "worker" + totalWorkers++;
+        System.out.println("Worker with id " + this.id + " came.");
     }
 
     public void run(){
@@ -73,7 +74,7 @@ public class WorkerHandler extends Thread {
     }
 
     private void sendMessagesToWorkers(){
-        while(this.workerSocket.isConnected()){
+        while(true){
             
             ArrayList<Mail> msgs = this.mailbox.checkMail(HandlerTypes.WORKER, this.id);
             // System.out.println("hi");
@@ -86,20 +87,14 @@ public class WorkerHandler extends Thread {
                     } catch (Exception e){
                         System.out.println(e.getMessage());
                     }
-                    Mail response = (Mail) this.res.readObject();
-                    // System.out.println("Received object");
-                    // Mail toClient = new Mail(response.getFirst(), response.getSecond());
-                    this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
                 }
             }
-            try {
-                this.res.readMessage();
-            } catch (Exception e){
-                // System.out.println("Worker died");
-                this.bookkeeper.workerDied(this.id);
-                break;
+            Mail response = (Mail) this.res.readObject();
+            // System.out.println("Received object");
+            // Mail toClient = new Mail(response.getFirst(), response.getSecond());
+            if(!response.getSubject().equals("dummy")){
+                this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
             }
-            
         }
     }
 

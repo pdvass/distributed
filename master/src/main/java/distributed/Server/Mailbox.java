@@ -60,7 +60,7 @@ public class Mailbox extends Thread {
             ArrayList<Mail> directedTo = new ArrayList<>();
             ArrayList<Mail> notDirectedTo = new ArrayList<>();
             // NOTE: MUST CHANGE 
-            if(!mails.isEmpty() && type.equals(HandlerTypes.CLIENT)){
+            // if(!mails.isEmpty() && type.equals(HandlerTypes.CLIENT)){
                 for(Mail mail : mails){
                     if(mail.getRecipient().equals(callerID)){
                         directedTo.add(mail);
@@ -69,9 +69,9 @@ public class Mailbox extends Thread {
                     }
                     
                 }
-            } else {
-                directedTo = mails;
-            }
+            // } else {
+            //     directedTo = mails;
+            // }
             messages.get(type).clear();
             messages.get(type).addAll(notDirectedTo);
             read_lock = true;
@@ -103,6 +103,7 @@ public class Mailbox extends Thread {
             switch (mail.getSubject()) {
                 case "Message":
                 case "Filter":
+                case "room":
                     messages.get(toType).add(mail);
                     break;
                 case "Transaction":

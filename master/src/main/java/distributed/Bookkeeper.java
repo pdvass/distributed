@@ -29,9 +29,22 @@ public class Bookkeeper {
     private static volatile ArrayList<Hotel> hotels = new ArrayList<>();
     private static volatile ArrayList<String> users = new ArrayList<>();
     private HandlerTypes type = HandlerTypes.BOOKKEEPER;
-    private Mailbox mailbox = new Mailbox();
+    private Mailbox mailbox = null;
+    private static volatile boolean created = false;
 
-    public Bookkeeper() {}
+    public Bookkeeper() {
+        this.mailbox = new Mailbox();
+        if(!created){
+            created = true;
+            try {
+                this.createWorkers();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Map<String, ArrayList<Room>> getWorkers() {
         return workers;
@@ -99,7 +112,7 @@ public class Bookkeeper {
 
         int nOfWorkers = Integer.parseInt(workersEnv);
 
-        for(int i=0; i>nOfWorkers; i++) {
+        for(int i=0; i<nOfWorkers; i++) {
             this.addWorker();
         }
 
@@ -122,23 +135,23 @@ public class Bookkeeper {
      **/
     public void distributingRooms(ArrayList<Room> rooms) {
         Mail mail;
-        HandlerTypes to = HandlerTypes.WORKER;
+        // HandlerTypes to = HandlerTypes.WORKER;
         int numberOfActiveWorkers = workers.size();
 
         for (Room room: rooms) {
             int roomId = room.getIntId();
-            int workerIndex = roomId % numberOfActiveWorkers;  // Calculation of the worker's index
+            int workerIndex = Math.abs(roomId % numberOfActiveWorkers);  // Calculation of the worker's index
 
-            String targetWorkerName = "Worker " + workerIndex;
-            try{
-                workers.get(targetWorkerName).add(room);
-            } catch (Exception e){
-                System.out.println("No active workers");
-                return;
-            }
-
+            String targetWorkerName = "worker" + workerIndex;
+            // try{
+            //     workers.get(targetWorkerName).add(room);
+            // } catch (Exception e){
+            //     System.out.println("No active workers");
+            //     return;
+            // }
+            // System.out.println(targetWorkerName);
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
-            this.mailbox.addMessage(this.type, to, mail);
+            this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
 
             System.out.println("Room with hash " + roomId + " distributed to " + targetWorkerName);
         }

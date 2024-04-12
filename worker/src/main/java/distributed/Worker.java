@@ -54,8 +54,12 @@ public class Worker extends Thread {
                 System.out.println(message);
     
                 if(message.equals("room")){
+                    System.out.println("Got a room");
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
+                    Mail dummy = new Mail("", "", "dummy", null);
+                    this.req.changeContents(dummy);
+                    this.req.sendMessage();
                 } else if (incoming.getSender().contains("client")){
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
