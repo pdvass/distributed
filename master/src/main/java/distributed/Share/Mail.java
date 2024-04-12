@@ -42,4 +42,5 @@ public class Mail implements Serializable{
         this.sender = this.recipient;
         this.recipient = temp;
     }
+
 }

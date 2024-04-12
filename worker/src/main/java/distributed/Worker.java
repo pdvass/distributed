@@ -11,7 +11,7 @@ import distributed.Share.Filter;
 import distributed.Share.Request;
 import distributed.Share.Mail;
 
-public class Worker extends Thread{
+public class Worker extends Thread {
     private ArrayList<Room> rooms = null;
     private Socket conn = null;
     private Request req = null;
@@ -30,6 +30,7 @@ public class Worker extends Thread{
     public void connect(){
         try {
             this.req.sendMessage();
+            System.out.println("Sent!");
             System.out.println("Sent!");
             String isConnected = this.req.receiveMessage();
             if(!isConnected.equals("worker connected")){
@@ -90,4 +91,8 @@ public class Worker extends Thread{
             System.out.println(e.getMessage());
         }
     }
+
 }
+
+
+

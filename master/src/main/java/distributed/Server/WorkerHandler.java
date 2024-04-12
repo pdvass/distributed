@@ -42,7 +42,7 @@ public class WorkerHandler extends Thread {
     }
 
     public void run(){
-        this.populatedMessages();
+        // this.populatedMessages();
         this.sendMessagesToWorkers();
     }
 
@@ -73,7 +73,7 @@ public class WorkerHandler extends Thread {
     }
 
     private void sendMessagesToWorkers(){
-        while(true){
+        while(this.workerSocket.isConnected()){
             
             ArrayList<Mail> msgs = this.mailbox.checkMail(HandlerTypes.WORKER, this.id);
             // System.out.println("hi");
@@ -92,8 +92,19 @@ public class WorkerHandler extends Thread {
                     this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
                 }
             }
+            try {
+                this.res.readMessage();
+            } catch (Exception e){
+                // System.out.println("Worker died");
+                this.bookkeeper.workerDied(this.id);
+                break;
+            }
             
         }
+    }
+
+    public boolean isWorkerAlive(){
+        return this.workerSocket.isConnected();
     }
 
     public void close() throws IOException{

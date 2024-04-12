@@ -2,20 +2,15 @@ package distributed;
 
 import distributed.Estate.*;
 import distributed.JSONFileSystem.JSONDirManager;
+import distributed.Server.HandlerTypes;
+import distributed.Server.Mailbox;
 import distributed.Share.Mail;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import java.net.UnknownHostException;
 import io.github.cdimascio.dotenv.Dotenv;
 
 /**
@@ -31,9 +26,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class Bookkeeper {
 
     private static volatile Map<String, ArrayList<Room>> workers = new HashMap<>();
-    private Map<String, Process> workerProcesses = new ConcurrentHashMap<>();
     private static volatile ArrayList<Hotel> hotels = new ArrayList<>();
     private static volatile ArrayList<String> users = new ArrayList<>();
+    private HandlerTypes type = HandlerTypes.BOOKKEEPER;
+    private Mailbox mailbox = new Mailbox();
 
     public Bookkeeper() {}
 
@@ -45,10 +41,6 @@ public class Bookkeeper {
         String workerName = "Worker" + workers.size();
         workers.put(workerName, null);
 
-    }
-
-    public void removeWorker(String workerName) {
-        workers.remove(workerName);
     }
 
     public void addUser() {
@@ -74,6 +66,13 @@ public class Bookkeeper {
         return workers.get(workerName);
     }
 
+    /**
+     * This method returns all the rooms of the hotels that exist in the JSON files.
+     * 
+     * @return An ArrayList with all the rooms of the JSON files.
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
     public ArrayList<Room> getAllRooms() throws FileNotFoundException,Exception {
         ArrayList<Hotel> hotels = this.getHotels();
         ArrayList<Room> rooms = new ArrayList<>();
@@ -85,14 +84,14 @@ public class Bookkeeper {
     }    
 
     /** 
-     * This method reads the number of workers from an env file and creates the workers objects. 
-     * It also creates a thread for each worker, which checks if the workers are "alive". 
+     * This method is used for initialization. It reads from the env file the number of Workers and 
+     * creates the corresponding Map number with the id of each worker as a key. Then distribute the 
+     * rooms to existing Workers. 
      * 
      * @throws FileNotFoundException
      * @throws Exception
     **/
-    public void checkWorkers() throws FileNotFoundException, Exception {
-
+    public void createWorkers() throws FileNotFoundException, Exception {
         Dotenv dotenv = Dotenv.load();
         String workersEnv = dotenv.get("WORKERS");
 
@@ -100,93 +99,10 @@ public class Bookkeeper {
 
         int nOfWorkers = Integer.parseInt(workersEnv);
 
-        this.createWorkers();
-
-        // ExecutorService executor = Executors.newFixedThreadPool(nOfWorkers); // One Thread per Worker
-
-        // // Thread for checking if workers are alive
-        // while (true) {
-        //     for (int j=0; j<=nOfWorkers; j++) {
-        //         Worker requestedWorker = workers.get("worker"+j);
-    
-        //             if (requestedWorker.isAlive()) {
-        //                 executor.submit(() -> {
-        //                     System.out.println("The workers with " + requestedWorker.hashCode() + " hashCode is alive.");
-        //                     try {
-        //                         Thread.sleep(1000);
-        //                     } catch (InterruptedException e) {
-        //                         e.printStackTrace();
-        //                     }
-        //                 });
-        //             } else {
-        //                 System.out.println("The worker with the name " +requestedWorker.hashCode()+ " is not alive");
-
-        //                 String workerHashCode = Integer.toString(requestedWorker.hashCode());
-        //                 removeWorker(workerHashCode);
-                
-        //                 nOfWorkers--;
-                            
-        //                 try (FileWriter writer = new FileWriter(".env")) {
-        //                     writer.write("WORKERS=" + nOfWorkers);
-        //                     dotenv = Dotenv.configure().directory(".").load();
-        //                 } catch (IOException e) {
-        //                     System.out.println("An error occurred while updating .env file: " + e.getMessage());
-        //                 }
-        //                 this.distributingRooms(requestedWorker.getRooms());
-        //             }
-        //     }
-        // }
-
-        // Create and start workers
-        for (int i = 0; i < nOfWorkers; i++) {
-            String workerName = "Worker" + i;
-            String[] command = {"java", "-cp", "your-classpath", "distributed.Worker", workerName};
-            
-            // Start the worker process
-            Process process = Runtime.getRuntime().exec(command);
-            
-            // Wait for a bit before starting the next worker
-            Thread.sleep(1000);
+        for(int i=0; i>nOfWorkers; i++) {
+            this.addWorker();
         }
 
-        // Check status of workers
-        while (true) {
-            for (int j = 0; j < nOfWorkers; j++) {
-                String workerName = "Worker" + j;
-
-                // Check if worker process is alive
-                Process workerProcess = workerProcesses.get(workerName);
-
-                if (workerProcess.isAlive()) {
-                    System.out.println("Worker " + workerName + " is alive.");
-                } else {
-                    System.out.println("Worker " + workerName + " has died.");
-                    ArrayList<Room> missingRooms = workers.get(workerName);
-                    removeWorker(workerName);
-                
-                    nOfWorkers--;
-                            
-                    try (FileWriter writer = new FileWriter(".env")) {
-                        writer.write("WORKERS=" + nOfWorkers);
-                        dotenv = Dotenv.configure().directory(".").load();
-                    } catch (IOException e) {
-                        System.out.println("An error occurred while updating .env file: " + e.getMessage());
-                    }
-                    this.distributingRooms(missingRooms);
-
-                }
-            }
-            Thread.sleep(5000); 
-        }
-    }
-
-    /** 
-     * This method creates the workers and distributing all the rooms to them during initialization. 
-     * 
-     * @throws FileNotFoundException
-     * @throws Exception
-    **/
-    public void createWorkers() throws FileNotFoundException, Exception {
         JSONDirManager manager = new JSONDirManager();
 
         ArrayList<Hotel> hotels = manager.getHotels();
@@ -200,22 +116,30 @@ public class Bookkeeper {
     }
 
     /**
-     * This method is used, in case a worker "dies", it will distribute its data to the rest of the workers.
+     * This method is used for cases where we need to to allocate some rooms to existing workers.
      * 
      * @param rooms representing the list of rooms to be allocated.
      **/
     public void distributingRooms(ArrayList<Room> rooms) {
         Mail mail;
+        HandlerTypes to = HandlerTypes.WORKER;
         int numberOfActiveWorkers = workers.size();
 
         for (Room room: rooms) {
             int roomId = room.getIntId();
             int workerIndex = roomId % numberOfActiveWorkers;  // Calculation of the worker's index
 
-            String targetWorkerName = "Worker " + workerIndex; 
-            workers.get(targetWorkerName).add(room);
+            String targetWorkerName = "Worker " + workerIndex;
+            try{
+                workers.get(targetWorkerName).add(room);
+            } catch (Exception e){
+                System.out.println("No active workers");
+                return;
+            }
 
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
+            this.mailbox.addMessage(this.type, to, mail);
+
             System.out.println("Room with hash " + roomId + " distributed to " + targetWorkerName);
         }
     }
@@ -242,6 +166,24 @@ public class Bookkeeper {
         this.distributingRooms(rooms);
     }
 
+    /**
+     * This method is called when a worker dies and must be allocated the rooms he managed.
+     * 
+     * @param workerID The id of the worker.
+     */
+    public void workerDied(String workerID){
+        System.out.printf("%s died\n", workerID);
+        ArrayList<Room> toRedistribute = new ArrayList<>();
+
+        toRedistribute = workers.get(workerID);
+        workers.remove(workerID);
+
+        this.distributingRooms(toRedistribute);
+
+        System.out.println(workers.size());
+    }
 }
+
+
 
 

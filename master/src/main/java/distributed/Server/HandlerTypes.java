@@ -7,4 +7,5 @@ public enum HandlerTypes {
     CLIENT,
     WORKER,
     MANAGER,
+    BOOKKEEPER,
 }

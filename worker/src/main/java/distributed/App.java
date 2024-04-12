@@ -9,6 +9,9 @@ import java.net.UnknownHostException;
  * Tuple<Client, hotel>
  * Tuple<Manager, rangeDates>
  *
+ * get hotels filter stars:3
+ * get hotels filter stars:3 nOfPersons:5
+ * 
  */
 public class App 
 {

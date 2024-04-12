@@ -87,7 +87,7 @@ public class Mailbox extends Thread {
      * @param type The type of Handler 
      * @param message The message for the handler.
      */
-    protected void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
+    public void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
         synchronized (messages){
             while(!write_lock){
                 try {
