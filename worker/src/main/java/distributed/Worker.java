@@ -45,6 +45,7 @@ public class Worker extends Thread{
 
     public void init(){
         try{
+
             Mail incoming = (Mail) this.req.receiveRequestObject();
             // Mail incoming = (Mail) incomingTuple.getSecond();
 
@@ -63,7 +64,7 @@ public class Worker extends Thread{
                         System.out.println(e.getMessage());
                     }
                     if(f != null){
-                        // System.out.println("Applying filters to my room list");
+                        System.out.println("Applying filters to my room list");
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
@@ -80,8 +81,8 @@ public class Worker extends Thread{
                     }
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");
-                }
-    
+                } 
+
                 incoming = (Mail) this.req.receiveRequestObject();
                 // incoming = (Mail) incomingTuple.getSecond();
             }

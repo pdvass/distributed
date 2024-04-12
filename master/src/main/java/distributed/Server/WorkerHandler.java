@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import distributed.Bookkeeper;
 import distributed.Estate.Hotel;
 import distributed.JSONFileSystem.JSONDirManager;
-// import distributed.Share.Filter;
 import distributed.Share.Mail;
 
 /**
@@ -77,7 +76,7 @@ public class WorkerHandler extends Thread {
             ArrayList<Mail> msgs = this.mailbox.checkMail(HandlerTypes.WORKER, this.id);
             // System.out.println("hi");
             if(!msgs.isEmpty()){
-                // System.out.println("Got a message size->" + msgs.size());
+                System.out.println("Got a message size->" + msgs.size());
                 for(Mail msg : msgs){
                     this.res.changeContents(msg);
                     try{
@@ -90,18 +89,6 @@ public class WorkerHandler extends Thread {
                     // Mail toClient = new Mail(response.getFirst(), response.getSecond());
                     this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
                 }
-            }
-
-            try{
-                this.res.readMessage();
-            } catch (Exception e){
-                System.out.println("Worker died");
-                try {
-                    this.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                break;
             }
             
         }

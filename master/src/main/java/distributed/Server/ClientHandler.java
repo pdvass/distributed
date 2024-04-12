@@ -99,7 +99,7 @@ public class ClientHandler extends Thread {
                     this.res.sendObject();
                 } else if(greeting.contains("say")) {
                     String said = this.id + " says: " + greeting.substring(4);
-                    Mail request = new Mail(this.id, "manger", "Message", said);
+                    Mail request = new Mail(this.id, "manager", "Message", said);
                     this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, request);
                     
                 } else {
