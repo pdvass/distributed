@@ -160,7 +160,7 @@
           <execution>
             <id>reducer</id>
             <configuration>
-              <mainClass>distributed.ReducerApp</mainClass>
+              <mainClass>distributed.Reducer.ReducerApp</mainClass>
             </configuration>
           </execution>
         </executions>

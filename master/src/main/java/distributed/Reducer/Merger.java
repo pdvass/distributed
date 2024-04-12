@@ -2,8 +2,6 @@ package distributed.Reducer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import distributed.Estate.Room;
 import distributed.Share.Mail;
@@ -25,11 +23,6 @@ public class Merger {
         if(receivedMails==null){ 
             receivedMails = new ArrayList<>(); 
         }
-    }
-
-
-    public Mail getMail() {
-        return this.sendMail;
     }
 
     /**
@@ -67,33 +60,34 @@ public class Merger {
      * 
      */
 
+    @SuppressWarnings("unchecked")
     private void mergeContents(){
         
         System.out.println("Number of mails received: "+ receivedMails.size());
         
         ArrayList<Room> mergedList = new ArrayList<>();
-        ArrayList<HashMap> mergedMaps = new ArrayList<>();
+        ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
         
         Object mergedContents = null;
 
         for (Mail mail : receivedMails){
             
             if (mail.getRecipient().contains("client")){
-                for (ArrayList<Room> contents : (ArrayList<Room>) mail.getContents()) {
-                    mergedList.addAll(contents);
+                for (Room contents : (ArrayList<Room>) mail.getContents()) {
+                    mergedList.add(contents);
                 }
 
                 mergedContents = mergedList.clone();
             } else if (mail.getRecipient().equals("manager")){
-                for (HashMap<String, Integer> contents  : (HashMap<Room>) mail.getContents()) {
+                for (HashMap<String, Integer> contents  : (ArrayList<HashMap<String, Integer>>) mail.getContents()) {
                     mergedMaps.add(contents);
                 }
 
                 for (int i=0; i<mergedMaps.size()-1; i++) {
-                    mergedMaps(i+1).forEach((key, value) -> mergedMaps(0).merge(key, value, (v1, v2) -> v1.equals(v2) ? v1: v1 + v2));
+                    mergedMaps.get(i+1).forEach((key, value) -> mergedMaps.get(0).merge(key, value, (v1, v2) -> v1.equals(v2) ? v1: v1 + v2));
                 }
 
-                mergedContents = mergedMaps(0).clone();
+                mergedContents = mergedMaps.get(0).clone();
             }
                 
         } 

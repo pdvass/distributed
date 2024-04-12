@@ -1,10 +1,9 @@
 package distributed.Reducer;
 
+import distributed.Server.Response;
+
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-
-import distributed.Response;
 
 public class ReducerServer extends Thread{
     private ServerSocket reducerSocket = null;
@@ -28,8 +27,6 @@ public class ReducerServer extends Thread{
         while(true){
 
             Socket workerSocket = reducerSocket.accept();
-            ObjectInputStream in = new ObjectInputStream(workerSocket.getInputStream());
-            ObjectOutputStream out = new ObjectOutputStream(workerSocket.getOutputStream());
             Response res = new Response(workerSocket, null);
 
             // Send message of connection.
@@ -49,6 +46,6 @@ public class ReducerServer extends Thread{
     }
 
     public void close() throws IOException {
-        serverSocket.close();
+        reducerSocket.close();
     }
 }
