@@ -20,18 +20,32 @@ import io.github.cdimascio.dotenv.Dotenv;
  * @see Worker
  * @see Hotel
  * 
+ * @author pdvass
  * @author panagou
  */
 
-public class Bookkeeper {
+public class Bookkeeper extends Thread {
 
     private static volatile Map<String, ArrayList<Room>> workers = new HashMap<>();
     private static volatile ArrayList<Hotel> hotels = new ArrayList<>();
     private static volatile ArrayList<String> users = new ArrayList<>();
     private HandlerTypes type = HandlerTypes.BOOKKEEPER;
-    private Mailbox mailbox = new Mailbox();
+    private Mailbox mailbox = null;
+    private static volatile boolean created = false;
 
-    public Bookkeeper() {}
+    public Bookkeeper() {
+        this.mailbox = new Mailbox();
+        if(!created){
+            created = true;
+            try {
+                this.createWorkers();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Map<String, ArrayList<Room>> getWorkers() {
         return workers;
@@ -99,7 +113,7 @@ public class Bookkeeper {
 
         int nOfWorkers = Integer.parseInt(workersEnv);
 
-        for(int i=0; i>nOfWorkers; i++) {
+        for(int i = 0; i < nOfWorkers; i++) {
             this.addWorker();
         }
 
@@ -113,6 +127,27 @@ public class Bookkeeper {
         }
 
         this.distributingRooms(rooms);
+
+        Runnable task = () -> {this.checkMail(nOfWorkers);};
+        Thread t = new Thread(task);
+        t.start();
+    }
+
+
+    private void checkMail(int nOfWorkers){
+        while (true) {
+            ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "bookkeeper");
+            if(!mails.isEmpty()){
+                for(Mail mail : mails){
+                    for(int i = 0; i < nOfWorkers; i++){
+                        Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+                        clonedMail.setRecipient("worker" + i);
+                        System.out.println(clonedMail.getSubject() );
+                        this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -122,25 +157,21 @@ public class Bookkeeper {
      **/
     public void distributingRooms(ArrayList<Room> rooms) {
         Mail mail;
-        HandlerTypes to = HandlerTypes.WORKER;
+        // HandlerTypes to = HandlerTypes.WORKER;
         int numberOfActiveWorkers = workers.size();
 
         for (Room room: rooms) {
             int roomId = room.getIntId();
-            int workerIndex = roomId % numberOfActiveWorkers;  // Calculation of the worker's index
+            int workerIndex = Math.abs(roomId % numberOfActiveWorkers);  // Calculation of the worker's index
 
-            String targetWorkerName = "Worker " + workerIndex;
-            try{
-                workers.get(targetWorkerName).add(room);
-            } catch (Exception e){
-                System.out.println("No active workers");
-                return;
-            }
-
+            String targetWorkerName = "worker" + workerIndex;
+           
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
-            this.mailbox.addMessage(this.type, to, mail);
+            this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
+            JSONDirManager manager = new JSONDirManager();
 
-            System.out.println("Room with hash " + roomId + " distributed to " + targetWorkerName);
+            String info = "Room with hash " + roomId + " is to be distributed to " + targetWorkerName;
+            manager.logInfo(info);
         }
     }
 

@@ -37,10 +37,17 @@ public class Mail implements Serializable{
         this.contents = newContents;
     }
 
+    public void setRecipient(String newRecipient){
+        this.recipient = newRecipient;
+    }
+
     public void respond(){
         String temp = this.sender;
         this.sender = this.recipient;
         this.recipient = temp;
     }
 
+    public String toString(){
+        return String.format("From %s to %s with subject %s", this.sender, this.recipient, this.subject);
+    }
 }

@@ -8,4 +8,5 @@ public enum HandlerTypes {
     WORKER,
     MANAGER,
     BOOKKEEPER,
+    REDUCER
 }

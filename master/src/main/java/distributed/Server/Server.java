@@ -3,6 +3,10 @@ package distributed.Server;
 import java.io.*;
 import java.net.*;
 
+/**
+ * @author stellagianno
+ */
+
 public class Server extends Thread {
     private ServerSocket serverSocket = null;
 
@@ -56,6 +60,13 @@ public class Server extends Thread {
                 Thread response = new Thread(responseSocket);
                 response.start();
 
+            } else if(msg.equals("reducer connection")){
+                res.changeContents("reducer connected");
+                res.sendMessage();
+
+                ReducerHandler responseSocket = new ReducerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
             }
         }
     }

@@ -92,15 +92,15 @@ public class ClientTerminal {
                 case "commands":
                     System.out.println(this.commands);
                     break;
-                case "say":
-                    this.req.changeContents(msg);
-                    this.req.sendMessage();
-                    System.out.println("Message sent!");
-                    break;
+                // case "say":
+                //     this.req.changeContents(msg);
+                //     this.req.sendMessage();
+                //     System.out.println("Message sent!");
+                //     break;
                 default:
-                    this.req.changeContents(msg);
-                    this.req.sendMessage();
-                    System.out.println(this.req.receiveMessage());
+                    // this.req.changeContents(msg);
+                    // this.req.sendMessage();
+                    // System.out.println(this.req.receiveMessage());
                     break;
             }
 
