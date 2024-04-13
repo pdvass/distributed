@@ -5,6 +5,10 @@ import distributed.Server.Response;
 import java.io.*;
 import java.net.*;
 
+/**
+ * @author stellagianno
+ * @author panagou
+ */
 public class ReducerServer extends Thread{
     private ServerSocket reducerSocket = null;
 

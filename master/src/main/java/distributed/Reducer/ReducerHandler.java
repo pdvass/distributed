@@ -16,6 +16,7 @@ import distributed.Share.Mail;
  * 
  * 
  * @author stellagianno
+ * @author panagou
  */
 public class ReducerHandler extends Thread {
     protected static volatile long totalHandlers = 0;
@@ -29,14 +30,17 @@ public class ReducerHandler extends Thread {
         this.workerSocket = socket;
         this.res = res;
         if( totalHandlers == Long.MAX_VALUE){
-         totalHandlers = 0;
+            System.out.println("Max number of handlers reached");
         }
+        totalHandlers++;
     }
 
 
     public void run(){
-        Mail incoming = (Mail) this.res.readObject();
-        merger.receiveMail(incoming);
+        while (true) {
+            Mail incoming = (Mail) this.res.readObject();
+            merger.receiveMail(incoming);    
+        }
     }
 
 

@@ -16,9 +16,15 @@ public class Worker extends Thread {
     private Socket conn = null;
     private Request req = null;
 
+    private Socket reducerConn = null;
+    private Request reducerReq = null;
+
     public Worker() throws UnknownHostException, IOException{
         this.conn = new Socket("localhost", 4555);
         this.req = new Request(this.conn, "worker connection");
+
+        this.reducerConn = new Socket("localhost", 25565);
+        this.reducerReq = new Request(this.reducerConn, "worker connection");
         this.rooms = new ArrayList<>();
     }
 
@@ -36,6 +42,14 @@ public class Worker extends Thread {
                 throw new Exception();
             }
             System.out.println("Connected to server");
+
+            this.reducerReq.sendMessage();
+            String reducerIsConnected = this.reducerReq.receiveMessage();
+            if(!reducerIsConnected.equals("worker connected to reducer")){
+                throw new Exception();
+            }
+            System.out.println("Connected to reducer");
+
         } catch (Exception e) {
             System.out.println("Could not reach server.");
             System.out.println(e.getMessage());
@@ -58,11 +72,6 @@ public class Worker extends Thread {
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
 
-                    Mail dummy = new Mail("", "", "dummy", null);
-
-                    this.req.changeContents(dummy);
-                    this.req.sendRequestObject();
-
                 } else if (incoming.getSender().contains("client")) {
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
@@ -77,15 +86,15 @@ public class Worker extends Thread {
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
                         incoming.setContents(filteredRoms);
-                        this.req.changeContents(incoming);
-                        this.req.sendRequestObject();
+                        this.reducerReq.changeContents(incoming);
+                        this.reducerReq.sendRequestObject();
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + incoming.getSender() + " asked for hotels");
                         incoming.respond();
                         incoming.setContents(this.rooms);
-                        this.req.changeContents(incoming);
-                        this.req.sendRequestObject();
+                        this.reducerReq.changeContents(incoming);
+                        this.reducerReq.sendRequestObject();
                     }
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");

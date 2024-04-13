@@ -9,7 +9,8 @@ import java.net.UnknownHostException;
 /**
  * ReducerClient is used to communicate with the manager and server and receives objects from the Workers.
  * 
- * @author pdvass
+ * @author stellagianno
+ * @author panagou
  */
 public class ReducerClient {
     private Socket clientSocket = null;
@@ -57,23 +58,6 @@ public class ReducerClient {
         String received = null;
         received = this.ois.readUTF();
         return received;
-    }
-
-
-    /**
-     * Reveive an Object from the server. The client is responsible for
-     * understanding what this object is.
-     * 
-     * @return An Object response from the server.
-     */
-    public Object receiveObject(){
-        Object obj = null;
-        try {
-            obj = this.ois.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-        return obj;
     }
 
     /**

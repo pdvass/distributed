@@ -60,6 +60,13 @@ public class Server extends Thread {
                 Thread response = new Thread(responseSocket);
                 response.start();
 
+            } else if(msg.equals("reducer connection")){
+                res.changeContents("reducer connected");
+                res.sendMessage();
+
+                ReducerHandler responseSocket = new ReducerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
             }
         }
     }

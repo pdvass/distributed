@@ -1,5 +1,6 @@
 package distributed.Reducer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,15 +13,17 @@ import distributed.Share.Mail;
  * @see Mail
  * 
  * @author stellagianno
+ * @author panagou
  */
 public class Merger {
     private static volatile ArrayList<Mail> receivedMails = null;
     private static volatile boolean write_lock = true;
+    private ReducerClient rClient = null;
     private Mail sendMail = null;
 
 
     public Merger(){
-        if(receivedMails==null){ 
+        if(receivedMails == null){ 
             receivedMails = new ArrayList<>(); 
         }
     }
@@ -48,8 +51,9 @@ public class Merger {
             receivedMails.add(mail);
             if (receivedMails.size() == ReducerHandler.totalHandlers){
                 this.mergeContents();
+                receivedMails.clear();
             }
-            
+
             write_lock = true; 
             receivedMails.notifyAll();
         }
@@ -63,7 +67,7 @@ public class Merger {
     @SuppressWarnings("unchecked")
     private void mergeContents(){
         
-        System.out.println("Number of mails received: "+ receivedMails.size());
+        System.out.println("Number of mails received: " + receivedMails.size());
         
         ArrayList<Room> mergedList = new ArrayList<>();
         ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
@@ -83,7 +87,7 @@ public class Merger {
                     mergedMaps.add(contents);
                 }
 
-                for (int i=0; i<mergedMaps.size()-1; i++) {
+                for (int i = 0; i < mergedMaps.size() - 1; i++) {
                     mergedMaps.get(i+1).forEach((key, value) -> mergedMaps.get(0).merge(key, value, (v1, v2) -> v1.equals(v2) ? v1: v1 + v2));
                 }
 
@@ -95,6 +99,24 @@ public class Merger {
         this.sendMail = new Mail(receivedMails.get(0).getSender(), receivedMails.get(0).getRecipient(), 
                                 receivedMails.get(0).getSubject(), mergedContents);
 
+        this.sendMailToServer(this.sendMail);
+
     }
     
+    private void sendMailToServer(Mail mail){
+        this.rClient = new ReducerClient();
+        try {
+            this.rClient.startConnection("localhost", 4555);
+            this.rClient.sendMessage("reducer connection");
+            String response = this.rClient.receiveMsg();
+
+            if(!response.equals("reducer connected")){
+                System.out.println("Could not connect");
+            } 
+            System.out.println("connected");
+            this.rClient.sendObject(mail);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
