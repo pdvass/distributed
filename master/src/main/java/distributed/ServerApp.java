@@ -13,6 +13,6 @@ public class ServerApp {
         Thread serverThread = new Thread(server);
         serverThread.start();
 
-        System.out.println("Hello");
+        System.out.println("Hello, I am Server");
     }
 }

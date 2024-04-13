@@ -3,7 +3,7 @@ package distributed;
 /**
  * Project's entry point.
  *
- */
+ */ 
 
 public class App 
 {
@@ -15,5 +15,6 @@ public class App
 
         termThread.start();
 
+        System.out.println("Hello, I am Manager");
     }
 }
