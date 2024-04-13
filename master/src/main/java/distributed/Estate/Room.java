@@ -67,7 +67,6 @@ public class Room implements Serializable {
         // Iterate the list and use each date as the key for the TreeMap.
         range.stream().forEach(i -> this.rangeMap.put(i, 0));
 
-        // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
         this.hotelsRegion = hotelsReg;

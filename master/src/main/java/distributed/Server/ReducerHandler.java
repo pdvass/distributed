@@ -9,7 +9,6 @@ import distributed.Share.Mail;
 public class ReducerHandler extends Thread {
     private Socket reducerSocket = null;
     private Response res = null;
-    // private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
     private HandlerTypes type = HandlerTypes.REDUCER;
 

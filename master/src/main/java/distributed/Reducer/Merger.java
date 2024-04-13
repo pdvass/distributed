@@ -67,7 +67,7 @@ public class Merger {
     @SuppressWarnings("unchecked")
     private void mergeContents(){
         
-        System.out.println("Number of mails received: " + receivedMails.size());
+        // System.out.println("Number of mails received: " + receivedMails.size());
         
         ArrayList<Room> mergedList = new ArrayList<>();
         ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
@@ -76,14 +76,22 @@ public class Merger {
 
         for (Mail mail : receivedMails){
             
-            if (mail.getRecipient().contains("client")){
+            if(mail.getSubject().equals("Book")){
+                String[] contents = (String[]) mail.getContents();
+                if( Boolean.parseBoolean(contents[0])){
+                    String[] res = new String[]{mail.getSender(), contents[0], contents[1], contents[2]};
+                    mergedContents = res;
+                }
+
+            } else if (mail.getRecipient().contains("client")){
+
                 for (Room contents : (ArrayList<Room>) mail.getContents()) {
                     mergedList.add(contents);
                 }
 
                 mergedContents = mergedList.clone();
             } else if (mail.getRecipient().equals("manager")){
-                for (HashMap<String, Integer> contents  : (ArrayList<HashMap<String, Integer>>) mail.getContents()) {
+                for (HashMap<String, Integer> contents : (ArrayList<HashMap<String, Integer>>) mail.getContents()) {
                     mergedMaps.add(contents);
                 }
 

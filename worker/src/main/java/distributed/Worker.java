@@ -3,6 +3,7 @@ package distributed;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,12 +66,31 @@ public class Worker extends Thread {
 
             while (true) {
                 String message = incoming.getSubject();
-                System.out.println(incoming.getSender());
+                // System.out.println(incoming.getSender());
     
                 if(message.equals("room")){
                     System.out.println("Got a room");
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
+
+                } else if(message.equals("Book")) {
+                    String[] info = (String[]) incoming.getContents();
+                    // info -> {"book", roomID, dates}
+                    Date[] dateRange = new Filter(info).getDateRange();
+                    boolean isBooked = false;
+                    for(Room room : this.rooms){
+                        String intIDtoString = Integer.toString(room.getIntId());
+                        if(info[1].equals(intIDtoString)){
+                            System.out.println("I have the room!!!");
+                            System.out.printf("From %tD to %tD", dateRange[0], dateRange[1]);
+                            isBooked = room.book(dateRange[0], dateRange[1]);
+                        }
+                    }
+                    incoming.respond();
+                    String[] contents = new String[]{Boolean.toString(isBooked), info[2], info[1]};
+                    incoming.setContents(contents);
+                    this.reducerReq.changeContents(incoming);
+                    this.reducerReq.sendRequestObject();
 
                 } else if (incoming.getSender().contains("client")) {
                     Object typeOfRequest = incoming.getContents();
@@ -99,7 +119,7 @@ public class Worker extends Thread {
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");
                 }
-    
+
                 incoming = (Mail) this.req.receiveRequestObject();
                 // incoming = (Mail) incomingTuple.getSecond();
             }

@@ -106,7 +106,7 @@ public class Filter implements Serializable {
                         .filter( room -> (
                                 (    
                                         room.getStartDate().before(this.dateRange[0])  
-                                    || room.getStartDate().equals(this.dateRange[0])
+                                    ||  room.getStartDate().equals(this.dateRange[0])
                                 )
                                     && room.getEndDate().after(this.dateRange[1])
                                 ))

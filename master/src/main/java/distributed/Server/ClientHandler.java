@@ -88,10 +88,11 @@ public class ClientHandler extends Thread {
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
                     
-                } else if(greeting.contains("say")) {
-                    String said = this.id + " says: " + greeting.substring(4);
-                    Mail request = new Mail(this.id, "manger", "Message", said);
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, request);
+                } else if(greeting.contains("book")) {
+                    String[] info = greeting.split(" ");
+                    System.out.println(greeting);
+                    Mail request = new Mail(this.id, "bookkeeper", "Book", info);
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
                     
                 } else {
                     // System.out.println(greeting);
@@ -117,15 +118,32 @@ public class ClientHandler extends Thread {
             if(!msgs.isEmpty()){
                 // System.out.println("Got a message for client size->" + msgs.size());
                 for(Mail msg : msgs){
-                    @SuppressWarnings("unchecked")
-                    List<Room> response = (List<Room>) msg.getContents();
-                    ArrayList<String> toClient = new ArrayList<String>();
-                    response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
-                    this.res.changeContents(toClient);
-                    try {
-                        this.res.sendObject();
-                    } catch (IOException e) {
-                        System.out.println("Could not send results to client" + this.id);
+                    if(msg.getSubject().equals("Book")){
+                        if(msg.getContents() == null){
+                            this.res.changeContents("No room aailable");
+                            try {
+                                this.res.sendMessage();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        String[] contents = (String[]) msg.getContents();
+                        System.out.printf("Sender: %s has the room. Did it get booked? %s. Dates %s. Code hash is %s\n", 
+                                contents[0], contents[1], contents[2], contents[3]);
+
+                        Mail noticeMail = new Mail("Manager", "bookkeeper", "book", contents);
+                        this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
+                    } else {
+                        @SuppressWarnings("unchecked")
+                        List<Room> response = (List<Room>) msg.getContents();
+                        ArrayList<String> toClient = new ArrayList<String>();
+                        response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
+                        this.res.changeContents(toClient);
+                        try {
+                            this.res.sendObject();
+                        } catch (IOException e) {
+                            System.out.println("Could not send results to client" + this.id);
+                        }
                     }
                 }
             }
