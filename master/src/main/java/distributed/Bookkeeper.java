@@ -5,9 +5,11 @@ import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Server.HandlerTypes;
 import distributed.Server.Mailbox;
 import distributed.Share.Mail;
+import distributed.Share.Filter;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +82,23 @@ public class Bookkeeper extends Thread {
         return workers.get(workerName);
     }
 
+    public void updateRoom(String[] content) {
+
+        ArrayList<Room> rooms = workers.get(content[0]);
+        int roomId = Integer.parseInt(content[3]);
+
+        String[] dates = new String[]{ content[2] };
+        Filter f = new Filter(dates);
+        Date[] date = (f.getDateRange());
+
+        for (Room room: rooms) {
+            if ( room.getIntId() == roomId ) {
+                room.book(date[0], date[1]);
+            }
+        }
+
+    }
+
     /**
      * This method returns all the rooms of the hotels that exist in the JSON files.
      * 
@@ -138,12 +157,22 @@ public class Bookkeeper extends Thread {
         while (true) {
             ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "bookkeeper");
             if(!mails.isEmpty()){
+                
                 for(Mail mail : mails){
-                    for(int i = 0; i < nOfWorkers; i++){
-                        Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
-                        clonedMail.setRecipient("worker" + i);
-                        System.out.println(clonedMail.getSubject() );
-                        this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
+                    if(mail.getSubject().equals("book")) {
+                        String[] content = (String[]) mail.getContents();
+                        this.updateRoom(content);
+                        Mail approvalMail = new Mail("bookkeeper", mail.getSender(), "book approval", "booked");
+                        this.mailbox.addMessage(HandlerTypes.BOOKKEEPER, HandlerTypes.CLIENT, approvalMail);
+                    } else {
+
+                        for(int i = 0; i < nOfWorkers; i++){
+                            Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+                            clonedMail.setRecipient("worker" + i);
+                            System.out.println(clonedMail.getSubject() );
+                            this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
+                        }
+
                     }
                 }
             }

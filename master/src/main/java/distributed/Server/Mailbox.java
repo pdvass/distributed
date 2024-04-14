@@ -102,6 +102,7 @@ public class Mailbox extends Thread {
                 case "Filter":
                 case "room":
                 case "Book":
+                case "book approval":
                     messages.get(toType).add(mail);
                     break;
                 case "Transaction":

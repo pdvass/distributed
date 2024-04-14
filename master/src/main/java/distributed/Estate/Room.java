@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -34,6 +35,7 @@ public class Room implements Serializable {
     private int nOfPeople;
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
+    private static volatile boolean write_lock = true;
 
     // Variables to use for providing workers with hotels' info
     // Should not be used in master.
@@ -60,7 +62,6 @@ public class Room implements Serializable {
             System.out.println(e.getMessage());
         }
 
-        
         List<LocalDate> range = this.produceDateRange(this.startDate, this.endDate);
         this.rangeMap = new TreeMap<LocalDate,Integer>();
 
@@ -76,21 +77,34 @@ public class Room implements Serializable {
     /**
      * Books the room by mutating the internal state of its available dates list. The range is
      * inclusive - exclusive.
+     * 
      * @param from Date representing the first day of which the room need to be booked.
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    protected void book(Date from, Date to) {
-        // NOTE: Should be synchronized
-        List<LocalDate> range = this.produceDateRange(from, to);
+    public synchronized void book(Date from, Date to) {
+        while(!write_lock) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
+            write_lock = false;
+            
+            List<LocalDate> range = this.produceDateRange(from, to);
+            range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
+        }
+
+        write_lock = true;
     }
 
     /**
      * Shows to the hotel - owner object if the room is available all the days a date range.
+     * 
      * @param from Date representing the first day of which the room needs to be checked.
      * @param to Date representing the last day of which the room needs to be checked.
+     * 
      * @return True if the room is available false otherwise.
      */
     protected boolean isAvailable(Date from, Date to){
@@ -158,6 +172,10 @@ public class Room implements Serializable {
 
     public Date getEndDate(){
         return this.endDate;
+    }
+
+    public TreeMap<LocalDate, Integer> getRangeMap() {
+        return this.rangeMap;
     }
 
     public int getNOfPeople(){

@@ -84,10 +84,14 @@ public class ClientTerminal {
                     }
                     break;
                 case "book":
+                    
                     System.out.println("Booking the room for you");
+                    
                     // book roomID dates:[dd/MM/yyyy-dd/MM/yyyy]
                     this.req.changeContents(msg);
                     this.req.sendMessage();
+                    
+                    System.out.println("still booking");
 
                     String answer = this.req.receiveMessage();
                     System.out.println(answer);

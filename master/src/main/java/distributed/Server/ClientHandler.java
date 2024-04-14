@@ -59,9 +59,9 @@ public class ClientHandler extends Thread {
 
     public void send() {
         try {
-            String greeting;
+            
             // greeting = this.ois.readUTF();
-            greeting = this.res.readMessage();
+            String greeting = this.res.readMessage();
                 
 
             while(!greeting.equals("q")){
@@ -91,7 +91,7 @@ public class ClientHandler extends Thread {
                 } else if(greeting.contains("book")) {
                     String[] info = greeting.split(" ");
                     System.out.println(greeting);
-                    Mail request = new Mail(this.id, "bookkeeper", "Book", info);
+                    Mail request = new Mail(this.id, "bookkeeper", "book", info);
                     this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
                     
                 } else {
@@ -120,7 +120,7 @@ public class ClientHandler extends Thread {
                 for(Mail msg : msgs){
                     if(msg.getSubject().equals("Book")){
                         if(msg.getContents() == null){
-                            this.res.changeContents("No room aailable");
+                            this.res.changeContents("No room available");
                             try {
                                 this.res.sendMessage();
                             } catch (IOException e) {
@@ -133,6 +133,13 @@ public class ClientHandler extends Thread {
 
                         Mail noticeMail = new Mail("Manager", "bookkeeper", "book", contents);
                         this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
+                    } else if(msg.getSubject().equals("book approval")) {
+                        this.res.changeContents("booked");
+                        try {
+                            this.res.sendMessage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         @SuppressWarnings("unchecked")
                         List<Room> response = (List<Room>) msg.getContents();

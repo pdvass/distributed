@@ -24,6 +24,7 @@ public class Hotel {
         this.stars = stars;
         this.nOfReviews = nOfReviews;
         this.rooms = new ArrayList<Room>();
+
     }
 
     public ArrayList<Boolean> checkAvailabilty(String username, Date from, Date to){
@@ -57,14 +58,19 @@ public class Hotel {
      * @param to Date representing the last day of which the room need to be booked.
      */
     public void book(String username, Date from, Date to) {
-        // NOTE: Should be synchronized
+
         for(Room room : rooms) {
-            if(room.isAvailable(from, to)) {
-                room.book(from, to);
-                System.out.println("Room " + room.getName() + " booked for user " + username + " from " + from.toString() + " to " + to.toString());
-                return; // Booked the first available room and exit
+
+            synchronized(room) {
+                if(room.isAvailable(from, to)) {
+                    room.book(from, to);
+
+                    System.out.println("Room " + room.getName() + " booked for user " + username + " from " + from.toString() + " to " + to.toString());
+                    break;
+                } 
             }
         }
+
         System.out.println("No available rooms for the specified dates.");
 
     }
