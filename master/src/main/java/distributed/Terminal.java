@@ -1,10 +1,13 @@
 package distributed;
 
 import distributed.JSONFileSystem.JSONDirManager;
+import distributed.Server.HandlerTypes;
+import distributed.Server.Mailbox;
 import distributed.Share.Request;
 import distributed.Share.Mail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Collections;
 import java.util.Date;
 import java.io.IOException;
@@ -23,6 +26,8 @@ import java.util.regex.Matcher;
 public class Terminal extends Thread {
     private Socket serverConn = null;
     private Request req = null;
+    private HandlerTypes type = HandlerTypes.MANAGER;
+    private Mailbox mailbox = null;
     /**
      * Text printed when the "list" command is given
     */
@@ -35,7 +40,9 @@ public class Terminal extends Thread {
             "- remove: Removes hotel or room from existing databse.\n" +
             "- book: Books a room from a hotel to a given date range.\n";
 
-    public Terminal(){}
+    public Terminal(){
+        this.mailbox = new Mailbox();
+    }
 
     public void run(){
         this.setup();
@@ -108,6 +115,7 @@ public class Terminal extends Thread {
                     System.out.println("Booked a room");
                     break;
                 case "show":
+                    this.showBooking(commandTokens);
                     System.out.println("Show booking applying to the Filter");
                     break;
                 case "users":
@@ -413,4 +421,42 @@ public class Terminal extends Thread {
             }
         return hotelInfo;
     }
+
+    /**
+     * This method is used so that the manager can leave a message in the mailbox to return 
+     * the list of reservations by region and display them. 
+     * 
+     * @param tokens A String array with the tokens from the command.
+     */
+    @SuppressWarnings("unchecked")
+    private void showBooking(String[] tokens) {
+        Mail sentMail = new Mail("manager", "bookkeeper", "filter", tokens);
+        this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, sentMail);
+
+        String date = tokens[1];
+        date = date.replace("dates:[", "");
+        date = date.substring(0, date.length() - 1);
+
+        while(true) {
+
+            ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "manager"); 
+            if (!mails.isEmpty()) {
+                for (Mail mail: mails) {
+                    Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+
+                    HashMap<String, Integer> reservations = (HashMap<String, Integer>) clonedMail.getContents();
+                    System.out.println("For the period " + date + " there are:");
+
+                    for (HashMap.Entry<String, Integer> entry: reservations.entrySet()) {
+                        String region = entry.getKey();
+                        int nOfReservations = entry.getValue();
+
+                        System.out.println(nOfReservations + " reservations for the region " + region);
+                    }
+                }
+            }
+
+        }
+    }
+
 }

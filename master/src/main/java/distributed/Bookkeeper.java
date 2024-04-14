@@ -169,6 +169,7 @@ public class Bookkeeper extends Thread {
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
             JSONDirManager manager = new JSONDirManager();
+            this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
 
             String info = "Room with hash " + roomId + " is to be distributed to " + targetWorkerName;
             manager.logInfo(info);

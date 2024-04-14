@@ -72,6 +72,11 @@ public class Worker extends Thread {
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
 
+                    Mail dummy = new Mail("", "", "dummy", null);
+
+                    this.req.changeContents(dummy);
+                    this.req.sendRequestObject();
+
                 } else if (incoming.getSender().contains("client")) {
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
@@ -86,15 +91,15 @@ public class Worker extends Thread {
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
                         incoming.setContents(filteredRoms);
-                        this.reducerReq.changeContents(incoming);
-                        this.reducerReq.sendRequestObject();
+                        this.req.changeContents(incoming);
+                        this.req.sendRequestObject();
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + incoming.getSender() + " asked for hotels");
                         incoming.respond();
                         incoming.setContents(this.rooms);
-                        this.reducerReq.changeContents(incoming);
-                        this.reducerReq.sendRequestObject();
+                        this.req.changeContents(incoming);
+                        this.req.sendRequestObject();
                     }
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");
