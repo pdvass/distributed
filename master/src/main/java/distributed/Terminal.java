@@ -80,7 +80,6 @@ public class Terminal extends Thread {
             System.out.print("> ");
 
             String in = input.nextLine();
-            //NOTE: Should put a regex to capture a name with spaces
             String[] commandTokens = in.trim().split(" ");
             switch (commandTokens[0].toLowerCase()) {
                 case "quit":

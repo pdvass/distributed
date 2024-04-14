@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * TCPClient is used to communicate with the server and send GET requests for the Wokrer.
+ * TCPClient is used to communicate with the server and send GET requests for the Worker.
  * 
  * @author pdvass
  */

@@ -12,6 +12,9 @@ import distributed.Share.Filter;
 import distributed.Share.Request;
 import distributed.Share.Mail;
 
+/**
+ * @author pdvass
+ */
 public class Worker extends Thread {
     private ArrayList<Room> rooms = null;
     private Socket conn = null;

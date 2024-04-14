@@ -25,6 +25,9 @@ public class Mailbox extends Thread {
     // private static volatile ArrayList<String> managerMessages                 = null;
     // private static volatile HashMap<String, ArrayList<Tuple>> workerMessages = null;
     private JSONDirManager manager = new JSONDirManager();
+
+    // Locks which give access to each handler that has them
+    // the ability to write to messages and read respectively.
     private static volatile boolean write_lock = true;
     private static volatile boolean read_lock = true;
 
@@ -55,6 +58,10 @@ public class Mailbox extends Thread {
                 }
             }
             read_lock = false;
+
+            // Each handler reads all the mails, keeps every mail that
+            // is directed to him and is responsible for adding all other
+            // mails back to shared spaces, for other handlers to repeat the process.
             @SuppressWarnings("unchecked")
             ArrayList<Mail> mails = (ArrayList<Mail>) messages.get(type).clone();
             ArrayList<Mail> directedTo = new ArrayList<>();
@@ -94,10 +101,10 @@ public class Mailbox extends Thread {
                 }
             }
             write_lock = false;
-            // this.read_lock = false;
             String log = String.format("%s left a message to %s", fromType.toString(), toType.toString());
             manager.logInfo(log);
             switch (mail.getSubject()) {
+                // May need to clean up.
                 case "Message":
                 case "Filter":
                 case "room":
@@ -111,7 +118,6 @@ public class Mailbox extends Thread {
                     break;
             }
             write_lock = true;
-            // this.read_lock = true;
             messages.notifyAll();
             return;
         }

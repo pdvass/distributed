@@ -130,6 +130,9 @@ public class Bookkeeper extends Thread {
 
         this.distributingRooms(rooms);
 
+        // checkMail is invoked as a Runnable thread so that it
+        // can pick up the lock and be scheduled by the Mailbox class
+        // to write messages to it and read them from it.
         Runnable task = () -> {this.checkMail(nOfWorkers);};
         Thread t = new Thread(task);
         t.start();
@@ -139,27 +142,33 @@ public class Bookkeeper extends Thread {
     private void checkMail(int nOfWorkers){
         while (true) {
             ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "bookkeeper");
+
             if(!mails.isEmpty()){
                 for(Mail mail : mails){
                     if(mail.getSubject().equals("Booked")){
                         String[] info = (String[]) mail.getContents();
+
                         for(Room room : workers.get(info[0])){
                             if(Integer.parseInt(info[3]) == room.getIntId()){
+
                                 Date[] dates = new Filter(info).getDateRange();
                                 room.book(dates[0], dates[1]);
-                                System.out.println("booked " + mail.getSender());
+                                // System.out.println("booked " + mail.getSender());
                                 Mail approval = new Mail("bookkeeper", mail.getSender(), "Booked", "Booked successfully");
                                 this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, approval);
                             }
                         }
 
                     } else {
+
                         for(int i = 0; i < nOfWorkers; i++){
+
                             Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
                             clonedMail.setRecipient("worker" + i);
                             System.out.println(clonedMail.getSubject() );
                             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
                         }
+
                     }
                 }
             }

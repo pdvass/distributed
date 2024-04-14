@@ -6,7 +6,19 @@ import java.net.Socket;
 // import distributed.Bookkeeper;
 import distributed.Share.Mail;
 
-
+/**
+ * ReducerHandler on Server's side is responsible to communicate
+ * with the Reducer and forward each result to the Mailbox for the
+ * rest of the handlers to see.
+ * 
+ * @see Mailbox
+ * 
+ * @see HandlerTypes
+ * 
+ * @see ClientHandler
+ * @see ManagerHandler
+ * @see WorkerHandler
+ */
 public class ReducerHandler extends Thread {
     private Socket reducerSocket = null;
     private Response res = null;

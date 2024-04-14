@@ -168,6 +168,9 @@ public class Room implements Serializable {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         String hotelName = this.name.replaceFirst("Room\\d", "");
+        // https://www.regular-expressions.info/unicode.html
+        // Link to show how it works:
+        //  https://regex101.com/r/QsUvXF/1
         hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
         String intro = String.format("\u2022 Room %s belongs to hotel \"%s\". ", this.name, hotelName);
         sb.append(intro);

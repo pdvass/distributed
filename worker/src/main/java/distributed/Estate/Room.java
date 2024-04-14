@@ -140,7 +140,7 @@ public class Room implements Serializable {
     /**
      * Getter for the hash of the room's id as an int. Useful if
      * combined with modulo operation determine which worker should
-     * have the room/
+     * have the room.
      * @return Integer of the hash.
      */
     public int getIntId(){

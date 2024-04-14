@@ -19,7 +19,7 @@ public class Logger {
      * Level can be used as a first filter to retrieve information from log files.
      */
     private static enum Level {
-        DEFAULT,
+        DEFAULT, // Level should never be left as Default.
         INFO,
         WARN,
         DANGER,

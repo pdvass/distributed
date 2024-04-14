@@ -60,14 +60,16 @@ public class Merger {
     }
 
     /**
-     *  This method merges the contents 
+     * Merges the contents each Worker Handler in Reducer's side leaves.
+     * In case a client is the recipient then the merge is about ArrayLists
+     * In case of a Manager's request, then it merges HashMaps.
+     * 
+     * @see ReducerHandler
      * 
      */
 
     @SuppressWarnings("unchecked")
     private void mergeContents(){
-        
-        // System.out.println("Number of mails received: " + receivedMails.size());
         
         ArrayList<Room> mergedList = new ArrayList<>();
         ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
@@ -112,6 +114,13 @@ public class Merger {
 
     }
     
+    /**
+     * Takes a mail with the merged contents and sends it back to the server.
+     * 
+     * @param mail the final mail.
+     * 
+     * @see ReducerClient
+     */
     private void sendMailToServer(Mail mail){
         this.rClient = new ReducerClient();
         try {

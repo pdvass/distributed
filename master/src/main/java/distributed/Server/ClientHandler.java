@@ -42,6 +42,8 @@ public class ClientHandler extends Thread {
     }
 
     public void run(){
+        // Sending messages to the server and checking if there is a mail
+        // that should be sent to the client is done in parallel.
         Runnable task = () -> {this.send();};
         Runnable task1 = () -> {this.checkMail();};
         Thread t = new Thread(task);
@@ -128,12 +130,12 @@ public class ClientHandler extends Thread {
                             }
                         }
                         String[] contents = (String[]) msg.getContents();
-                        System.out.printf("Sender: %s has the room. Did it get booked? %s. Dates %s. Code hash is %s. The room was asked by %s\n", 
-                                contents[0], contents[1], contents[2], contents[3], msg.getRecipient());
+                        // System.out.printf("Sender: %s has the room. Did it get booked? %s. Dates %s. Code hash is %s. The room was asked by %s\n", 
+                        //         contents[0], contents[1], contents[2], contents[3], msg.getRecipient());
 
                         Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents);
                         this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
-                        System.out.println("Added contents");
+                        // System.out.println("Added contents");
                     } else if(msg.getSubject().equals("Booked")) {
                         this.res.changeContents("Booked successfully");
                         try {
@@ -142,6 +144,7 @@ public class ClientHandler extends Thread {
                             e.printStackTrace();
                         }
                     } else {
+                        // We know the server sides leaves the messages as List<Room> 
                         @SuppressWarnings("unchecked")
                         List<Room> response = (List<Room>) msg.getContents();
                         ArrayList<String> toClient = new ArrayList<String>();
