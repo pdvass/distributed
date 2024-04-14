@@ -80,6 +80,7 @@ public class Merger {
                 String[] contents = (String[]) mail.getContents();
                 if( Boolean.parseBoolean(contents[0])){
                     String[] res = new String[]{mail.getSender(), contents[0], contents[1], contents[2]};
+                    // System.out.println(mail.getSender());
                     mergedContents = res;
                 }
 

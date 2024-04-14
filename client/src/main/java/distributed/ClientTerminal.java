@@ -91,7 +91,7 @@ public class ClientTerminal {
 
                     String answer = this.req.receiveMessage();
                     System.out.println(answer);
-                    if(answer.equals("booked")){
+                    if(answer.equals("Booked successfully")){
                         System.out.println("This room is now booked");
                     } else {
                         System.out.println("This room wasn't available the dates you wanted.");

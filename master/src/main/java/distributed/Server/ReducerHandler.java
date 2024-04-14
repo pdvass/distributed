@@ -1,5 +1,6 @@
 package distributed.Server;
 
+import java.io.IOException;
 import java.net.Socket;
 
 // import distributed.Bookkeeper;
@@ -26,6 +27,15 @@ public class ReducerHandler extends Thread {
         Mail mail = (Mail) this.res.readObject();
         this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, mail);
 
+    }
+
+    public void close(){
+        try {
+            this.reducerSocket.close();
+            this.res.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }

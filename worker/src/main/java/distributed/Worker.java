@@ -81,8 +81,8 @@ public class Worker extends Thread {
                     for(Room room : this.rooms){
                         String intIDtoString = Integer.toString(room.getIntId());
                         if(info[1].equals(intIDtoString)){
-                            System.out.println("I have the room!!!");
-                            System.out.printf("From %tD to %tD", dateRange[0], dateRange[1]);
+                            // System.out.println("I have the room!!!");
+                            // System.out.printf("From %tD to %tD", dateRange[0], dateRange[1]);
                             isBooked = room.book(dateRange[0], dateRange[1]);
                         }
                     }
@@ -98,7 +98,7 @@ public class Worker extends Thread {
                     try {
                         f = (Filter) typeOfRequest;
                     } catch (Exception e){
-                        System.out.println("Error during casting " + e.getMessage());
+                        // System.out.println("Error during casting " + e.getMessage());
                     }
                     if(f != null){
                         System.out.println("Applying filters to my room list");

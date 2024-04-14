@@ -90,7 +90,6 @@ public class ClientHandler extends Thread {
                     
                 } else if(greeting.contains("book")) {
                     String[] info = greeting.split(" ");
-                    System.out.println(greeting);
                     Mail request = new Mail(this.id, "bookkeeper", "Book", info);
                     this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
                     
@@ -120,19 +119,28 @@ public class ClientHandler extends Thread {
                 for(Mail msg : msgs){
                     if(msg.getSubject().equals("Book")){
                         if(msg.getContents() == null){
-                            this.res.changeContents("No room aailable");
+                            this.res.changeContents("No room available");
                             try {
                                 this.res.sendMessage();
+                                continue;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
                         String[] contents = (String[]) msg.getContents();
-                        System.out.printf("Sender: %s has the room. Did it get booked? %s. Dates %s. Code hash is %s\n", 
-                                contents[0], contents[1], contents[2], contents[3]);
+                        System.out.printf("Sender: %s has the room. Did it get booked? %s. Dates %s. Code hash is %s. The room was asked by %s\n", 
+                                contents[0], contents[1], contents[2], contents[3], msg.getRecipient());
 
-                        Mail noticeMail = new Mail("Manager", "bookkeeper", "book", contents);
+                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents);
                         this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
+                        System.out.println("Added contents");
+                    } else if(msg.getSubject().equals("Booked")) {
+                        this.res.changeContents("Booked successfully");
+                        try {
+                            this.res.sendMessage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         @SuppressWarnings("unchecked")
                         List<Room> response = (List<Room>) msg.getContents();

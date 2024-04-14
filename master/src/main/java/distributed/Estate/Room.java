@@ -80,7 +80,7 @@ public class Room implements Serializable {
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    protected void book(Date from, Date to) {
+    public void book(Date from, Date to) {
         // NOTE: Should be synchronized
         List<LocalDate> range = this.produceDateRange(from, to);
 
@@ -95,18 +95,10 @@ public class Room implements Serializable {
      */
     protected boolean isAvailable(Date from, Date to){
         List<LocalDate> range = this.produceDateRange(from, to);
-        var isFree = new Object(){boolean value = true;};
-        range.forEach(date -> {
-                if(this.rangeMap.get(date) == 1){
-                    isFree.value = false;
-                }
-            });
         
-        // If this works, return this instead of object
         boolean testAnyMatch = range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
         System.out.println(testAnyMatch);
-        // endif
-        return isFree.value;
+        return !testAnyMatch;
     }
 
     /**
