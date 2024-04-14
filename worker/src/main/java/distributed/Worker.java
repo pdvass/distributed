@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import distributed.Estate.Room;
@@ -91,8 +92,8 @@ public class Worker extends Thread {
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
                         incoming.setContents(filteredRoms);
-                        this.req.changeContents(incoming);
-                        this.req.sendRequestObject();
+                        this.reducerReq.changeContents(incoming);
+                        this.reducerReq.sendRequestObject();
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + incoming.getSender() + " asked for hotels");
@@ -103,6 +104,33 @@ public class Worker extends Thread {
                     }
                 } else if (message.equals("manager")){
                     System.out.println("Request received from manager");
+                    Object typeOfRequest = incoming.getContents();
+                    Filter f = null;
+                    try {
+                        f = (Filter) typeOfRequest;
+                    } catch (Exception e){
+                        System.out.println("Error during casting " + e.getMessage());
+                    }
+                    List<Room> filteredRoms = f.applyFilter(this.rooms);
+
+
+                    HashMap<String, Integer> reservations = new HashMap<>();
+                        for (Room room: filteredRoms) {
+
+                            String region = room.getHotelsRegion();
+                            if (reservations.containsKey(region)) {
+                                int currentRes = reservations.get(region);
+                                reservations.put(region, currentRes+1);
+
+                            } else {
+                                reservations.put(region, 1);
+                            }  
+                        }
+
+                        incoming.respond();
+                        incoming.setContents(filteredRoms);
+                        this.reducerReq.changeContents(incoming);
+                        this.reducerReq.sendRequestObject();
                 }
     
                 incoming = (Mail) this.req.receiveRequestObject();

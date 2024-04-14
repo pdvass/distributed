@@ -49,7 +49,7 @@ public class ManagerHandler extends Thread {
                                 this.res.sendObject();
                             }
                         } else {
-                            Mail empty = new Mail("wokrer", "manager", "Message", "No messsages yet");
+                            Mail empty = new Mail("worker", "manager", "Message", "No messsages yet");
                             this.res.changeContents(empty);
                             this.res.sendObject();
                         }

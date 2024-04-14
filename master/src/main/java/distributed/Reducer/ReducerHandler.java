@@ -24,29 +24,26 @@ public class ReducerHandler extends Thread {
     private Response res = null;
     private Merger merger = new Merger();
 
-
-
-    public ReducerHandler(Socket socket, Response res){
+    public ReducerHandler(Socket socket, Response res) {
         this.workerSocket = socket;
         this.res = res;
+
         if( totalHandlers == Long.MAX_VALUE){
             System.out.println("Max number of handlers reached");
         }
         totalHandlers++;
     }
 
-
-    public void run(){
-        while (true) {
-            Mail incoming = (Mail) this.res.readObject();
-            merger.receiveMail(incoming);    
-        }
+    public void run() {
+        Mail incoming = (Mail) this.res.readObject();
+        merger.receiveMail(incoming);    
     }
 
-
-    public void close() throws IOException{
+    public void close() throws IOException {
         this.res.close();
         this.workerSocket.close();
     }
-    
 }
+
+
+

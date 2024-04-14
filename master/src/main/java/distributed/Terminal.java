@@ -115,8 +115,8 @@ public class Terminal extends Thread {
                     System.out.println("Booked a room");
                     break;
                 case "show":
-                    this.showBooking(commandTokens);
                     System.out.println("Show booking applying to the Filter");
+                    this.showBooking(commandTokens);
                     break;
                 case "users":
                     this.req.changeContents("users");
@@ -437,26 +437,23 @@ public class Terminal extends Thread {
         date = date.replace("dates:[", "");
         date = date.substring(0, date.length() - 1);
 
-        while(true) {
+        ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "manager"); 
+                
+        for (Mail mail: mails) {
+            Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
 
-            ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "manager"); 
-            if (!mails.isEmpty()) {
-                for (Mail mail: mails) {
-                    Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+            HashMap<String, Integer> reservations = (HashMap<String, Integer>) clonedMail.getContents();
+            System.out.println("For the period " + date + " there are:");
 
-                    HashMap<String, Integer> reservations = (HashMap<String, Integer>) clonedMail.getContents();
-                    System.out.println("For the period " + date + " there are:");
-
-                    for (HashMap.Entry<String, Integer> entry: reservations.entrySet()) {
-                        String region = entry.getKey();
-                        int nOfReservations = entry.getValue();
-
-                        System.out.println(nOfReservations + " reservations for the region " + region);
-                    }
-                }
+            for (HashMap.Entry<String, Integer> entry: reservations.entrySet()) {
+                String region = entry.getKey();
+                int nOfReservations = entry.getValue();
+        
+                System.out.println(nOfReservations + " reservations for the region " + region);
             }
-
         }
     }
-
+            
 }
+
+

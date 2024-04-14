@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import distributed.Estate.Room;
+import distributed.Server.HandlerTypes;
+import distributed.Server.Mailbox;
 import distributed.Share.Mail;
 
 /**
@@ -19,10 +21,13 @@ public class Merger {
     private static volatile ArrayList<Mail> receivedMails = null;
     private static volatile boolean write_lock = true;
     private ReducerClient rClient = null;
+    private HandlerTypes type = HandlerTypes.REDUCER;
     private Mail sendMail = null;
+    private Mailbox mailbox = null;
 
 
-    public Merger(){
+    public Merger() {
+        this.mailbox = new Mailbox();
         if(receivedMails == null){ 
             receivedMails = new ArrayList<>(); 
         }
@@ -35,13 +40,12 @@ public class Merger {
      * @param mail The object sent from the workers  
      * 
      */
-    
-    public void receiveMail(Mail mail){
-        synchronized(receivedMails){
-            while(!write_lock){
+    public void receiveMail(Mail mail) {
+        synchronized(receivedMails) {
+            while(!write_lock) {
                 try {
                     receivedMails.wait();
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -49,7 +53,7 @@ public class Merger {
             write_lock = false;
 
             receivedMails.add(mail);
-            if (receivedMails.size() == ReducerHandler.totalHandlers){
+            if (receivedMails.size() == ReducerHandler.totalHandlers) {
                 this.mergeContents();
                 receivedMails.clear();
             }
@@ -63,9 +67,8 @@ public class Merger {
      *  This method merges the contents 
      * 
      */
-
     @SuppressWarnings("unchecked")
-    private void mergeContents(){
+    private void mergeContents() {
         
         System.out.println("Number of mails received: " + receivedMails.size());
         
@@ -73,6 +76,7 @@ public class Merger {
         ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
         
         Object mergedContents = null;
+        HandlerTypes to = null;
 
         for (Mail mail : receivedMails){
             
@@ -82,7 +86,9 @@ public class Merger {
                 }
 
                 mergedContents = mergedList.clone();
-            } else if (mail.getRecipient().equals("manager")){
+                to = HandlerTypes.CLIENT;
+
+            } else if (mail.getRecipient().contains("manager")) {
                 for (HashMap<String, Integer> contents  : (ArrayList<HashMap<String, Integer>>) mail.getContents()) {
                     mergedMaps.add(contents);
                 }
@@ -92,13 +98,15 @@ public class Merger {
                 }
 
                 mergedContents = mergedMaps.get(0).clone();
+                to = HandlerTypes.MANAGER;
             }
                 
         } 
 
-        this.sendMail = new Mail(receivedMails.get(0).getSender(), receivedMails.get(0).getRecipient(), 
+        this.sendMail = new Mail(receivedMails.get(0).getRecipient(), receivedMails.get(0).getSender(), 
                                 receivedMails.get(0).getSubject(), mergedContents);
 
+        this.mailbox.addMessage(this.type, to, sendMail);
         this.sendMailToServer(this.sendMail);
 
     }

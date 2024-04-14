@@ -17,6 +17,8 @@ public class App
         
         ClientTerminal cTerm = new ClientTerminal();
         cTerm.run();
+
+        System.out.println("Hello, I am Client");
     }
 
     public static void testNewCapabilities(){
