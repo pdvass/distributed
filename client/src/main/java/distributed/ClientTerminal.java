@@ -85,6 +85,17 @@ public class ClientTerminal {
                     break;
                 case "book":
                     System.out.println("Booking the room for you");
+                    // book roomID dates:[dd/MM/yyyy-dd/MM/yyyy]
+                    this.req.changeContents(msg);
+                    this.req.sendMessage();
+
+                    String answer = this.req.receiveMessage();
+                    System.out.println(answer);
+                    if(answer.equals("Booked successfully")){
+                        System.out.println("This room is now booked");
+                    } else {
+                        System.out.println("This room wasn't available the dates you wanted.");
+                    }
                     break;
                 case "h":
                     System.out.println("Helped you");
@@ -92,15 +103,7 @@ public class ClientTerminal {
                 case "commands":
                     System.out.println(this.commands);
                     break;
-                case "say":
-                    this.req.changeContents(msg);
-                    this.req.sendMessage();
-                    System.out.println("Message sent!");
-                    break;
                 default:
-                    this.req.changeContents(msg);
-                    this.req.sendMessage();
-                    System.out.println(this.req.receiveMessage());
                     break;
             }
 
@@ -132,6 +135,7 @@ public class ClientTerminal {
                 if(tokens[1].equals("hotels") && tokens.length == 2){
                     return "hotels";
                 }
+                return "";
             case "book":
                 return "book";
             case "commands":

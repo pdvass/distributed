@@ -3,6 +3,9 @@ package distributed.Server;
 import java.io.*;
 import java.net.*;
 
+/**
+ * @author stellagianno
+ */
 
 public class Server extends Thread {
     private ServerSocket serverSocket = null;
@@ -44,6 +47,11 @@ public class Server extends Thread {
             } else if(msg.equals("worker connection")){
                 res.changeContents("worker connected");
                 res.sendMessage();
+
+                WorkerHandler responseSocket = new WorkerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
+                
             } else if(msg.equals("Manager connection")){
                 res.changeContents("manager connected");
                 res.sendMessage();
@@ -52,6 +60,13 @@ public class Server extends Thread {
                 Thread response = new Thread(responseSocket);
                 response.start();
 
+            } else if(msg.equals("reducer connection")){
+                res.changeContents("reducer connected");
+                res.sendMessage();
+
+                ReducerHandler responseSocket = new ReducerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
             }
         }
     }

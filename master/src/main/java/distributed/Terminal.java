@@ -2,6 +2,8 @@ package distributed;
 
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Request;
+import distributed.Share.Filter;
+import distributed.Share.Mail;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +12,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -25,15 +28,14 @@ public class Terminal extends Thread {
     /**
      * Text printed when the "list" command is given
     */
-    private String listText = """
-            Available commands:
-            - list: Lists Available commands
-            - help (h): Prints help text
-            - hotels: Lists all hotels with all the rooms they have.
-            - add: Adds hotel or room to existing database.
-            - remove: Removes hotel or room from existing databse.
-            - book: Books a room from a hotel to a given date range.
-            """;
+    private String listText = 
+            "Available commands:\n" +
+            "- list: Lists Available commands\n" +
+            "- help (h): Prints help text\n" +
+            "- hotels: Lists all hotels with all the rooms they have.\n" +
+            "- add: Adds hotel or room to existing database.\n" +
+            "- remove: Removes hotel or room from existing databse.\n" +
+            "- book: Books a room from a hotel to a given date range.\n";
 
     public Terminal(){}
 
@@ -80,7 +82,6 @@ public class Terminal extends Thread {
             System.out.print("> ");
 
             String in = input.nextLine();
-            //NOTE: Should put a regex to capture a name with spaces
             String[] commandTokens = in.trim().split(" ");
             switch (commandTokens[0].toLowerCase()) {
                 case "quit":
@@ -104,11 +105,26 @@ public class Terminal extends Thread {
                 case "remove":
                     this.remove(commandTokens, in, manager);
                     break;
-                case "book":
-                    System.out.println("Booked a room");
-                    break;
                 case "show":
                     System.out.println("Show booking applying to the Filter");
+                    Filter f = new Filter(commandTokens);
+                    try {
+                        this.req.changeContents("show");
+                        this.req.sendMessage();
+                        // System.out.println(f.getDateRangeString());
+                        this.req.changeContents(f);
+                        this.req.sendRequestObject();
+                        TreeMap<String, Long> answer = new TreeMap<>();
+                        try {
+                            answer = (TreeMap<String, Long>) this.req.receiveRequestObject();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        answer.forEach((key, value) -> {System.out.println(key + ": " + value);});
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
                     break;
                 case "users":
                     this.req.changeContents("users");
@@ -127,12 +143,14 @@ public class Terminal extends Thread {
                     this.req.changeContents("check");
                     try {
                         this.req.sendMessage();
-                        String msg = this.req.receiveMessage();
-                        while(!msg.equals("-1")){
-                            System.out.println(msg);
-                            msg = this.req.receiveMessage();
+                        Mail msg = (Mail) this.req.receiveRequestObject();
+                        while(!(msg.getSubject().equals("Message") && msg.getContents().equals("-1"))){
+                            if(msg.getSubject().equals("Message")){
+                                System.out.println(msg.getContents());
+                            }
+                            msg = (Mail) this.req.receiveRequestObject();
                         }
-                    } catch (IOException e) {
+                    } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -223,8 +241,8 @@ public class Terminal extends Thread {
                     float cost = Float.parseFloat(hotelInfo.get(3));
                     int nOfPeople = Integer.parseInt(hotelInfo.getLast());
                     manager.addRoom(hotelInfo.get(0), hotelInfo.get(1), hotelInfo.get(2), cost, nOfPeople);
-                    System.out.printf("Added to hotel %s date range %s to %s. It costs %.2f$ and it is for %d %s\n", 
-                                hotelInfo.get(0), startDate.toString(), 
+                    System.out.printf("Added to hotel %s date range %s to %s. It costs %.2f$ and it is for %d %s\n",
+                                hotelInfo.get(0), startDate.toString(),
                                 endDate.toString(), cost, nOfPeople,
                                 (nOfPeople > 1) ? "people" : "person");
                     

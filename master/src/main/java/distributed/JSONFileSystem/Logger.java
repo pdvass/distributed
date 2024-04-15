@@ -19,10 +19,11 @@ public class Logger {
      * Level can be used as a first filter to retrieve information from log files.
      */
     private static enum Level {
-        DEFAULT,
+        DEFAULT, // Level should never be left as Default.
         INFO,
         WARN,
-        DANGER
+        DANGER,
+        TRANSACTION,
     };
 
     private final String path = "src/main/java/distributed/logs/";
@@ -62,6 +63,9 @@ public class Logger {
             case "danger":
                 this.level = Level.DANGER;
                 break;
+            case "transaction":
+                this.level = Level.TRANSACTION;
+                break;
             default:
                 this.level = Level.DEFAULT;
                 break;
@@ -79,6 +83,9 @@ public class Logger {
                 break;
             case Level.DANGER:
                 label = "[ERROR]";
+                break;
+            case Level.TRANSACTION:
+                label = "[TRANSACTION]";
                 break;
             default:
                 System.err.println("Level should never be left at DEFAULT");
