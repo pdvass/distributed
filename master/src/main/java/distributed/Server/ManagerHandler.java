@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import distributed.Bookkeeper;
 import distributed.Share.Mail;
@@ -57,6 +58,21 @@ public class ManagerHandler extends Thread {
                         this.res.changeContents(finalMsg);
                         this.res.sendObject();
                         break;
+                    case "show":
+                        Object filter = this.res.readObject();
+                        Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter);
+                        this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, managerRequest);
+                        System.out.println("Left the message ");
+                        ArrayList<Mail> bookings = new ArrayList<>();
+                        while(bookings.isEmpty()){
+                            bookings = this.mailbox.checkMail(this.type, "manager");
+                        }
+                        System.out.println("Got the email");
+                        @SuppressWarnings("unchecked") HashMap<String, Long> ans = (HashMap<String, Long>) bookings.get(0).getContents();
+                        System.out.println(ans.size());
+                        ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
+                        this.res.changeContents(ans);
+                        this.res.sendObject();
                     default:
                         res.changeContents(-1);
                         res.sendObject();

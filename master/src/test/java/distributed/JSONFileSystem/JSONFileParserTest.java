@@ -15,7 +15,6 @@ public class JSONFileParserTest {
 
     private final String path = "src/main/java/distributed/data/";
 
-    @SuppressWarnings("null")
     @Test
     public void testParseValidity(){
         // Contents of dummy data file in a String.

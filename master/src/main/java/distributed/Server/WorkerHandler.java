@@ -37,7 +37,7 @@ public class WorkerHandler extends Thread {
             totalWorkers = 0;
         }
         this.id = "worker" + totalWorkers++;
-        System.out.println("Worker with id " + this.id + " came.");
+        // System.out.println("Worker with id " + this.id + " came.");
     }
 
     public void run(){
@@ -52,7 +52,7 @@ public class WorkerHandler extends Thread {
             if(!msgs.isEmpty()){
                 // System.out.println("Got a message size->" + msgs.size());
                 for(Mail msg : msgs){
-                    System.out.println(msg.getSubject());
+                    // System.out.println(msg.getSubject());
                     this.res.changeContents(msg);
                     try{
                         this.res.sendObject();
@@ -60,14 +60,7 @@ public class WorkerHandler extends Thread {
                         System.out.println(e.getMessage());
                     }
                 }
-                Mail response = (Mail) this.res.readObject();
-                System.out.println("Received object");
-                // Mail toClient = new Mail(response.getFirst(), response.getSecond());
-                if(!response.getSubject().equals("dummy")){
-                    this.mailbox.addMessage(HandlerTypes.WORKER, HandlerTypes.CLIENT, response);
-                }
             }
         }
     }
-
 }

@@ -4,12 +4,14 @@ import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Server.HandlerTypes;
 import distributed.Server.Mailbox;
 import distributed.Share.Request;
+import distributed.Share.Filter;
 import distributed.Share.Mail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.io.IOException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -74,6 +76,7 @@ public class Terminal extends Thread {
      * Initiates the terminal to read from Master any commands
      * @throws ClassNotFoundException 
      */
+    @SuppressWarnings("unchecked")
     public void init(){
         System.out.println("Welcome to room management system. Type 'list' for available commands.");
         System.out.println("Type 'h' or 'help' for anything else.");
@@ -87,7 +90,6 @@ public class Terminal extends Thread {
             System.out.print("> ");
 
             String in = input.nextLine();
-            //NOTE: Should put a regex to capture a name with spaces
             String[] commandTokens = in.trim().split(" ");
             switch (commandTokens[0].toLowerCase()) {
                 case "quit":
@@ -111,12 +113,25 @@ public class Terminal extends Thread {
                 case "remove":
                     this.remove(commandTokens, in, manager);
                     break;
-                case "book":
-                    System.out.println("Booked a room");
-                    break;
                 case "show":
                     System.out.println("Show booking applying to the Filter");
-                    this.showBooking(commandTokens);
+                    Filter f = new Filter(commandTokens);
+                    try {
+                        this.req.changeContents("show");
+                        this.req.sendMessage();
+                        this.req.changeContents(f);
+                        this.req.sendRequestObject();
+                        HashMap<String, Long> answer = null;
+                        try {
+                            answer = (HashMap<String, Long>) this.req.receiveRequestObject();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        answer.forEach((key, value) -> {System.out.println(key + ": " + value);});
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
                     break;
                 case "users":
                     this.req.changeContents("users");

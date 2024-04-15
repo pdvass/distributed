@@ -1,11 +1,16 @@
 package distributed;
 
-import java.io.*;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
-
-public class WorkerApp {
-    public static void main(String[ ] args) throws IOException{
-        System.out.println( "Hello maybe it must deleted" );
+/**
+ * Worker's main entry point
+ */
+public class WorkerApp 
+{
+    public static void main( String[] args ) throws UnknownHostException, IOException
+    {        
+        System.out.println( "Hello World!" );
 
         Worker worker = new Worker();
 

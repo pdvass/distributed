@@ -1,9 +1,10 @@
 package distributed;
 
-
 import distributed.Server.Server;
+
 /**
- * @author stellagianno
+ * Entry point for the Server.
+ * 
  */
 public class ServerApp {
     public static void main( String[] args )

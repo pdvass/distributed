@@ -42,6 +42,8 @@ public class ClientHandler extends Thread {
     }
 
     public void run(){
+        // Sending messages to the server and checking if there is a mail
+        // that should be sent to the client is done in parallel.
         Runnable task = () -> {this.send();};
         Runnable task1 = () -> {this.checkMail();};
         Thread t = new Thread(task);
@@ -88,10 +90,10 @@ public class ClientHandler extends Thread {
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
                     
-                } else if(greeting.contains("say")) {
-                    String said = this.id + " says: " + greeting.substring(4);
-                    Mail request = new Mail(this.id, "manger", "Message", said);
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, request);
+                } else if(greeting.contains("book")) {
+                    String[] info = greeting.split(" ");
+                    Mail request = new Mail(this.id, "bookkeeper", "Book", info);
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
                     
                 } else {
                     // System.out.println(greeting);
@@ -117,15 +119,42 @@ public class ClientHandler extends Thread {
             if(!msgs.isEmpty()){
                 // System.out.println("Got a message for client size->" + msgs.size());
                 for(Mail msg : msgs){
-                    @SuppressWarnings("unchecked")
-                    List<Room> response = (List<Room>) msg.getContents();
-                    ArrayList<String> toClient = new ArrayList<String>();
-                    response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
-                    this.res.changeContents(toClient);
-                    try {
-                        this.res.sendObject();
-                    } catch (IOException e) {
-                        System.out.println("Could not send results to client" + this.id);
+                    if(msg.getSubject().equals("Book")){
+                        if(msg.getContents() == null){
+                            this.res.changeContents("No room available");
+                            try {
+                                this.res.sendMessage();
+                                continue;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        String[] contents = (String[]) msg.getContents();
+                        // System.out.printf("Sender: %s has the room. Did it get booked? %s. Dates %s. Code hash is %s. The room was asked by %s\n", 
+                        //         contents[0], contents[1], contents[2], contents[3], msg.getRecipient());
+
+                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents);
+                        this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
+                        // System.out.println("Added contents");
+                    } else if(msg.getSubject().equals("Booked")) {
+                        this.res.changeContents("Booked successfully");
+                        try {
+                            this.res.sendMessage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // We know the server sides leaves the messages as List<Room> 
+                        @SuppressWarnings("unchecked")
+                        List<Room> response = (List<Room>) msg.getContents();
+                        ArrayList<String> toClient = new ArrayList<String>();
+                        response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
+                        this.res.changeContents(toClient);
+                        try {
+                            this.res.sendObject();
+                        } catch (IOException e) {
+                            System.out.println("Could not send results to client" + this.id);
+                        }
                     }
                 }
             }

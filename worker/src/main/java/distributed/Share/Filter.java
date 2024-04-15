@@ -101,18 +101,19 @@ public class Filter implements Serializable {
         // We use a more fuctional way of creating list, by initializing a stable state hotel list
         // and creating a new one first by which hotel satisfies the filter predicates, if there are any.
         List<Room> filteredHotels = hotels.stream()
-                        .filter(hotel -> (hotel.getHotelsRegion().equals(this.region) || this.region.equals("")))
-                        .filter(hotel -> (hotel.getHotelsStars() >= this.stars || this.stars == -1))
-                        .filter( room -> (
+                        .filter(hotel -> hotel.getHotelsRegion().equals(this.region) || this.region.equals(""))
+                        .filter(hotel -> hotel.getHotelsStars() >= this.stars || this.stars == -1)
+                        .filter( room -> 
                                 (    
                                         room.getStartDate().before(this.dateRange[0])  
-                                    || room.getStartDate().equals(this.dateRange[0])
+                                    ||  room.getStartDate().equals(this.dateRange[0])
                                 )
                                     && room.getEndDate().after(this.dateRange[1])
-                                ))
-                        .filter(room -> (room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1))
+                                )
+                        .filter(room -> room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1)
                         .collect(Collectors.toList());
 
+        System.out.println(hotels.size());
         return filteredHotels;
     }
     ////////////// UNIQUE TO WORKER //////////////

@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 /**
- * Hello world!
- *
+ * Entry point for the Client.
+ * 
  */
 public class App 
 {

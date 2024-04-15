@@ -4,10 +4,12 @@ import distributed.Estate.*;
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Server.HandlerTypes;
 import distributed.Server.Mailbox;
+import distributed.Share.Filter;
 import distributed.Share.Mail;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,8 +54,8 @@ public class Bookkeeper extends Thread {
     }
 
     public void addWorker() {
-        String workerName = "Worker" + workers.size();
-        workers.put(workerName, null);
+        String workerName = "worker" + workers.size();
+        workers.put(workerName, new ArrayList<>());
 
     }
 
@@ -128,6 +130,9 @@ public class Bookkeeper extends Thread {
 
         this.distributingRooms(rooms);
 
+        // checkMail is invoked as a Runnable thread so that it
+        // can pick up the lock and be scheduled by the Mailbox class
+        // to write messages to it and read them from it.
         Runnable task = () -> {this.checkMail(nOfWorkers);};
         Thread t = new Thread(task);
         t.start();
@@ -137,13 +142,34 @@ public class Bookkeeper extends Thread {
     private void checkMail(int nOfWorkers){
         while (true) {
             ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "bookkeeper");
+
             if(!mails.isEmpty()){
                 for(Mail mail : mails){
-                    for(int i = 0; i < nOfWorkers; i++){
-                        Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
-                        clonedMail.setRecipient("worker" + i);
-                        System.out.println(clonedMail.getSubject() );
-                        this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
+                    if(mail.getSubject().equals("Booked")){
+                        String[] info = (String[]) mail.getContents();
+
+                        for(Room room : workers.get(info[0])){
+                            if(Integer.parseInt(info[3]) == room.getIntId()){
+
+                                Date[] dates = new Filter(info).getDateRange();
+                                room.book(dates[0], dates[1]);
+                                // System.out.println("booked " + mail.getSender());
+                                Mail approval = new Mail("bookkeeper", mail.getSender(), "Booked", "Booked successfully");
+                                this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, approval);
+                            }
+                        }
+
+                    } else {
+
+                        for(int i = 0; i < nOfWorkers; i++){
+
+                            Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+                            clonedMail.setRecipient("worker" + i);
+                            System.out.println(mail.getSender());
+                            System.out.println(clonedMail.getSubject() );
+                            this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
+                        }
+
                     }
                 }
             }
@@ -165,11 +191,10 @@ public class Bookkeeper extends Thread {
             int workerIndex = Math.abs(roomId % numberOfActiveWorkers);  // Calculation of the worker's index
 
             String targetWorkerName = "worker" + workerIndex;
-           
+            workers.get(targetWorkerName).add(room);
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
             JSONDirManager manager = new JSONDirManager();
-            this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
 
             String info = "Room with hash " + roomId + " is to be distributed to " + targetWorkerName;
             manager.logInfo(info);

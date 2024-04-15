@@ -35,6 +35,7 @@ public class Room implements Serializable {
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
 
+    private long totalBookings;
     private String hotelsRegion;
     private float hotelsStars;
 
@@ -65,6 +66,7 @@ public class Room implements Serializable {
         // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
+        this.totalBookings = 0;
     }
 
     /**
@@ -74,10 +76,14 @@ public class Room implements Serializable {
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    protected void book(Date from, Date to){
+    public boolean book(Date from, Date to){
         List<LocalDate> range = this.produceDateRange(from, to);
-
-        range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
+        if(isAvailable(from, to)){
+            range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
+            this.totalBookings++;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -88,18 +94,18 @@ public class Room implements Serializable {
      */
     protected boolean isAvailable(Date from, Date to){
         List<LocalDate> range = this.produceDateRange(from, to);
-        var isFree = new Object(){boolean value = true;};
-        range.forEach(date -> {
-                if(this.rangeMap.get(date) == 1){
-                    isFree.value = false;
-                }
-            });
+        boolean testAnyMatch = true;
+
+        try{
+            testAnyMatch = !range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
+            System.out.println(testAnyMatch);
+        } catch (Exception e){
+            // In case wrong dates are given.
+            return false;
+        }
+        // System.out.println("It works" + !testAnyMatch);
         
-        // If this works, return this instead of object
-        boolean testAnyMatch = range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
-        System.out.println(testAnyMatch);
-        // endif
-        return isFree.value;
+        return testAnyMatch;
     }
 
     /**
@@ -138,7 +144,7 @@ public class Room implements Serializable {
     /**
      * Getter for the hash of the room's id as an int. Useful if
      * combined with modulo operation determine which worker should
-     * have the room/
+     * have the room.
      * @return Integer of the hash.
      */
     public int getIntId(){
@@ -171,6 +177,10 @@ public class Room implements Serializable {
 
     public float getHotelsStars(){
         return this.hotelsStars;
+    }
+
+    public long getTotalBookings(){
+        return this.totalBookings;
     }
 
     public String toString(){

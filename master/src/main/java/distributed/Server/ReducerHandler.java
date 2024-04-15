@@ -1,15 +1,27 @@
 package distributed.Server;
 
+import java.io.IOException;
 import java.net.Socket;
 
 // import distributed.Bookkeeper;
 import distributed.Share.Mail;
 
-
+/**
+ * ReducerHandler on Server's side is responsible to communicate
+ * with the Reducer and forward each result to the Mailbox for the
+ * rest of the handlers to see.
+ * 
+ * @see Mailbox
+ * 
+ * @see HandlerTypes
+ * 
+ * @see ClientHandler
+ * @see ManagerHandler
+ * @see WorkerHandler
+ */
 public class ReducerHandler extends Thread {
     private Socket reducerSocket = null;
     private Response res = null;
-    // private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
     private HandlerTypes type = HandlerTypes.REDUCER;
 
@@ -25,8 +37,21 @@ public class ReducerHandler extends Thread {
 
     public void forwardMessage(){
         Mail mail = (Mail) this.res.readObject();
-        this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, mail);
+        if(mail.getRecipient().equals("manager")){
+            this.mailbox.addMessage(this.type, HandlerTypes.MANAGER, mail);
+        } else {
+            this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, mail);
+        }
 
+    }
+
+    public void close(){
+        try {
+            this.reducerSocket.close();
+            this.res.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }

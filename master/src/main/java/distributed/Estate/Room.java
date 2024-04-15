@@ -37,6 +37,8 @@ public class Room implements Serializable {
 
     // Variables to use for providing workers with hotels' info
     // Should not be used in master.
+    @SuppressWarnings("unused")
+    private long totalBookings;
     protected float hotelsStars;
     @SuppressWarnings("unused")
     private String hotelsRegion;
@@ -67,11 +69,11 @@ public class Room implements Serializable {
         // Iterate the list and use each date as the key for the TreeMap.
         range.stream().forEach(i -> this.rangeMap.put(i, 0));
 
-        // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
         this.hotelsRegion = hotelsReg;
         this.hotelsStars = hotelsStars;
+        this.totalBookings = 0;
     }
 
     /**
@@ -81,7 +83,7 @@ public class Room implements Serializable {
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    protected void book(Date from, Date to) {
+    public void book(Date from, Date to) {
         // NOTE: Should be synchronized
         List<LocalDate> range = this.produceDateRange(from, to);
 
@@ -96,18 +98,10 @@ public class Room implements Serializable {
      */
     protected boolean isAvailable(Date from, Date to){
         List<LocalDate> range = this.produceDateRange(from, to);
-        var isFree = new Object(){boolean value = true;};
-        range.forEach(date -> {
-                if(this.rangeMap.get(date) == 1){
-                    isFree.value = false;
-                }
-            });
         
-        // If this works, return this instead of object
         boolean testAnyMatch = range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
         System.out.println(testAnyMatch);
-        // endif
-        return isFree.value;
+        return !testAnyMatch;
     }
 
     /**
@@ -177,6 +171,9 @@ public class Room implements Serializable {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         String hotelName = this.name.replaceFirst("Room\\d", "");
+        // https://www.regular-expressions.info/unicode.html
+        // Link to show how it works:
+        //  https://regex101.com/r/QsUvXF/1
         hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
         String intro = String.format("\u2022 Room %s belongs to hotel \"%s\". ", this.name, hotelName);
         sb.append(intro);
