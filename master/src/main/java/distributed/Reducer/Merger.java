@@ -72,45 +72,58 @@ public class Merger {
     private void mergeContents(){
         
         ArrayList<Room> mergedList = new ArrayList<>();
-        // ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
+        TreeMap<String, Long> mergedMaps = new TreeMap<>();
+        String[] res = null;
+        String subject = "";
+        String recipient = "";
         
         Object mergedContents = null;
 
         for (Mail mail : receivedMails){
             
             if(mail.getSubject().equals("Book")){
+                subject = "Book";
                 String[] contents = (String[]) mail.getContents();
                 if( Boolean.parseBoolean(contents[0])){
-                    String[] res = new String[]{mail.getSender(), contents[0], contents[1], contents[2]};
+                    res = new String[]{mail.getSender(), contents[0], contents[1], contents[2]};
                     // System.out.println(mail.getSender());
-                    mergedContents = res;
                 }
-
+                
             } else if (mail.getRecipient().contains("client")){
-
+                recipient = mail.getRecipient();
                 for (Room contents : (ArrayList<Room>) mail.getContents()) {
                     mergedList.add(contents);
                 }
-
-                mergedContents = mergedList.clone();
+                
             } else if (mail.getRecipient().equals("manager")){
+                recipient = "manager";
                 TreeMap<String, Long> mergedMap = new TreeMap<String, Long>();
                 TreeMap<String, Long> map = (TreeMap<String, Long>) mail.getContents();
-
+                
                 map.forEach((key, value) -> {
                     if(mergedMap.get(key) == null){
-                        mergedMap.put(key, value);
+                        mergedMaps.put(key, value);
                     } else {
-                        mergedMap.put(key, mergedMap.get(key) + value);
+                        mergedMaps.put(key, mergedMap.get(key) + value);
                     }
                 });
-
-
-                mergedMap.forEach((key, value) -> {System.out.println(key + ": " + value);});
-                mergedContents = mergedMap.clone();
-            }
                 
+                
+                // mergedMap.forEach((key, value) -> {System.out.println(key + ": " + value);});
+            }
+            
         } 
+        
+        if(subject.equals("Book")){
+            mergedContents = res;
+        } else if(recipient.contains("client")){
+            mergedContents = mergedList.clone();
+        } else if(recipient.equals("manager")){
+            mergedContents = mergedMaps.clone();
+        } else {
+            System.err.println("Problem");
+        }
+
         System.out.println(receivedMails.get(0).getSubject());
         this.sendMail = new Mail(receivedMails.get(0).getSender(), receivedMails.get(0).getRecipient(), 
                                 receivedMails.get(0).getSubject(), mergedContents);

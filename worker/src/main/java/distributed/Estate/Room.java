@@ -81,6 +81,7 @@ public class Room implements Serializable {
         if(isAvailable(from, to)){
             range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
             this.totalBookings++;
+            System.out.println("Now bookings are: " + this.totalBookings);
             return true;
         }
         return false;

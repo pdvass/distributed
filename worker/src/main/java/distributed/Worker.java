@@ -137,7 +137,7 @@ public class Worker extends Thread {
                     rooms.iterator().forEachRemaining(room -> {
                         String region = room.getHotelsRegion();
                         if(bookingsPerRegion.get(region) == null){
-                            bookingsPerRegion.put(region, 0L);
+                            bookingsPerRegion.put(region, room.getTotalBookings());
                         } else {
                             bookingsPerRegion.put(region, bookingsPerRegion.get(region) + room.getTotalBookings());
                         }
