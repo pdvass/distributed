@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import distributed.Estate.Room;
 import distributed.Share.Filter;
@@ -130,8 +131,8 @@ public class Worker extends Thread {
                     } catch (Exception e){
                         System.out.println("Error during casting " + e.getMessage());
                     }
-                    List<Room> rooms = f.applyManagerFilter(this.rooms);
-                    HashMap<String, Long> bookingsPerRegion = new HashMap<>();
+                    List<Room> rooms = f.applyFilter(this.rooms);
+                    TreeMap<String, Long> bookingsPerRegion = new TreeMap<String, Long>();
                     System.out.println("Filter date range that arrived at worker ->" + f.getDateRangeString());
                     rooms.iterator().forEachRemaining(room -> {
                         String region = room.getHotelsRegion();
@@ -141,6 +142,7 @@ public class Worker extends Thread {
                             bookingsPerRegion.put(region, bookingsPerRegion.get(region) + room.getTotalBookings());
                         }
                     });
+                    bookingsPerRegion.forEach((key, value) -> {System.out.println(key + ": " + value);});
                     incoming.setContents(bookingsPerRegion);
                     incoming.respond();
                     this.reducerReq.changeContents(incoming);

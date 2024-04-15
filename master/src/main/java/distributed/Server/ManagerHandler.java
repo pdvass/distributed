@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import distributed.Bookkeeper;
 import distributed.Share.Mail;
@@ -64,14 +65,15 @@ public class ManagerHandler extends Thread {
                         Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter);
                         this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, managerRequest);
                         // System.out.println("Left the message ");
-                        ArrayList<Mail> bookings = new ArrayList<>();
+                        ArrayList<Mail> bookings = new ArrayList<Mail>();
                         while(bookings.isEmpty()){
                             bookings = this.mailbox.checkMail(this.type, "manager");
                         }
                         // System.out.println("Got the email");
-                        @SuppressWarnings("unchecked") HashMap<String, Long> ans = (HashMap<String, Long>) bookings.get(0).getContents();
+                        @SuppressWarnings("unchecked") 
+                        TreeMap<String, Long> ans = (TreeMap<String, Long>) bookings.get(0).getContents();
                         System.out.println(ans.size());
-                        // ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
+                        ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
                         this.res.changeContents(ans);
                         this.res.sendObject();
                         break;
