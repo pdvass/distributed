@@ -14,6 +14,7 @@ import distributed.Share.Mail;
  * 
  * @author stellagianno
  * @author panagou
+ * @author pdvass
  */
 public class Merger {
     private static volatile ArrayList<Mail> receivedMails = null;
@@ -97,19 +98,18 @@ public class Merger {
                 
             } else if (mail.getRecipient().equals("manager")){
                 recipient = "manager";
-                TreeMap<String, Long> mergedMap = new TreeMap<String, Long>();
+                // TreeMap<String, Long> mergedMap = new TreeMap<String, Long>();
                 TreeMap<String, Long> map = (TreeMap<String, Long>) mail.getContents();
                 
                 map.forEach((key, value) -> {
-                    if(mergedMap.get(key) == null){
+                    if(mergedMaps.get(key) == null){
                         mergedMaps.put(key, value);
                     } else {
-                        mergedMaps.put(key, mergedMap.get(key) + value);
+                        mergedMaps.put(key, mergedMaps.get(key) + value);
                     }
                 });
                 
                 
-                // mergedMap.forEach((key, value) -> {System.out.println(key + ": " + value);});
             }
             
         } 
@@ -119,6 +119,7 @@ public class Merger {
         } else if(recipient.contains("client")){
             mergedContents = mergedList.clone();
         } else if(recipient.equals("manager")){
+            // mergedMaps.forEach((key, value) -> {System.out.println(key + ": " + value);});
             mergedContents = mergedMaps.clone();
         } else {
             System.err.println("Problem");
