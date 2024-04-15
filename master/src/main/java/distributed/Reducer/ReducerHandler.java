@@ -39,7 +39,7 @@ public class ReducerHandler extends Thread {
     public void run(){
         while (true) {
             Mail incoming = (Mail) this.res.readObject();
-            merger.receiveMail(incoming);    
+            merger.receiveMail(incoming);   
         }
     }
 

@@ -35,6 +35,7 @@ public class Room implements Serializable {
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
 
+    private long totalBookings;
     private String hotelsRegion;
     private float hotelsStars;
 
@@ -65,6 +66,7 @@ public class Room implements Serializable {
         // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
+        this.totalBookings = 0;
     }
 
     /**
@@ -78,6 +80,7 @@ public class Room implements Serializable {
         List<LocalDate> range = this.produceDateRange(from, to);
         if(isAvailable(from, to)){
             range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
+            this.totalBookings++;
             return true;
         }
         return false;
@@ -94,14 +97,15 @@ public class Room implements Serializable {
         boolean testAnyMatch = true;
 
         try{
-            testAnyMatch = range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
+            testAnyMatch = !range.stream().anyMatch(date -> this.rangeMap.get(date) == 1);
+            System.out.println(testAnyMatch);
         } catch (Exception e){
             // In case wrong dates are given.
             return false;
         }
         // System.out.println("It works" + !testAnyMatch);
         
-        return !testAnyMatch;
+        return testAnyMatch;
     }
 
     /**
@@ -173,6 +177,10 @@ public class Room implements Serializable {
 
     public float getHotelsStars(){
         return this.hotelsStars;
+    }
+
+    public long getTotalBookings(){
+        return this.totalBookings;
     }
 
     public String toString(){

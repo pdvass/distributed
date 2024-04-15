@@ -37,7 +37,11 @@ public class ReducerHandler extends Thread {
 
     public void forwardMessage(){
         Mail mail = (Mail) this.res.readObject();
-        this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, mail);
+        if(mail.getRecipient().equals("manager")){
+            this.mailbox.addMessage(this.type, HandlerTypes.MANAGER, mail);
+        } else {
+            this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, mail);
+        }
 
     }
 

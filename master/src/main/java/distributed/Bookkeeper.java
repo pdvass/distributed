@@ -165,6 +165,7 @@ public class Bookkeeper extends Thread {
 
                             Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
                             clonedMail.setRecipient("worker" + i);
+                            System.out.println(mail.getSender());
                             System.out.println(clonedMail.getSubject() );
                             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
                         }

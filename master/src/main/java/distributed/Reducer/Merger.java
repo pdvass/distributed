@@ -94,19 +94,23 @@ public class Merger {
 
                 mergedContents = mergedList.clone();
             } else if (mail.getRecipient().equals("manager")){
-                for (HashMap<String, Integer> contents : (ArrayList<HashMap<String, Integer>>) mail.getContents()) {
-                    mergedMaps.add(contents);
-                }
+                HashMap<String, Long> mergedMap = new HashMap<>();
+                HashMap<String, Long> map = (HashMap<String, Long>) mail.getContents();
 
-                for (int i = 0; i < mergedMaps.size() - 1; i++) {
-                    mergedMaps.get(i+1).forEach((key, value) -> mergedMaps.get(0).merge(key, value, (v1, v2) -> v1.equals(v2) ? v1: v1 + v2));
-                }
+                map.forEach((key, value) -> {
+                    if(mergedMap.get(key) == null){
+                        mergedMap.put(key, value);
+                    } else {
+                        mergedMap.put(key, mergedMap.get(key) + value);
+                    }
+                });
 
-                mergedContents = mergedMaps.get(0).clone();
+
+                mergedContents = mergedMap;
             }
                 
         } 
-
+        System.out.println(receivedMails.get(0).getSubject());
         this.sendMail = new Mail(receivedMails.get(0).getSender(), receivedMails.get(0).getRecipient(), 
                                 receivedMails.get(0).getSubject(), mergedContents);
 

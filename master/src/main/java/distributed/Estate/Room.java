@@ -37,6 +37,8 @@ public class Room implements Serializable {
 
     // Variables to use for providing workers with hotels' info
     // Should not be used in master.
+    @SuppressWarnings("unused")
+    private long totalBookings;
     protected float hotelsStars;
     @SuppressWarnings("unused")
     private String hotelsRegion;
@@ -71,6 +73,7 @@ public class Room implements Serializable {
         this.cost = cost;
         this.hotelsRegion = hotelsReg;
         this.hotelsStars = hotelsStars;
+        this.totalBookings = 0;
     }
 
     /**

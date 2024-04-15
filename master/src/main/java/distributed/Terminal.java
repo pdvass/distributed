@@ -2,11 +2,13 @@ package distributed;
 
 import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Request;
+import distributed.Share.Filter;
 import distributed.Share.Mail;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.io.IOException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -103,11 +105,25 @@ public class Terminal extends Thread {
                 case "remove":
                     this.remove(commandTokens, in, manager);
                     break;
-                case "book":
-                    System.out.println("Booked a room");
-                    break;
                 case "show":
                     System.out.println("Show booking applying to the Filter");
+                    Filter f = new Filter(commandTokens);
+                    try {
+                        this.req.changeContents("show");
+                        this.req.sendMessage();
+                        this.req.changeContents(f);
+                        this.req.sendRequestObject();
+                        HashMap<String, Long> answer = null;
+                        try {
+                            answer = (HashMap<String, Long>) this.req.receiveRequestObject();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        answer.forEach((key, value) -> {System.out.println(key + ": " + value);});
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
                     break;
                 case "users":
                     this.req.changeContents("users");

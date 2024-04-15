@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +105,7 @@ public class Worker extends Thread {
                         // System.out.println("Error during casting " + e.getMessage());
                     }
                     if(f != null){
-                        System.out.println("Applying filters to my room list");
+                        System.out.println("Applying filters to my room list" + this.rooms.size());
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
@@ -119,8 +120,30 @@ public class Worker extends Thread {
                         this.reducerReq.changeContents(incoming);
                         this.reducerReq.sendRequestObject();
                     }
-                } else if (message.equals("manager")){
+                } else if (incoming.getSender().equals("manager")){
                     System.out.println("Request received from manager");
+                    Object typeOfRequest = incoming.getContents();
+                    Filter f = null;
+                    try {
+                        f = (Filter) typeOfRequest;
+                    } catch (Exception e){
+                        System.out.println("Error during casting " + e.getMessage());
+                    }
+                    List<Room> rooms = f.applyFilter(this.rooms);
+                    HashMap<String, Long> bookingsPerRegion = new HashMap<>();
+                    rooms.iterator().forEachRemaining(room -> {
+                        String region = room.getHotelsRegion();
+                        if(bookingsPerRegion.get(region) == null){
+                            bookingsPerRegion.put(region, 0L);
+                        } else {
+                            bookingsPerRegion.put(region, bookingsPerRegion.get(region) + 1);
+                        }
+                    });
+                    incoming.setContents(bookingsPerRegion);
+                    incoming.respond();
+                    this.reducerReq.changeContents(incoming);
+                    this.reducerReq.sendRequestObject();
+
                 }
 
                 incoming = (Mail) this.req.receiveRequestObject();
