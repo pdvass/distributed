@@ -65,6 +65,7 @@ public class Worker extends Thread {
     public void init(){
         try{
             Mail incoming = (Mail) this.req.receiveRequestObject();
+            System.out.println(incoming.getSender());
             // System.out.println("hi");
             // Mail incoming = (Mail) incomingTuple.getSecond();
 
@@ -129,14 +130,15 @@ public class Worker extends Thread {
                     } catch (Exception e){
                         System.out.println("Error during casting " + e.getMessage());
                     }
-                    List<Room> rooms = f.applyFilter(this.rooms);
+                    List<Room> rooms = f.applyManagerFilter(this.rooms);
                     HashMap<String, Long> bookingsPerRegion = new HashMap<>();
+                    System.out.println("Filter date range that arrived at worker ->" + f.getDateRangeString());
                     rooms.iterator().forEachRemaining(room -> {
                         String region = room.getHotelsRegion();
                         if(bookingsPerRegion.get(region) == null){
                             bookingsPerRegion.put(region, 0L);
                         } else {
-                            bookingsPerRegion.put(region, bookingsPerRegion.get(region) + 1);
+                            bookingsPerRegion.put(region, bookingsPerRegion.get(region) + room.getTotalBookings());
                         }
                     });
                     incoming.setContents(bookingsPerRegion);

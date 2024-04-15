@@ -37,6 +37,7 @@ public class ManagerHandler extends Thread {
         while (true) {
             try {
                 String request = res.readMessage();
+                System.out.println(request);
                 switch (request) {
                     case "users":
                         res.changeContents(this.getUsers());
@@ -62,17 +63,18 @@ public class ManagerHandler extends Thread {
                         Object filter = this.res.readObject();
                         Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter);
                         this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, managerRequest);
-                        System.out.println("Left the message ");
+                        // System.out.println("Left the message ");
                         ArrayList<Mail> bookings = new ArrayList<>();
                         while(bookings.isEmpty()){
                             bookings = this.mailbox.checkMail(this.type, "manager");
                         }
-                        System.out.println("Got the email");
+                        // System.out.println("Got the email");
                         @SuppressWarnings("unchecked") HashMap<String, Long> ans = (HashMap<String, Long>) bookings.get(0).getContents();
                         System.out.println(ans.size());
-                        ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
+                        // ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
                         this.res.changeContents(ans);
                         this.res.sendObject();
+                        break;
                     default:
                         res.changeContents(-1);
                         res.sendObject();

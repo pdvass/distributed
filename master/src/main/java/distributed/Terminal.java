@@ -111,6 +111,7 @@ public class Terminal extends Thread {
                     try {
                         this.req.changeContents("show");
                         this.req.sendMessage();
+                        // System.out.println(f.getDateRangeString());
                         this.req.changeContents(f);
                         this.req.sendRequestObject();
                         HashMap<String, Long> answer = null;

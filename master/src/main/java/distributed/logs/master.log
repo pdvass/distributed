@@ -269,3 +269,939 @@
 [INFO] BOOKKEEPER left a message to WORKER 15/04/2024 04:30:32
 [INFO] BOOKKEEPER left a message to WORKER 15/04/2024 04:30:32
 [INFO] REDUCER left a message to CLIENT 15/04/2024 04:30:32
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 12:52:06
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:52:06
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 12:52:06
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 12:53:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:53:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:53:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:53:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 12:58:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:58:45
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 12:58:45
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 12:59:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:59:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:59:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 12:59:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:01:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:01:44
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:01:44
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:02:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:02:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:02:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:02:00
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:02:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:03:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:13
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:03:13
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:03:28
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:28
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:28
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:28
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:03:28
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:03:55
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:03:55
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:03:55
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:55
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:55
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:03:55
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:03:55
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:04:09
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:04:09
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:04:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:09
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:09
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:04:09
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:04:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:40
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:04:40
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:04:48
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:48
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:48
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:48
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:04:48
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:04:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:04:57
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:04:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:06:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:46
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:06:46
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:06:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:06:59
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:06:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:08:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:22
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:08:22
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:08:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:08:33
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:08:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:09:57
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:09:57
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:09:57
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:10:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:10:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:10:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:10:08
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:10:08
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:10:56
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:10:56
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:10:56
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:10:56
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:10:56
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:11:27
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:11:27
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:11:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:11:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:11:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:11:27
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:11:27
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:11:53
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:11:53
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:11:53
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:11:53
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:11:53
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:11:53
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:11:53
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:14:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:14:49
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:14:49
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:15:15
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:15:15
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:15:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:15:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:15:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:15:15
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:15:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:17:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:15
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:17:15
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:17:39
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:17:39
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:17:39
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:39
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:39
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:17:39
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:17:39
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:19:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:27
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:19:27
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:19:41
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:19:41
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:19:41
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:41
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:41
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:19:41
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:19:41
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:21:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:21:40
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:21:40
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:22:00
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:22:00
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:22:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:22:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:22:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:22:00
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:22:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:23:20
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:20
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:23:20
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:23:44
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:23:44
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:23:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:44
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:23:44
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:23:44
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:26:33
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:26:33
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:26:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:26:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:26:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:26:33
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:26:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:28:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:25
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:28:25
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:28:51
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:51
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:51
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:51
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:28:51
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:28:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:28:58
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:28:58
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:30:14
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:14
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:14
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:14
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:30:14
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:30:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:15
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:30:15
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:30:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:22
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:30:22
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:30:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:24
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:30:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:30:59
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:30:59
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:30:59
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:31:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:31:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:31:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:31:08
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:31:08
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:32:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:32:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:32:25
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:32:25
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:32:25
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:32:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:32:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:32:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:32:27
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:32:27
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:33:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:33:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:33:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:33:12
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:33:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:34:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:03
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:34:03
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:34:26
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:26
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:26
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:34:26
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:34:26
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:35:03
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:03
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:35:03
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:12
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:12
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:12
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:12
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:13
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:13
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:13
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:13
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:14
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:14
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:14
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:14
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:14
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:15
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:15
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:15
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:15
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:15
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:35:29
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:29
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:29
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:35:29
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:35:29
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:53:05
+[TRANSACTION] Transaction opens from client0 15/04/2024 13:53:05
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 13:53:05
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:53:05
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:53:05
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:53:05
+[INFO] REDUCER left a message to CLIENT 15/04/2024 13:53:05
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:55:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:00
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:00
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:55:00
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:55:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:08
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:55:08
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:55:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:55:24
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:55:24
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:57:04
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:04
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:57:04
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:57:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:57:22
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:57:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 13:59:08
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:08
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 13:59:08
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:59:28
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:28
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:28
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:28
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:59:28
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:59:38
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:38
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:38
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:38
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:59:38
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 13:59:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 13:59:45
+[INFO] REDUCER left a message to MANAGER 15/04/2024 13:59:45
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 14:00:58
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:00:58
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 14:00:58
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:01:19
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:19
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:19
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:19
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:01:19
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:01:31
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:31
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:31
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:31
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:01:31
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:01:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:49
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:01:49
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:01:49
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 14:02:12
+[TRANSACTION] Transaction opens from client0 15/04/2024 14:02:12
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 14:02:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:12
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:12
+[INFO] REDUCER left a message to CLIENT 15/04/2024 14:02:12
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 14:02:37
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:37
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:37
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:37
+[INFO] REDUCER left a message to CLIENT 15/04/2024 14:02:37
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:02:37
+[INFO] BOOKKEEPER left a message to CLIENT 15/04/2024 14:02:37
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:02:48
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:48
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:48
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:48
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:02:48
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:02:56
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:56
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:56
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:02:56
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:02:56
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:03:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:22
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:22
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:03:22
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 14:03:31
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:31
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:31
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:31
+[INFO] REDUCER left a message to CLIENT 15/04/2024 14:03:31
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:03:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:40
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:03:40
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:03:40
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:04:07
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:07
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:07
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:07
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:04:07
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:04:35
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:35
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:35
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:35
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:04:35
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:04:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:46
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:46
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:04:46
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:04:50
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:50
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:50
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:04:50
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:04:50
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:05:16
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:05:16
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:05:16
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:05:16
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:05:16
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 1095179056 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -1036181519 is to be distributed to worker2 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 135731883 is to be distributed to worker0 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 3437501 is to be distributed to worker2 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -1117153711 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 1548305173 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 799549516 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -884012541 is to be distributed to worker0 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -1872113212 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 662066448 is to be distributed to worker0 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash 1984787920 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -1333897753 is to be distributed to worker1 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -1267769555 is to be distributed to worker2 15/04/2024 14:07:02
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:02
+[INFO] Room with hash -1906184660 is to be distributed to worker2 15/04/2024 14:07:02
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:07:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:13
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:13
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:07:13
+[INFO] CLIENT left a message to BOOKKEEPER 15/04/2024 14:07:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:27
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:27
+[INFO] REDUCER left a message to CLIENT 15/04/2024 14:07:27
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:07:27
+[INFO] BOOKKEEPER left a message to CLIENT 15/04/2024 14:07:27
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:07:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:33
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:33
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:07:33
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:07:47
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:47
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:47
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:47
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:07:47
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:07:50
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:50
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:50
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:50
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:07:50
+[INFO] MANAGER left a message to BOOKKEEPER 15/04/2024 14:07:51
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:51
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:51
+[INFO] BOOKKEEPER left a message to WORKER 15/04/2024 14:07:51
+[INFO] REDUCER left a message to MANAGER 15/04/2024 14:07:51
