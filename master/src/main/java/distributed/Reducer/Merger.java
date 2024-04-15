@@ -2,7 +2,7 @@ package distributed.Reducer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import distributed.Estate.Room;
 import distributed.Share.Mail;
@@ -72,7 +72,7 @@ public class Merger {
     private void mergeContents(){
         
         ArrayList<Room> mergedList = new ArrayList<>();
-        ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
+        // ArrayList<HashMap<String, Integer>> mergedMaps = new ArrayList<>();
         
         Object mergedContents = null;
 
@@ -94,8 +94,8 @@ public class Merger {
 
                 mergedContents = mergedList.clone();
             } else if (mail.getRecipient().equals("manager")){
-                HashMap<String, Long> mergedMap = new HashMap<>();
-                HashMap<String, Long> map = (HashMap<String, Long>) mail.getContents();
+                TreeMap<String, Long> mergedMap = new TreeMap<String, Long>();
+                TreeMap<String, Long> map = (TreeMap<String, Long>) mail.getContents();
 
                 map.forEach((key, value) -> {
                     if(mergedMap.get(key) == null){
@@ -106,7 +106,8 @@ public class Merger {
                 });
 
 
-                mergedContents = mergedMap;
+                mergedMap.forEach((key, value) -> {System.out.println(key + ": " + value);});
+                mergedContents = mergedMap.clone();
             }
                 
         } 

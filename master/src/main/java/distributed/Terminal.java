@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -119,11 +120,12 @@ public class Terminal extends Thread {
                     try {
                         this.req.changeContents("show");
                         this.req.sendMessage();
+                        // System.out.println(f.getDateRangeString());
                         this.req.changeContents(f);
                         this.req.sendRequestObject();
-                        HashMap<String, Long> answer = null;
+                        TreeMap<String, Long> answer = new TreeMap<>();
                         try {
-                            answer = (HashMap<String, Long>) this.req.receiveRequestObject();
+                            answer = (TreeMap<String, Long>) this.req.receiveRequestObject();
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }

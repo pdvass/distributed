@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 /**
- * Worker's main entry point
+ * Entry point for the Worker.
+ * 
  */
 public class WorkerApp 
 {
     public static void main( String[] args ) throws UnknownHostException, IOException
     {        
-        System.out.println( "Hello World!" );
+        System.out.println( "Hello, I am Worker" );
 
         Worker worker = new Worker();
 

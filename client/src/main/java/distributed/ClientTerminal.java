@@ -135,6 +135,7 @@ public class ClientTerminal {
                 if(tokens[1].equals("hotels") && tokens.length == 2){
                     return "hotels";
                 }
+                return "";
             case "book":
                 return "book";
             case "commands":

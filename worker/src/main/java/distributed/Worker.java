@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import distributed.Estate.Room;
 import distributed.Share.Filter;
@@ -66,6 +67,7 @@ public class Worker extends Thread {
     public void init(){
         try{
             Mail incoming = (Mail) this.req.receiveRequestObject();
+            System.out.println(incoming.getSender());
             // System.out.println("hi");
             // Mail incoming = (Mail) incomingTuple.getSecond();
 
@@ -131,15 +133,17 @@ public class Worker extends Thread {
                         System.out.println("Error during casting " + e.getMessage());
                     }
                     List<Room> rooms = f.applyFilter(this.rooms);
-                    HashMap<String, Long> bookingsPerRegion = new HashMap<>();
+                    TreeMap<String, Long> bookingsPerRegion = new TreeMap<String, Long>();
+                    System.out.println("Filter date range that arrived at worker ->" + f.getDateRangeString());
                     rooms.iterator().forEachRemaining(room -> {
                         String region = room.getHotelsRegion();
                         if(bookingsPerRegion.get(region) == null){
                             bookingsPerRegion.put(region, 0L);
                         } else {
-                            bookingsPerRegion.put(region, bookingsPerRegion.get(region) + 1);
+                            bookingsPerRegion.put(region, bookingsPerRegion.get(region) + room.getTotalBookings());
                         }
                     });
+                    bookingsPerRegion.forEach((key, value) -> {System.out.println(key + ": " + value);});
                     incoming.setContents(bookingsPerRegion);
                     incoming.respond();
                     this.reducerReq.changeContents(incoming);
