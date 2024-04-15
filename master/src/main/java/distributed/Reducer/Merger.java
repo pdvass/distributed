@@ -93,8 +93,10 @@ public class Merger {
             } else if (mail.getRecipient().contains("client")){
                 recipient = mail.getRecipient();
                 for (Room contents : (ArrayList<Room>) mail.getContents()) {
+                    System.out.println(contents.toString());
                     mergedList.add(contents);
                 }
+                // mergedList.addAll((ArrayList<Room>) mail.getContents());
                 
             } else if (mail.getRecipient().equals("manager")){
                 recipient = "manager";

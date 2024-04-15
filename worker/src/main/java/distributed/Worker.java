@@ -108,6 +108,7 @@ public class Worker extends Thread {
                     }
                     if(f != null){
                         System.out.println("Applying filters to my room list" + this.rooms.size());
+                        System.out.println("Got filter " + f.getStars());
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
@@ -131,7 +132,7 @@ public class Worker extends Thread {
                     } catch (Exception e){
                         System.out.println("Error during casting " + e.getMessage());
                     }
-                    List<Room> rooms = f.applyFilter(this.rooms);
+                    List<Room> rooms = f.applyManagerFilter(this.rooms);
                     TreeMap<String, Long> bookingsPerRegion = new TreeMap<String, Long>();
                     System.out.println("Filter date range that arrived at worker ->" + f.getDateRangeString());
                     rooms.iterator().forEachRemaining(room -> {
