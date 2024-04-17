@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.io.IOException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -22,6 +21,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.util.regex.Matcher;
+
 /**
  * Terminal to parse user input and invoke the methods that are needed.
  * @author pdvass

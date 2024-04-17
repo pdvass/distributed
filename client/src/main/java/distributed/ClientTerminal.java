@@ -34,7 +34,7 @@ public class ClientTerminal {
 
     public void run() throws UnknownHostException, IOException{
         TCPClient client = new TCPClient();
-        client.startConnection("localhost", 4555);
+        client.startConnection("192.168.2.6", 4555);
 
         this.req = new Request(client, "user connection");
         this.req.sendMessage();
