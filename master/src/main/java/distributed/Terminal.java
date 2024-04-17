@@ -8,23 +8,27 @@ import distributed.Share.Mail;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.io.IOException;
-import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
-import java.util.regex.Matcher;
 /**
  * Terminal to parse user input and invoke the methods that are needed.
+ * 
  * @author pdvass
  */
 public class Terminal extends Thread {
+
     private Socket serverConn = null;
     private Request req = null;
+
     /**
      * Text printed when the "list" command is given
     */
@@ -48,7 +52,9 @@ public class Terminal extends Thread {
      * Sets up ant dependencies or setting in the system.
      */
     public void setup(){
+
         System.out.println("Setting up the system...");
+
         try {
             this.serverConn = new Socket("localhost", 4555);
             this.req = new Request(this.serverConn, "Manager connection");
@@ -62,6 +68,7 @@ public class Terminal extends Thread {
         } catch (IOException e) {
             System.out.println("Could not connect to server");
         }
+        
         System.out.println("Everything is ready.");
     }
 
@@ -69,6 +76,7 @@ public class Terminal extends Thread {
      * Initiates the terminal to read from Master any commands
      * @throws ClassNotFoundException 
      */
+    @SuppressWarnings("unchecked")
     public void init(){
         System.out.println("Welcome to room management system. Type 'list' for available commands.");
         System.out.println("Type 'h' or 'help' for anything else.");
@@ -169,12 +177,15 @@ public class Terminal extends Thread {
     }
 
     private void levenshtein(String given){
+
         final String[] commands = new String[]{"quit", "help", "hotels", "add", "remove", "list", "book", "show"};
+
         LevenshteinDistance dist = new LevenshteinDistance();
         ArrayList<Integer> distances = new ArrayList<>();
-        for(String command : commands){
+        for(String command : commands) {
             distances.add(dist.apply(given, command));
         }
+
         int positionOfMinDistance = distances.indexOf(Collections.min(distances));
         System.out.printf("Hint: Did you mean %s?\n", commands[positionOfMinDistance]);
 
@@ -190,12 +201,13 @@ public class Terminal extends Thread {
      * 
      * @see JSONDirManager
      */
-    // NOTE: This - and the other dblike methods - should be moved to another class.
     private void add(String[] tokens, String in, JSONDirManager manager){
+
         if(tokens.length < 2){
             System.err.println("Not enough arguments");
             return;
         }
+
         switch (tokens[1].toLowerCase()) {
             case "hotel":
                 try {
@@ -276,6 +288,7 @@ public class Terminal extends Thread {
             System.err.println("Not enough arguments");
             return;
         }
+
         ArrayList<String> hotelInfo = new ArrayList<>();
         switch (tokens[1]) {
             case "hotel":
@@ -318,6 +331,7 @@ public class Terminal extends Thread {
             System.out.println("ex. help book");
             return;
         }
+
         switch (tokens[1]) {
             case "add":
                 System.out.println("\"add\" Adds a hotel or a room to the database. Its syntax is as follows.");
@@ -360,6 +374,7 @@ public class Terminal extends Thread {
         // https://regex101.com/
         String regex = "";
         ArrayList<String> hotelInfo = new ArrayList<>();
+
         Pattern pattern;
         Matcher matcher;
         switch (action) {
@@ -429,4 +444,5 @@ public class Terminal extends Thread {
             }
         return hotelInfo;
     }
+    
 }

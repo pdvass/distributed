@@ -35,7 +35,7 @@ public class Bookkeeper extends Thread {
     private Mailbox mailbox = null;
     private static volatile boolean created = false;
 
-    public Bookkeeper() {
+    public Bookkeeper(){
         this.mailbox = new Mailbox();
         if(!created){
             created = true;
@@ -49,36 +49,36 @@ public class Bookkeeper extends Thread {
         }
     }
 
-    public Map<String, ArrayList<Room>> getWorkers() {
+    public Map<String, ArrayList<Room>> getWorkers(){
         return workers;
     }
 
-    public void addWorker() {
+    public void addWorker(){
         String workerName = "worker" + workers.size();
         workers.put(workerName, new ArrayList<>());
 
     }
 
-    public void addUser() {
+    public void addUser(){
         String user = "User" + Integer.toString(users.size());
         users.add(user);
     }
 
-    public ArrayList<String> getUsers() {
+    public ArrayList<String> getUsers(){
         return users;
     }
 
-    public void removeUser() {
+    public void removeUser(){
         users.removeLast();
     }
 
-    public ArrayList<Hotel> getHotels() throws FileNotFoundException,Exception {
+    public ArrayList<Hotel> getHotels() throws FileNotFoundException,Exception{
         JSONDirManager manager = new JSONDirManager();
         hotels = manager.getHotels();
         return hotels;
     }
 
-    public ArrayList<Room> getRooms(String workerName) {
+    public ArrayList<Room> getRooms(String workerName){
         return workers.get(workerName);
     }
 
@@ -86,16 +86,17 @@ public class Bookkeeper extends Thread {
      * This method returns all the rooms of the hotels that exist in the JSON files.
      * 
      * @return An ArrayList with all the rooms of the JSON files.
+     * 
      * @throws FileNotFoundException
      * @throws Exception
      */
-    public ArrayList<Room> getAllRooms() throws FileNotFoundException,Exception {
+    public ArrayList<Room> getAllRooms() throws FileNotFoundException,Exception{
         ArrayList<Hotel> hotels = this.getHotels();
         ArrayList<Room> rooms = new ArrayList<>();
+
         for (Hotel hotel: hotels) {
             rooms.addAll(hotel.getRooms());
         }
-
         return rooms;
     }    
 
@@ -107,7 +108,7 @@ public class Bookkeeper extends Thread {
      * @throws FileNotFoundException
      * @throws Exception
     **/
-    public void createWorkers() throws FileNotFoundException, Exception {
+    public void createWorkers() throws FileNotFoundException, Exception{
         Dotenv dotenv = Dotenv.load();
         String workersEnv = dotenv.get("WORKERS");
 
@@ -144,11 +145,12 @@ public class Bookkeeper extends Thread {
             ArrayList<Mail> mails = this.mailbox.checkMail(this.type, "bookkeeper");
 
             if(!mails.isEmpty()){
-                for(Mail mail : mails){
+                for(Mail mail : mails) {
+
                     if(mail.getSubject().equals("Booked")){
                         String[] info = (String[]) mail.getContents();
 
-                        for(Room room : workers.get(info[0])){
+                        for(Room room : workers.get(info[0])) {
                             if(Integer.parseInt(info[3]) == room.getIntId()){
 
                                 Date[] dates = new Filter(info).getDateRange();
@@ -161,10 +163,11 @@ public class Bookkeeper extends Thread {
 
                     } else {
 
-                        for(int i = 0; i < nOfWorkers; i++){
+                        for(int i = 0; i < nOfWorkers; i++) {
 
                             Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
                             clonedMail.setRecipient("worker" + i);
+
                             System.out.println(mail.getSender());
                             System.out.println(clonedMail.getSubject() );
                             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, clonedMail);
@@ -181,9 +184,9 @@ public class Bookkeeper extends Thread {
      * 
      * @param rooms representing the list of rooms to be allocated.
      **/
-    public void distributingRooms(ArrayList<Room> rooms) {
+    public void distributingRooms(ArrayList<Room> rooms){
         Mail mail;
-        // HandlerTypes to = HandlerTypes.WORKER;
+    
         int numberOfActiveWorkers = workers.size();
 
         for (Room room: rooms) {
@@ -192,11 +195,12 @@ public class Bookkeeper extends Thread {
 
             String targetWorkerName = "worker" + workerIndex;
             workers.get(targetWorkerName).add(room);
+
             mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
-            JSONDirManager manager = new JSONDirManager();
 
             String info = "Room with hash " + roomId + " is to be distributed to " + targetWorkerName;
+            JSONDirManager manager = new JSONDirManager();
             manager.logInfo(info);
         }
     }
@@ -208,13 +212,13 @@ public class Bookkeeper extends Thread {
      * @throws FileNotFoundException
      * @throws Exception
      **/
-    public void checkForMissingRooms() throws FileNotFoundException,Exception {
+    public void checkForMissingRooms() throws FileNotFoundException,Exception{
         ArrayList<Room> existingRooms = this.getAllRooms();
         ArrayList<Room> rooms = new ArrayList<>();
 
         for (Room room: existingRooms) {
             for (Map.Entry<String, ArrayList<Room>> entry : workers.entrySet()) {
-                if (!entry.getValue().contains(room)) {
+                if (!entry.getValue().contains(room)){
                     rooms.add(room);
                 }
             }
@@ -230,13 +234,12 @@ public class Bookkeeper extends Thread {
      */
     public void workerDied(String workerID){
         System.out.printf("%s died\n", workerID);
-        ArrayList<Room> toRedistribute = new ArrayList<>();
 
+        ArrayList<Room> toRedistribute = new ArrayList<>();
         toRedistribute = workers.get(workerID);
         workers.remove(workerID);
 
         this.distributingRooms(toRedistribute);
-
         System.out.println(workers.size());
     }
 }

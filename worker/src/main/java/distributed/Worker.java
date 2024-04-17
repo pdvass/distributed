@@ -3,8 +3,8 @@ package distributed;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 import java.util.Date;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -18,10 +18,10 @@ import distributed.Share.Mail;
  * @author pdvass
  */
 public class Worker extends Thread {
+
     private ArrayList<Room> rooms = null;
     private Socket conn = null;
     private Request req = null;
-
     private Socket reducerConn = null;
     private Request reducerReq = null;
 
@@ -44,6 +44,7 @@ public class Worker extends Thread {
             this.req.sendMessage();
             System.out.println("Sent!");
             String isConnected = this.req.receiveMessage();
+
             if(!isConnected.equals("worker connected")){
                 throw new Exception();
             }
@@ -67,24 +68,23 @@ public class Worker extends Thread {
         try{
             Mail incoming = (Mail) this.req.receiveRequestObject();
             System.out.println(incoming.getSender());
-            // System.out.println("hi");
-            // Mail incoming = (Mail) incomingTuple.getSecond();
 
             while (true) {
                 String message = incoming.getSubject();
-                // System.out.println(incoming.getSender());
     
                 if(message.equals("room")){
                     System.out.println("Got a room");
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
 
-                } else if(message.equals("Book")) {
+                } else if(message.equals("Book")){
+
                     String[] info = (String[]) incoming.getContents();
                     // info -> {"book", roomID, dates}
                     Date[] dateRange = new Filter(info).getDateRange();
                     boolean isBooked = false;
-                    for(Room room : this.rooms){
+
+                    for(Room room : this.rooms) {
                         String intIDtoString = Integer.toString(room.getIntId());
                         if(info[1].equals(intIDtoString)){
                             // System.out.println("I have the room!!!");
@@ -92,15 +92,18 @@ public class Worker extends Thread {
                             isBooked = room.book(dateRange[0], dateRange[1]);
                         }
                     }
+
                     incoming.respond();
                     String[] contents = new String[]{Boolean.toString(isBooked), info[2], info[1]};
                     incoming.setContents(contents);
+
                     this.reducerReq.changeContents(incoming);
                     this.reducerReq.sendRequestObject();
 
-                } else if (incoming.getSender().contains("client")) {
+                } else if (incoming.getSender().contains("client")){
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
+
                     try {
                         f = (Filter) typeOfRequest;
                     } catch (Exception e){
@@ -109,6 +112,7 @@ public class Worker extends Thread {
                     if(f != null){
                         System.out.println("Applying filters to my room list" + this.rooms.size());
                         System.out.println("Got filter " + f.getStars());
+
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         // Mail response = new Mail(message, filteredRoms);
                         incoming.respond();
@@ -118,8 +122,10 @@ public class Worker extends Thread {
 
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + incoming.getSender() + " asked for hotels");
+
                         incoming.respond();
                         incoming.setContents(this.rooms);
+
                         this.reducerReq.changeContents(incoming);
                         this.reducerReq.sendRequestObject();
                     }
@@ -160,6 +166,3 @@ public class Worker extends Thread {
     }
 
 }
-
-
-

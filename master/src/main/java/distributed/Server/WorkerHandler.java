@@ -19,6 +19,7 @@ import distributed.Share.Mail;
  * @author pdvass
  */
 public class WorkerHandler extends Thread {
+
     private static volatile long totalWorkers = 0;
     private String id;
     @SuppressWarnings("unused")
@@ -27,17 +28,16 @@ public class WorkerHandler extends Thread {
     private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
 
-
-    public WorkerHandler(Socket s, Response res) throws UnknownHostException, IOException {
+    public WorkerHandler(Socket s, Response res) throws UnknownHostException, IOException{
         this.workerSocket = s;
         this.res = res;
         this.bookkeeper.addWorker();
         this.mailbox = new Mailbox();
+
         if(totalWorkers == Long.MAX_VALUE){
             totalWorkers = 0;
         }
         this.id = "worker" + totalWorkers++;
-        // System.out.println("Worker with id " + this.id + " came.");
     }
 
     public void run(){
@@ -45,14 +45,12 @@ public class WorkerHandler extends Thread {
     }
 
     private void sendMessagesToWorkers(){
-        while(true){
-            
+        while(true) {
             ArrayList<Mail> msgs = this.mailbox.checkMail(HandlerTypes.WORKER, this.id);
-            // System.out.println("hi");
+
             if(!msgs.isEmpty()){
-                // System.out.println("Got a message size->" + msgs.size());
-                for(Mail msg : msgs){
-                    // System.out.println(msg.getSubject());
+                
+                for(Mail msg : msgs) {
                     this.res.changeContents(msg);
                     try{
                         this.res.sendObject();

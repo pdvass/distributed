@@ -10,9 +10,9 @@ import java.io.Serializable;
  * @see distributed.Server.Mailbox
  * @author pdvass
  */
-public class Mail implements Serializable{
-    private static final long serialVersionUID = 040420242020L;
+public class Mail implements Serializable {
 
+    private static final long serialVersionUID = 040420242020L;
     private String sender;
     private String recipient;
     private String subject;
@@ -69,4 +69,5 @@ public class Mail implements Serializable{
     public String toString(){
         return String.format("From %s to %s with subject %s", this.sender, this.recipient, this.subject);
     }
+    
 }

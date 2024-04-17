@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @author pdvass
  * @author panagou
  */
-
 public class Hotel {
+
     private ArrayList<Room> rooms;
     private float stars;
     private int nOfReviews;
@@ -27,8 +27,9 @@ public class Hotel {
     }
 
     public ArrayList<Boolean> checkAvailabilty(String username, Date from, Date to){
+
         ArrayList<Boolean> availabity = new ArrayList<>();
-        for(Room room : rooms){
+        for(Room room : rooms) {
             availabity.add(room.isAvailable(from, to));
         }
         return availabity;
@@ -52,21 +53,22 @@ public class Hotel {
 
     /**
      * Finds the room that is available on the dates desired by the user.
+     * 
      * @param username representing the name of the user who wants to make the reservation.
      * @param from Date representing the first day of which the room need to be booked.
      * @param to Date representing the last day of which the room need to be booked.
      */
-    public void book(String username, Date from, Date to) {
+    public void book(String username, Date from, Date to){
         // NOTE: Should be synchronized
         for(Room room : rooms) {
-            if(room.isAvailable(from, to)) {
+            if(room.isAvailable(from, to)){
                 room.book(from, to);
                 System.out.println("Room " + room.getName() + " booked for user " + username + " from " + from.toString() + " to " + to.toString());
-                return; // Booked the first available room and exit
+                return; // Booked the first available room and exit.
             }
         }
-        System.out.println("No available rooms for the specified dates.");
 
+        System.out.println("No available rooms for the specified dates.");
     }
 
     public ArrayList<Room> getRooms(){
@@ -97,10 +99,12 @@ public class Hotel {
         // NOTE: StringBuilder is more efficient than String concats
         String repr = String.format("Name: %s. It is located in %s and averages %.2f stars from %d reviews. ", this.name, this.region, this.stars, this.nOfReviews);
         repr += "Here is some info for its room" + (this.rooms.size() > 1 ? "s:\n" : ":\n");
-        for(Room room : this.rooms){
+
+        for(Room room : this.rooms) {
             repr += String.format("- %s for %d people. It costs %.2f and it is available from %s to %s.\n", room.getName(), room.getNOfPeople(), room.getCost(), 
                                         room.getStartDate(), room.getEndDate());
         }
+        
         if(this.rooms.isEmpty()){
             repr += "It has no rooms yet.";
         }

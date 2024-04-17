@@ -9,9 +9,9 @@ import java.io.Serializable;
  * 
  * @author pdvass
  */
-public class Mail implements Serializable{
+public class Mail implements Serializable {
+    
     private static final long serialVersionUID = 040420242020L;
-
     private String sender;
     private String recipient;
     private String subject;

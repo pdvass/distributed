@@ -3,6 +3,7 @@ package distributed.Client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -12,6 +13,7 @@ import java.net.UnknownHostException;
  * @author pdvass
  */
 public class TCPClient {
+
     private Socket clientSocket = null;
     private ObjectInputStream ois = null;
     private ObjectOutputStream oos = null;
@@ -59,7 +61,6 @@ public class TCPClient {
         received = this.ois.readUTF();
         return received;
     }
-
 
     /**
      * Reveive an Object from the server. The client is responsible for

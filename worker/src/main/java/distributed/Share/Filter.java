@@ -3,6 +3,7 @@ package distributed.Share;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,8 +17,8 @@ import distributed.Estate.Room;
  * @author pdvass
  */
 public class Filter implements Serializable {
-    private static final long serialVersionUID = 290320241224L;
 
+    private static final long serialVersionUID = 290320241224L;
     private String region = "";
     private Date[] dateRange = new Date[2];
     private float stars = -1;
@@ -33,7 +34,7 @@ public class Filter implements Serializable {
             e.printStackTrace();
         }
 
-        for(String filter : filters ){
+        for(String filter : filters ) {
             if (filter.contains("region")) {
                 String[] reg = filter.trim().split(":");
                 this.region = reg[1];
@@ -86,9 +87,8 @@ public class Filter implements Serializable {
         return this.dateRange[0].toString() + " and " + this.dateRange[1].toString();
     }
 
-    ////////////////////////// GETTERS //////////////////////////
-
-    ////////////// UNIQUE TO WORKER //////////////
+    ////////////////// GETTERS //////////////////
+    ////////////// UNIQUE TO WORKER /////////////
 
     /**
      * Applies filters to Room List.
@@ -141,5 +141,5 @@ public class Filter implements Serializable {
         // });
         return filteredHotels;
     }
-    ////////////// UNIQUE TO WORKER //////////////
+
 }

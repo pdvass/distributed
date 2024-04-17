@@ -3,7 +3,6 @@ package distributed.Server;
 import java.io.IOException;
 import java.net.Socket;
 
-// import distributed.Bookkeeper;
 import distributed.Share.Mail;
 
 /**
@@ -12,14 +11,15 @@ import distributed.Share.Mail;
  * rest of the handlers to see.
  * 
  * @see Mailbox
- * 
- * @see HandlerTypes
- * 
  * @see ClientHandler
  * @see ManagerHandler
  * @see WorkerHandler
+ * 
+ * @author pdvass
+ * @author stellagianno
  */
 public class ReducerHandler extends Thread {
+
     private Socket reducerSocket = null;
     private Response res = null;
     private Mailbox mailbox = null;
@@ -36,6 +36,7 @@ public class ReducerHandler extends Thread {
     }
 
     public void forwardMessage(){
+
         Mail mail = (Mail) this.res.readObject();
         if(mail.getRecipient().equals("manager")){
             this.mailbox.addMessage(this.type, HandlerTypes.MANAGER, mail);
@@ -55,3 +56,4 @@ public class ReducerHandler extends Thread {
     }
     
 }
+

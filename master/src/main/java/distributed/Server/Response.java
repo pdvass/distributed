@@ -17,6 +17,7 @@ import java.net.Socket;
  * @author pdvass
  */
 public class Response extends Thread {
+    
     private Socket connection = null;
     private Object contents;
     private ObjectInputStream ois = null;
