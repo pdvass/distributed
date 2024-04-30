@@ -54,18 +54,18 @@ public class ManagerHandler extends Thread {
                                 this.res.sendObject();
                             }
                         } else {
-                            Mail empty = new Mail("wokrer", "manager", "Message", "No messsages yet");
+                            Mail empty = new Mail("wokrer", "manager", "Message", "No messsages yet", -1);
                             this.res.changeContents(empty);
                             this.res.sendObject();
                         }
 
-                        Mail finalMsg = new Mail("worker", "manager", "Message", "-1");
+                        Mail finalMsg = new Mail("worker", "manager", "Message", "-1", -1);
                         this.res.changeContents(finalMsg);
                         this.res.sendObject();
                         break;
                     case "show":
                         Object filter = this.res.readObject();
-                        Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter);
+                        Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter, -1);
                         this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, managerRequest);
                         
                         ArrayList<Mail> bookings = new ArrayList<Mail>();

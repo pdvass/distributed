@@ -126,7 +126,7 @@ public class Merger {
 
         System.out.println(receivedMails.get(0).getSubject());
         this.sendMail = new Mail(receivedMails.get(0).getSender(), receivedMails.get(0).getRecipient(), 
-                                receivedMails.get(0).getSubject(), mergedContents);
+                                receivedMails.get(0).getSubject(), mergedContents, -1);
 
         this.sendMailToServer(this.sendMail);
 

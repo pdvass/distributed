@@ -26,6 +26,10 @@ import distributed.Share.Mail;
 public class ClientHandler extends Thread {
 
     private static volatile long totalUsers = 0;
+
+    private static volatile Object transactionNumberDispenser = new Object();
+    private static volatile long transactionNumber = 0;
+    private static volatile boolean transactionNumber_lock = true;
     private String id;
     private Socket clienSocket = null;
     private Response res = null;
@@ -70,35 +74,49 @@ public class ClientHandler extends Thread {
             greeting = this.res.readMessage();
 
             while(!greeting.equals("q")) {
+                synchronized(transactionNumberDispenser){
+                    while (!transactionNumber_lock) {
+                        try {
+                            transactionNumberDispenser.wait();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                transactionNumber_lock = false;
+                transactionNumber++;
 
                 if(greeting.equals("filter")){
 
                     Filter f = (Filter) this.res.readObject();
-                    Mail request = new Mail(this.id, "bookkeeper", "Filter", f);
+                    Mail request = new Mail(this.id, "bookkeeper", "Filter", f, transactionNumber);
                     
-                    String contents = String.format("Transaction opens from %s", this.id);
-                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
+                    String contents = String.format("Transaction opens from %s with transaction number %ld", this.id, transactionNumber);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents, transactionNumber);
                     
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
 
                 } else if (greeting.equals("hotels")){
-                    Mail request = new Mail(this.id, "bookkeeper", "Message", "hotels");
-                    String contents = String.format("Transaction opens from %s", this.id);
-                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
+                    Mail request = new Mail(this.id, "bookkeeper", "Message", "hotels", transactionNumber);
+                    String contents = String.format("Transaction opens from %s with transaction number %ld", this.id, transactionNumber);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents, transactionNumber);
                     
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
                     
                 } else if(greeting.contains("book")){
                     String[] info = greeting.split(" ");
-                    Mail request = new Mail(this.id, "bookkeeper", "Book", info);
+                    Mail request = new Mail(this.id, "bookkeeper", "Book", info, transactionNumber);
                     this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
                     
                 } else{
                     this.res.changeContents(greeting);
                     this.res.sendMessage();
                 }
+
+                transactionNumber_lock = true;
+                transactionNumberDispenser.notifyAll();
 
                 greeting = this.res.readMessage();
             }
@@ -131,7 +149,7 @@ public class ClientHandler extends Thread {
 
                         String[] contents = (String[]) msg.getContents();
 
-                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents);
+                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents, -1);
                         this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
                     } else if(msg.getSubject().equals("Booked")) {
 
