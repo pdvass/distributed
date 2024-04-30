@@ -66,6 +66,7 @@ public class Worker extends Thread {
 
     public void init(){
         try{
+
             Mail incoming = (Mail) this.req.receiveRequestObject();
             System.out.println(incoming.getSender());
 
