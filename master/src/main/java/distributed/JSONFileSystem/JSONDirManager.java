@@ -3,8 +3,10 @@ package distributed.JSONFileSystem;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -31,9 +33,11 @@ public class JSONDirManager {
      * Can be extended with DFS to organise the folder with subfolders.
      */
     public JSONDirManager(){
+
         logger = new Logger();
         File files = new File(this.path);
-        for(File file : files.listFiles()){
+
+        for(File file : files.listFiles()) {
             if(!file.isDirectory() && getFileExtension(file).equals("json")){
                 this.fileList.add(file);
             }
@@ -43,13 +47,16 @@ public class JSONDirManager {
     private String getFileExtension(File file){
         String fileName = file.getName();
         String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+
         return extension;
     }
 
     public void updateFileList(){
+
         this.fileList.clear();
         File files = new File(this.path);
-        for(File file : files.listFiles()){
+
+        for(File file : files.listFiles()) {
             if(!file.isDirectory() && getFileExtension(file).equals("json")){
                 this.fileList.add(file);
             }
@@ -76,10 +83,13 @@ public class JSONDirManager {
      * @see JSONFileParser#createHotelJSON(String, String)
      */
     public void addHotel(String name, String region, float stars, int n){
+
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
+
         try {
             File newHotel = new File(fileName);
+
             if(newHotel.createNewFile()){
                 System.out.println("New Hotel Added");
                 fileList.add(newHotel);
@@ -91,10 +101,8 @@ public class JSONDirManager {
         }
 
         JSONFileParser parser = new JSONFileParser(fileName);
-
         parser.createHotelJSON(name, region, stars, n);
         
-        // Write to Log
         String contents = String.format("Added hotel %s", name);
         logger.setLevel("info");
         logger.writeToLog(contents);
@@ -115,6 +123,7 @@ public class JSONDirManager {
         // Duplicate with 135 - 145, might need to extract function.
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
+
         JSONFileParser parser = new JSONFileParser(fileName);
         JSONObject data = null;
         try {
@@ -128,6 +137,7 @@ public class JSONDirManager {
         JSONObject room = new JSONObject();
         JSONObject roomInfo = new JSONObject();
         String roomID = name + "Room" + Integer.toString(rooms.size() + 1);
+
         roomInfo.put("id", roomID);
         roomInfo.put("startDate", startDate);
         roomInfo.put("endDate", endDate);
@@ -141,7 +151,7 @@ public class JSONDirManager {
         // would produce another room2 since room.size() -> 1 + 1 = 2.
         // In a while loop we search for the first available unique id, even after 
         // multiple additions and deletions.
-        while(((JSONObject) rooms.getLast()).get("room" + Integer.toString(lastRoom)) != null){
+        while(((JSONObject) rooms.getLast()).get("room" + Integer.toString(lastRoom)) != null) {
             lastRoom++;
         }
         room.put("room" + Integer.toString(lastRoom), roomInfo);
@@ -164,9 +174,11 @@ public class JSONDirManager {
 
     /**
      * Removes a hotel by deleting its corresponding JSON file.
+     * 
      * @param name The name of hotel that is going to be deleeted.
      */
     public void removeHotel(String name){
+
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";    
         try {
@@ -174,6 +186,7 @@ public class JSONDirManager {
             if(newHotel.delete()){
                 System.out.println("Hotel deleted");
             }
+
             this.fileList.stream()
                          .filter(file -> file.getName().equals(newHotel.getName()));
         } catch (Exception e) {
@@ -195,6 +208,7 @@ public class JSONDirManager {
     public void removeRoom(String name, int roomNumber){
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
+
         JSONFileParser parser = new JSONFileParser(fileName);
         JSONObject data = null;
         try {
@@ -206,6 +220,7 @@ public class JSONDirManager {
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
         JSONArray toBeRemoved = new JSONArray();
+
         var index = new Object(){
             int value = 0;
         };
@@ -213,7 +228,8 @@ public class JSONDirManager {
         // If, for some reason, multiple rooms have the same id, all
         // are going to be deleted.
         ((Collection<JSONObject>) rooms).forEach(room -> {
-            for(String key : ( (Set<String>) room.keySet())){
+            for(String key : ( (Set<String>) room.keySet())) {
+
                 if(key.equals(("room" + Integer.toString(roomNumber)))){
                     toBeRemoved.add(rooms.get(index.value));
                 }
@@ -245,17 +261,43 @@ public class JSONDirManager {
      * method is beign invoked.
      * 
      * @return ArrayList with all the hotels manager is directing.
+     * 
      * @throws FileNotFoundException
      * @throws Exception
      */
     public ArrayList<Hotel> getHotels() throws FileNotFoundException, Exception {
+
         ArrayList<Hotel> hotels = new ArrayList<>();
         for(File f : fileList){
             JSONFileParser parser = new JSONFileParser(this.path + f.getName());
             JSONObject data = parser.parseFile();
+
             hotels.add(parser.iterateJSON(data));
         }
         return hotels;
+    }
+
+    /**
+     * Get the hotel that is saved in {@link #fileList} at the moment this
+     * method is beign invoked.
+     * 
+     * @param name The name of the hotel.
+     * @return The hotel object corresponding to the name.
+     * 
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
+    public Hotel getHotel(String name) throws FileNotFoundException, Exception{
+
+        Hotel hotel = null;
+        String hotelPath = this.path + name + ".json";
+        for(File f : fileList) {
+            JSONFileParser parser = new JSONFileParser(hotelPath + f.getName());
+            JSONObject data = parser.parseFile();
+
+            hotel = parser.iterateJSON(data);
+        }
+        return hotel;
     }
 
     ///////////////////////////// LOGGING /////////////////////////////
@@ -295,19 +337,23 @@ public class JSONDirManager {
      */
     @SuppressWarnings("unchecked")
     public void addReview(String name, float review){
+
         if (review < 0 || review > 5) {
             System.out.println("Review must be at least 0 with a maximum of 5 stars.");
             return;
         }
+
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
+
         File reviewdFile = null;
-        for(File f : this.fileList){
+        for(File f : this.fileList) {
             // System.out.println(f.getPath() + " " + fileName);
             if(f.getPath().equals(fileName)){
                 reviewdFile = f;
             }
         }
+
         if(reviewdFile == null){
             this.logError(String.format("Hotel %s not found, to add a review.", name));
             return;
@@ -325,10 +371,12 @@ public class JSONDirManager {
                 System.out.println(e.getMessage());
                 return;
             }
+
             double stars = (double) ((JSONObject) data.get(name)).get("stars");
             long n = (long) ((JSONObject) data.get(name)).get("nOfReviews");
             double newStars = ((stars * n) + review) / (n + 1);
             BigDecimal newStarsRounded = new BigDecimal(newStars).setScale(2, RoundingMode.UP);
+            
             ((JSONObject) data.get(name)).remove("stars");
             ((JSONObject) data.get(name)).remove("nOfReviews");
             ((JSONObject) data.get(name)).put("stars", newStarsRounded);

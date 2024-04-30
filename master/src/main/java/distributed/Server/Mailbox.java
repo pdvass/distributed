@@ -18,6 +18,7 @@ import distributed.JSONFileSystem.JSONDirManager;
  * @author pdvass
  */
 public class Mailbox extends Thread {
+
     private static volatile HashMap<HandlerTypes, ArrayList<Mail>> messages = null;
     // For bigger app, every type of user, would have its own message queue, or even 
     // multiple per type.
@@ -25,6 +26,9 @@ public class Mailbox extends Thread {
     // private static volatile ArrayList<String> managerMessages                 = null;
     // private static volatile HashMap<String, ArrayList<Tuple>> workerMessages = null;
     private JSONDirManager manager = new JSONDirManager();
+
+    // Locks which give access to each handler that has them
+    // the ability to write to messages and read respectively.
     private static volatile boolean write_lock = true;
     private static volatile boolean read_lock = true;
 
@@ -33,7 +37,7 @@ public class Mailbox extends Thread {
         // access this Constructor is responsible for creating the shared space.
         if(messages == null){
             messages = new HashMap<>();
-            for(HandlerTypes type : HandlerTypes.values()){
+            for(HandlerTypes type : HandlerTypes.values()) {
                 messages.put(type, new ArrayList<>());
             }
         }
@@ -45,9 +49,10 @@ public class Mailbox extends Thread {
      * @param type Type of handler trying to access the mail.
      * @return The mails directed to the handler.
      */
-    protected  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+    public  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+
         synchronized (messages){
-            while(!read_lock){
+            while(!read_lock) {
                 try {
                     messages.wait();
                 } catch (InterruptedException e){
@@ -55,27 +60,29 @@ public class Mailbox extends Thread {
                 }
             }
             read_lock = false;
+
+            // Each handler reads all the mails, keeps every mail that
+            // is directed to him and is responsible for adding all other
+            // mails back to shared spaces, for other handlers to repeat the process.
             @SuppressWarnings("unchecked")
             ArrayList<Mail> mails = (ArrayList<Mail>) messages.get(type).clone();
             ArrayList<Mail> directedTo = new ArrayList<>();
             ArrayList<Mail> notDirectedTo = new ArrayList<>();
-            if(!mails.isEmpty() && type.equals(HandlerTypes.CLIENT)){
-                for(Mail mail : mails){
-                    if(mail.getRecipient().equals(callerID)){
-                        directedTo.add(mail);
-                    } else {
-                        notDirectedTo.add(mail);
-                    }
-                    
+            
+            for(Mail mail : mails) {
+                if(mail.getRecipient().equals(callerID)){
+                    directedTo.add(mail);
+                } else {
+                    notDirectedTo.add(mail);
                 }
-            } else {
-                directedTo = mails;
+                
             }
+
             messages.get(type).clear();
             messages.get(type).addAll(notDirectedTo);
             read_lock = true;
             messages.notifyAll();
-            // return mails;
+
             return directedTo;
         }
     }
@@ -86,9 +93,10 @@ public class Mailbox extends Thread {
      * @param type The type of Handler 
      * @param message The message for the handler.
      */
-    protected void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
+    public void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
+
         synchronized (messages){
-            while(!write_lock){
+            while(!write_lock) {
                 try {
                     messages.wait();
                 } catch (InterruptedException e){
@@ -96,12 +104,16 @@ public class Mailbox extends Thread {
                 }
             }
             write_lock = false;
-            // this.read_lock = false;
             String log = String.format("%s left a message to %s", fromType.toString(), toType.toString());
             manager.logInfo(log);
+            
             switch (mail.getSubject()) {
+                // May need to clean up.
                 case "Message":
                 case "Filter":
+                case "room":
+                case "Book":
+                case "Booked":
                     messages.get(toType).add(mail);
                     break;
                 case "Transaction":
@@ -110,7 +122,6 @@ public class Mailbox extends Thread {
                     break;
             }
             write_lock = true;
-            // this.read_lock = true;
             messages.notifyAll();
             return;
         }

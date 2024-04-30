@@ -1,18 +1,18 @@
-package distributed.Client;
+package distributed.Reducer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * TCPClient is used to communicate with the server and send GET requests for the Worker.
+ * ReducerClient is used to communicate with the manager and server and receives objects from the Workers.
  * 
- * @author pdvass
+ * @author stellagianno
+ * @author panagou
  */
-public class TCPClient {
+public class ReducerClient {
 
     private Socket clientSocket = null;
     private ObjectInputStream ois = null;
@@ -21,7 +21,7 @@ public class TCPClient {
     /**
      * Default constructor
      */
-    public TCPClient(){}
+    public ReducerClient(){}
 
     /**
      * Starts the conection with the server given an IP address and the port.
@@ -39,8 +39,7 @@ public class TCPClient {
     }
 
     /**
-     * Send a string message to the server. Mainly used for the type of 
-     * request that the worker wants to make.
+     * Send a string message to the server. 
      * 
      * @param msg String message the client wants to send.
      * @throws IOException
@@ -63,22 +62,6 @@ public class TCPClient {
     }
 
     /**
-     * Reveive an Object from the server. The client is responsible for
-     * understanding what this object is.
-     * 
-     * @return An Object response from the server.
-     */
-    public Object receiveObject(){
-        Object obj = null;
-        try {
-            obj = this.ois.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-        return obj;
-    }
-
-    /**
      * Send an Object to the server. The server is responsible for
      * understanding what the Object is. The Object must be serializable.
      *  
@@ -94,7 +77,7 @@ public class TCPClient {
     }
 
     /**
-     * Stop the TCPClient.
+     * Stop the ReducerClient.
      * 
      * @throws IOException
      */
@@ -103,4 +86,5 @@ public class TCPClient {
         this.ois.close();
         clientSocket.close();
     }
+
 }

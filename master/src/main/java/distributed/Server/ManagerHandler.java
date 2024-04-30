@@ -3,7 +3,9 @@ package distributed.Server;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import distributed.Bookkeeper;
 import distributed.Share.Mail;
@@ -20,6 +22,7 @@ import distributed.Share.Mail;
  * @author pdvass
  */
 public class ManagerHandler extends Thread {
+
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
@@ -36,6 +39,8 @@ public class ManagerHandler extends Thread {
         while (true) {
             try {
                 String request = res.readMessage();
+                System.out.println(request);
+
                 switch (request) {
                     case "users":
                         res.changeContents(this.getUsers());
@@ -53,8 +58,27 @@ public class ManagerHandler extends Thread {
                             this.res.changeContents(empty);
                             this.res.sendObject();
                         }
+
                         Mail finalMsg = new Mail("worker", "manager", "Message", "-1");
                         this.res.changeContents(finalMsg);
+                        this.res.sendObject();
+                        break;
+                    case "show":
+                        Object filter = this.res.readObject();
+                        Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter);
+                        this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, managerRequest);
+                        
+                        ArrayList<Mail> bookings = new ArrayList<Mail>();
+                        while(bookings.isEmpty()){
+                            bookings = this.mailbox.checkMail(this.type, "manager");
+                        }
+                        
+                        @SuppressWarnings("unchecked") 
+                        TreeMap<String, Long> ans = (TreeMap<String, Long>) bookings.get(0).getContents();
+                        System.out.println(ans.size());
+                        
+                        ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
+                        this.res.changeContents(ans);
                         this.res.sendObject();
                         break;
                     default:

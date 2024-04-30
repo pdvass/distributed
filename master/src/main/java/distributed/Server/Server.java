@@ -3,10 +3,13 @@ package distributed.Server;
 import java.io.*;
 import java.net.*;
 
-
+/**
+ * @author panagou
+ * @author stellagianno
+ */
 public class Server extends Thread {
-    private ServerSocket serverSocket = null;
 
+    private ServerSocket serverSocket = null;
     private final int PORT = 4555;
 
     public void run(){
@@ -18,21 +21,16 @@ public class Server extends Thread {
     }
 
     public void init(int port) throws IOException{
+
         this.serverSocket = new ServerSocket(port);
         this.serverSocket.setReuseAddress(true);
 
-
-        while(true){
+        while(true) {
             Socket client = serverSocket.accept();
-
             Response res = new Response(client, null);
-
-            // Figure out type of connections made.
             
             String msg = res.readMessage();
 
-            
-            
             if(msg.equals("user connection")){
                 res.changeContents("client connected");
                 res.sendMessage();
@@ -57,6 +55,13 @@ public class Server extends Thread {
                 Thread response = new Thread(responseSocket);
                 response.start();
 
+            } else if(msg.equals("reducer connection")){
+                res.changeContents("reducer connected");
+                res.sendMessage();
+
+                ReducerHandler responseSocket = new ReducerHandler(client, res);
+                Thread response = new Thread(responseSocket);
+                response.start();
             }
         }
     }

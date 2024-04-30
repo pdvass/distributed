@@ -17,6 +17,7 @@ import java.net.Socket;
  * @author pdvass
  */
 public class Response extends Thread {
+    
     private Socket connection = null;
     private Object contents;
     private ObjectInputStream ois = null;
@@ -44,14 +45,14 @@ public class Response extends Thread {
      * 
      * @param newContents Contents of the message abstracted to an Object.
      */
-    protected void changeContents(Object newContents){
+    public void changeContents(Object newContents){
         this.contents = newContents;
     }
     
     /**
      * Sends an Object through the enstablished connection.
      */
-    protected void sendObject() throws IOException{
+    public void sendObject() throws IOException{
         this.oos.writeObject(this.contents);
         this.oos.flush();
     }
@@ -59,7 +60,7 @@ public class Response extends Thread {
     /**
      * Receives a Object through the enstablished connection.
      */
-    protected Object readObject(){
+    public Object readObject(){
         Object obj = null;
         try {
             obj =  this.ois.readObject();
@@ -74,7 +75,7 @@ public class Response extends Thread {
      *
      * @throws IOException
      */
-    protected String readMessage() throws IOException {
+    public String readMessage() throws IOException {
         String response = this.ois.readUTF();
         return response;
     }
@@ -85,12 +86,12 @@ public class Response extends Thread {
      *
      * @throws IOException
      */
-    protected void sendMessage() throws IOException {
+    public void sendMessage() throws IOException {
         this.oos.writeUTF((String) this.contents);
         this.oos.flush();
     }
 
-    protected void close() throws IOException{
+    public void close() throws IOException{
         this.ois.close();
         this.oos.close();
         this.connection.close();

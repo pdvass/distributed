@@ -1,7 +1,6 @@
 package distributed.Share;
 
 import java.io.IOException;
-
 import distributed.Client.TCPClient;
 
 /**
@@ -14,6 +13,7 @@ import distributed.Client.TCPClient;
  * @author pdvass
  */
 public class Request {
+
     private TCPClient connection = null;
     private Object contents = null;
 

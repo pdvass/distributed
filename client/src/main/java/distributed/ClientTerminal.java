@@ -2,6 +2,7 @@ package distributed;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,18 +34,21 @@ public class ClientTerminal {
     public ClientTerminal(){}
 
     public void run() throws UnknownHostException, IOException{
+
         TCPClient client = new TCPClient();
         client.startConnection("localhost", 4555);
 
         this.req = new Request(client, "user connection");
         this.req.sendMessage();
-        if(!this.req.receiveMessage().equals("client connected")){
+
+        if(!this.req.receiveMessage().equals("client connected")) {
             System.out.println("Could not connect. Please try again later.");
             return;
         }
 
         System.out.println("Welcome to out Booking agency. Type list for available commands.");
         System.out.print("> ");
+
         Scanner scanner = new Scanner(System.in);
         String msg = scanner.nextLine();
         
@@ -56,8 +60,10 @@ public class ClientTerminal {
                 case "filter":
                     this.req.changeContents("filter");
                     this.req.sendMessage();
+
                     String[] tokens = msg.split(" ");
                     Filter filter = new Filter(tokens);
+
                     this.req.changeContents(filter);
                     this.req.sendRequestObject();
                     try{
@@ -73,6 +79,7 @@ public class ClientTerminal {
                 case "hotels":
                     this.req.changeContents("hotels");
                     this.req.sendMessage();
+
                     try{
                         // We already know from server side, that we need to cast to List<String>
                         @SuppressWarnings("unchecked")
@@ -85,6 +92,18 @@ public class ClientTerminal {
                     break;
                 case "book":
                     System.out.println("Booking the room for you");
+                    // book roomID dates:[dd/MM/yyyy-dd/MM/yyyy]
+                    this.req.changeContents(msg);
+                    this.req.sendMessage();
+
+                    String answer = this.req.receiveMessage();
+                    System.out.println(answer);
+
+                    if(answer.equals("Booked successfully")) {
+                        System.out.println("This room is now booked");
+                    } else {
+                        System.out.println("This room wasn't available the dates you wanted.");
+                    }
                     break;
                 case "h":
                     System.out.println("Helped you");
@@ -92,15 +111,7 @@ public class ClientTerminal {
                 case "commands":
                     System.out.println(this.commands);
                     break;
-                case "say":
-                    this.req.changeContents(msg);
-                    this.req.sendMessage();
-                    System.out.println("Message sent!");
-                    break;
                 default:
-                    this.req.changeContents(msg);
-                    this.req.sendMessage();
-                    System.out.println(this.req.receiveMessage());
                     break;
             }
 
@@ -110,28 +121,32 @@ public class ClientTerminal {
 
         this.req.changeContents("q");
         this.req.sendMessage();
+
         client.stop();
         scanner.close();
     }
 
     public String getCommand(String command){
+
         String[] tokens = command.split(" ");
         
         switch (tokens[0]) {
             case "get":
 
-                if(tokens.length < 2){
+                if(tokens.length < 2) {
                     System.out.println("Not enough arguments");
                     return "";
                 }
 
-                if(command.contains("filter")){
+                if(command.contains("filter")) {
                     return "filter";
                 }
 
-                if(tokens[1].equals("hotels") && tokens.length == 2){
+                if(tokens[1].equals("hotels") && tokens.length == 2) {
                     return "hotels";
                 }
+                
+                return "";
             case "book":
                 return "book";
             case "commands":

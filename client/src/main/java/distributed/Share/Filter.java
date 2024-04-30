@@ -1,8 +1,9 @@
 package distributed.Share;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,7 +15,6 @@ import java.util.Date;
 public class Filter implements Serializable {
     
     private static final long serialVersionUID = 290320241224L;
-
     private String region = "";
     private Date[] dateRange = new Date[2];
     private float stars = -1;
@@ -36,13 +36,13 @@ public class Filter implements Serializable {
             e.printStackTrace();
         }
 
-        for(String filter : filters ){
+        for(String filter : filters ) {
             if (filter.contains("region")) {
                 String[] reg = filter.split(":");
                 this.region = reg[1];
             }
 
-            if(filter.contains("dates")){
+            if(filter.contains("dates")) {
                 String[] dates = filter.split(":")[1]
                                     .replace("[", "")
                                     .replace("]", "")
@@ -57,11 +57,11 @@ public class Filter implements Serializable {
                 }
             }
 
-            if(filter.contains("stars")){
+            if(filter.contains("stars")) {
                 this.stars = Float.parseFloat(filter.split(":")[1]);
             }
 
-            if(filter.contains("nOfPersons")){
+            if(filter.contains("nOfPersons")) {
                 this.nOfPersons = Integer.parseInt(filter.split(":")[1]);
             }
         }

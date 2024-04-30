@@ -3,11 +3,11 @@ package distributed.Share;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import distributed.Estate.Hotel;
 import distributed.Estate.Room;
 
 /**
@@ -17,8 +17,8 @@ import distributed.Estate.Room;
  * @author pdvass
  */
 public class Filter implements Serializable {
-    private static final long serialVersionUID = 290320241224L;
 
+    private static final long serialVersionUID = 290320241224L;
     private String region = "";
     private Date[] dateRange = new Date[2];
     private float stars = -1;
@@ -34,7 +34,7 @@ public class Filter implements Serializable {
             e.printStackTrace();
         }
 
-        for(String filter : filters ){
+        for(String filter : filters ) {
             if (filter.contains("region")) {
                 String[] reg = filter.trim().split(":");
                 this.region = reg[1];
@@ -87,34 +87,59 @@ public class Filter implements Serializable {
         return this.dateRange[0].toString() + " and " + this.dateRange[1].toString();
     }
 
-    ////////////////////////// GETTERS //////////////////////////
-
-    ////////////// UNIQUE TO WORKER //////////////
+    ////////////////// GETTERS //////////////////
+    ////////////// UNIQUE TO WORKER /////////////
 
     /**
-     * Applies filters to Hotel List.
+     * Applies filters to Room List.
      * 
-     * @return A list of all the hotels.
+     * @return A list of all the rooms.
      * 
-     * @see Hotel
+     * @see Room
      */
     public final List<Room> applyFilter(List<Room> hotels){
         // We use a more fuctional way of creating list, by initializing a stable state hotel list
         // and creating a new one first by which hotel satisfies the filter predicates, if there are any.
         List<Room> filteredHotels = hotels.stream()
-                        .filter(hotel -> (hotel.getHotelsRegion().equals(this.region) || this.region.equals("")))
-                        .filter(hotel -> (hotel.getHotelsStars() >= this.stars || this.stars == -1))
-                        .filter( room -> (
-                                (    
-                                        room.getStartDate().before(this.dateRange[0])  
-                                    || room.getStartDate().equals(this.dateRange[0])
-                                )
-                                    && room.getEndDate().after(this.dateRange[1])
-                                ))
-                        .filter(room -> (room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1))
+                        .filter(hotel -> hotel.getHotelsRegion().equals(this.region) || this.region.equals(""))
+                        .filter(hotel -> hotel.getHotelsStars() >= this.stars || this.stars == -1)
+                        .filter(room -> ( room.getStartDate().before(this.dateRange[1])  
+                                         ||  room.getStartDate().equals(this.dateRange[1]) ))
+                        .filter(room -> room.getEndDate().after(this.dateRange[0]) )
+                        .filter(room -> room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1)
                         .collect(Collectors.toList());
 
+        // System.out.println(this.getDateRangeString());
+        // System.out.println(this.dateRange[0].toString() + " " + this.dateRange[1].toString());
+        // hotels.stream().forEach(room -> {
+        //     System.out.println(room.getStartDate().toString() + " before " + this.dateRange[0].toString());
+        //     System.out.println(room.getStartDate().before(this.dateRange[0])  
+        //                     ||  room.getStartDate().equals(this.dateRange[0]) );
+        // });
         return filteredHotels;
     }
-    ////////////// UNIQUE TO WORKER //////////////
+
+    public final List<Room> applyManagerFilter(List<Room> hotels){
+        // We use a more fuctional way of creating list, by initializing a stable state hotel list
+        // and creating a new one first by which hotel satisfies the filter predicates, if there are any.
+        List<Room> filteredHotels = hotels.stream()
+                        .filter(hotel -> hotel.getHotelsRegion().equals(this.region) || this.region.equals(""))
+                        .filter(hotel -> hotel.getHotelsStars() >= this.stars || this.stars == -1)
+                        .filter(room -> ( room.getStartDate().after(this.dateRange[0])
+                                         ||  room.getStartDate().equals(this.dateRange[0]) ))
+                        .filter(room -> room.getEndDate().before(this.dateRange[1])
+                                        ||  room.getEndDate().equals(this.dateRange[1]))
+                        .filter(room -> room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1)
+                        .collect(Collectors.toList());
+
+        // System.out.println(this.getDateRangeString());
+        // System.out.println(this.dateRange[0].toString() + " " + this.dateRange[1].toString());
+        // hotels.stream().forEach(room -> {
+        //     System.out.println(room.getStartDate().toString() + " before " + this.dateRange[0].toString());
+        //     System.out.println(room.getStartDate().before(this.dateRange[0])  
+        //                     ||  room.getStartDate().equals(this.dateRange[0]) );
+        // });
+        return filteredHotels;
+    }
+
 }

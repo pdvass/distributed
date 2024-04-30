@@ -7,8 +7,6 @@ import java.util.List;
 
 import distributed.Bookkeeper;
 import distributed.Estate.Room;
-// import distributed.Estate.Hotel;
-import distributed.JSONFileSystem.JSONDirManager;
 import distributed.Share.Filter;
 import distributed.Share.Mail;
 
@@ -23,21 +21,24 @@ import distributed.Share.Mail;
  * @see Response
  * 
  * @author pdvass
+ * @author stellagianno
  */
 public class ClientHandler extends Thread {
+
     private static volatile long totalUsers = 0;
     private String id;
     private Socket clienSocket = null;
     private Response res = null;
-    private Bookkeeper bookkeeper = new Bookkeeper();
     private Mailbox mailbox = null;
     private HandlerTypes type = HandlerTypes.CLIENT;
+    private Bookkeeper bookkeeper = new Bookkeeper();
 
     public ClientHandler(Socket socket, Response res){
         this.clienSocket = socket;
         this.res = res;
         this.bookkeeper.addUser();
         this.mailbox = new Mailbox();
+
         if(totalUsers == Long.MAX_VALUE){
             totalUsers = 0;
         }
@@ -58,69 +59,53 @@ public class ClientHandler extends Thread {
         try{
             t.join();
             t1.join();
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void send() {
+    public void send(){
         try {
             String greeting;
-            // greeting = this.ois.readUTF();
             greeting = this.res.readMessage();
-                
 
-            while(!greeting.equals("q")){
+            while(!greeting.equals("q")) {
 
-                // NOTE: better if refactored to switch
-                if(greeting.equals("filter")) {
+                if(greeting.equals("filter")){
 
                     Filter f = (Filter) this.res.readObject();
-                    // System.out.println("Got a filter");
-                    
-                    Mail request = new Mail(this.id, "worker", "Filter", f);
+                    Mail request = new Mail(this.id, "bookkeeper", "Filter", f);
                     
                     String contents = String.format("Transaction opens from %s", this.id);
                     Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
                     
-                    // Always run the transaction first.
-                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, transaction);  
-                    this.mailbox.addMessage(this.type, HandlerTypes.WORKER, request);
-                    
-                    // this.sendObject(filteredHotelsStrings);
-                    // this.res.changeContents(filteredHotelsStrings);
-                    // this.res.sendObject();
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
+
                 } else if (greeting.equals("hotels")){
-                    JSONDirManager manager = new JSONDirManager();
-                    List<String> hotels = new ArrayList<>();
-                    try {
-                        manager.getHotels().stream().forEach(hotel -> hotels.add(hotel.toString()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        // System.out.println(e.getMessage());
-                    } 
-                    // this.sendObject(hotels);
-                    this.res.changeContents(hotels);
-                    this.res.sendObject();
-                } else if(greeting.contains("say")) {
-                    String said = this.id + " says: " + greeting.substring(4);
-                    Mail request = new Mail(this.id, "manger", "Message", said);
-                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, request);
+                    Mail request = new Mail(this.id, "bookkeeper", "Message", "hotels");
+                    String contents = String.format("Transaction opens from %s", this.id);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
                     
-                } else {
-                    // System.out.println(greeting);
-                    // this.sendMessage(greeting);
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
+                    this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
+                    
+                } else if(greeting.contains("book")){
+                    String[] info = greeting.split(" ");
+                    Mail request = new Mail(this.id, "bookkeeper", "Book", info);
+                    this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
+                    
+                } else{
                     this.res.changeContents(greeting);
                     this.res.sendMessage();
                 }
 
-                // greeting = this.ois.readUTF();
                 greeting = this.res.readMessage();
             }
 
             this.close();
 
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -128,19 +113,48 @@ public class ClientHandler extends Thread {
     public void checkMail(){
         while (true) {
             ArrayList<Mail> msgs = this.mailbox.checkMail(this.type, this.id);
+
             if(!msgs.isEmpty()){
-                // System.out.println("Got a message for client size->" + msgs.size());
-                for(Mail msg : msgs){
-                    // We know that the workers send Lists of Rooms.
-                    @SuppressWarnings("unchecked")
-                    List<Room> response = (List<Room>) msg.getContents();
-                    ArrayList<String> toClient = new ArrayList<String>();
-                    response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
-                    this.res.changeContents(toClient);
-                    try {
-                        this.res.sendObject();
-                    } catch (IOException e) {
-                        System.out.println("Could not send results to client" + this.id);
+                for(Mail msg : msgs) {
+
+                    if(msg.getSubject().equals("Book")){
+
+                        if(msg.getContents() == null){
+                            this.res.changeContents("No room available");
+                            try {
+                                this.res.sendMessage();
+                                continue;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        String[] contents = (String[]) msg.getContents();
+
+                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents);
+                        this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
+                    } else if(msg.getSubject().equals("Booked")) {
+
+                        this.res.changeContents("Booked successfully");
+                        try {
+                            this.res.sendMessage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // We know the server sides leaves the messages as List<Room> 
+                        @SuppressWarnings("unchecked")
+                        List<Room> response = (List<Room>) msg.getContents();
+                        ArrayList<String> toClient = new ArrayList<String>();
+
+                        response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
+                        this.res.changeContents(toClient);
+                        
+                        try {
+                            this.res.sendObject();
+                        } catch (IOException e) {
+                            System.out.println("Could not send results to client" + this.id);
+                        }
                     }
                 }
             }
