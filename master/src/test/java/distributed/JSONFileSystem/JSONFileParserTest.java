@@ -35,7 +35,8 @@ public class JSONFileParserTest {
                 ],
                 "region": "Metaksourgio",
                 "stars":3,
-                "nOfReviews":15
+                "nOfReviews":15,
+                "path": "C:\\Users\\User\\Documents\\AUEB.pergamos.png"
                 }
             }
                 """;

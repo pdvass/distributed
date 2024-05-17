@@ -39,6 +39,7 @@ public class Room implements Serializable {
     private long totalBookings;
     private String hotelsRegion;
     private float hotelsStars;
+    private String hotelsImage;
 
     public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
         this.name = name;
@@ -194,9 +195,13 @@ public class Room implements Serializable {
         return this.totalBookings;
     }
 
+    public String getHotelsImage(){
+        return this.hotelsImage;
+    }
+
     public String toString(){
-        String r = String.format("Hotel %s: room %d. Has a capacity of %d people, costs %.2f per night and is located in %s.", 
-                    this.name, this.getIntId(), this.nOfPeople, this.cost, this.hotelsRegion);
+        String r = String.format("Hotel's Image is %s. \nHotel %s: room %d. Has a capacity of %d people, costs %.2f per night and is located in %s.", 
+                    this.hotelsImage, this.name, this.getIntId(), this.nOfPeople, this.cost, this.hotelsRegion);
         return r;
     }
 
