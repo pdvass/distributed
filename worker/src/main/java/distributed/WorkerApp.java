@@ -1,21 +1,17 @@
 package distributed;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
+import java.io.*;
 
 /**
- * Entry point for the Worker.
- * 
+ * Worker's entry point
+ *
  */
 public class WorkerApp 
 {
-    public static void main( String[] args ) throws UnknownHostException, IOException
-    {        
-        System.out.println( "Hello, I am Worker" );
-
+    public static void main(String[ ] args) throws IOException
+    {
         Worker worker = new Worker();
-
-        Thread workerThread = new Thread(worker);
-        workerThread.start();
+        worker.start();
     }
+
 }

@@ -18,6 +18,7 @@ import distributed.JSONFileSystem.JSONDirManager;
  * @author pdvass
  */
 public class Mailbox extends Thread {
+
     private static volatile HashMap<HandlerTypes, ArrayList<Mail>> messages = null;
     // For bigger app, every type of user, would have its own message queue, or even 
     // multiple per type.
@@ -36,7 +37,7 @@ public class Mailbox extends Thread {
         // access this Constructor is responsible for creating the shared space.
         if(messages == null){
             messages = new HashMap<>();
-            for(HandlerTypes type : HandlerTypes.values()){
+            for(HandlerTypes type : HandlerTypes.values()) {
                 messages.put(type, new ArrayList<>());
             }
         }
@@ -48,9 +49,10 @@ public class Mailbox extends Thread {
      * @param type Type of handler trying to access the mail.
      * @return The mails directed to the handler.
      */
-    public  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+    public ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+
         synchronized (messages){
-            while(!read_lock){
+            while(!read_lock) {
                 try {
                     messages.wait();
                 } catch (InterruptedException e){
@@ -67,7 +69,7 @@ public class Mailbox extends Thread {
             ArrayList<Mail> directedTo = new ArrayList<>();
             ArrayList<Mail> notDirectedTo = new ArrayList<>();
             
-            for(Mail mail : mails){
+            for(Mail mail : mails) {
                 if(mail.getRecipient().equals(callerID)){
                     directedTo.add(mail);
                 } else {
@@ -92,8 +94,9 @@ public class Mailbox extends Thread {
      * @param message The message for the handler.
      */
     public void addMessage(HandlerTypes fromType, HandlerTypes toType, Mail mail){
+
         synchronized (messages){
-            while(!write_lock){
+            while(!write_lock) {
                 try {
                     messages.wait();
                 } catch (InterruptedException e){
@@ -103,6 +106,7 @@ public class Mailbox extends Thread {
             write_lock = false;
             String log = String.format("%s left a message to %s", fromType.toString(), toType.toString());
             manager.logInfo(log);
+            
             switch (mail.getSubject()) {
                 // May need to clean up.
                 case "Message":

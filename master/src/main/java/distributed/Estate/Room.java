@@ -1,20 +1,24 @@
 package distributed.Estate;
 
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.List;
 import java.util.TreeMap;
+
+import java.nio.charset.StandardCharsets;
+import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * The room class mainly needed for keeping information about when a room object is 
@@ -24,13 +28,12 @@ import java.util.TreeMap;
  * @see Hotel
  */
 public class Room implements Serializable {
-    private static final long serialVersionUID = 80420241743L;
 
+    private static final long serialVersionUID = 80420241743L;
     private String name;
     private byte[] id;
     private Date startDate;
     private Date endDate;
-    // NOTE: Should add functionality for people
     private int nOfPeople;
     private float cost;
     private TreeMap<LocalDate, Integer> rangeMap;
@@ -42,10 +45,12 @@ public class Room implements Serializable {
     protected float hotelsStars;
     @SuppressWarnings("unused")
     private String hotelsRegion;
+    private String hotelImage;
     
     
 
-    public Room(String name, String startDate, String endDate, float cost, int nOfPeople, String hotelsReg, float hotelsStars){
+    public Room(String name, String startDate, String endDate, float cost, int nOfPeople, String hotelsReg, float hotelsStars, String hotelImage){
+
         this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
@@ -61,7 +66,6 @@ public class Room implements Serializable {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
-
         
         List<LocalDate> range = this.produceDateRange(this.startDate, this.endDate);
         this.rangeMap = new TreeMap<LocalDate,Integer>();
@@ -73,20 +77,21 @@ public class Room implements Serializable {
         this.cost = cost;
         this.hotelsRegion = hotelsReg;
         this.hotelsStars = hotelsStars;
+        this.hotelImage = hotelImage;
         this.totalBookings = 0;
     }
 
     /**
      * Books the room by mutating the internal state of its available dates list. The range is
      * inclusive - exclusive.
+     * 
      * @param from Date representing the first day of which the room need to be booked.
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
      */
-    public void book(Date from, Date to) {
+    public void book(Date from, Date to){
         // NOTE: Should be synchronized
         List<LocalDate> range = this.produceDateRange(from, to);
-
         range.stream().forEach(date -> this.rangeMap.put(date, this.rangeMap.get(date) + 1));
     }
 
@@ -107,8 +112,10 @@ public class Room implements Serializable {
     /**
      * Internal tool for producing a {@link List} with all the dates between the
      * date range given, as its values.
+     * 
      * @param from Date representing the first day the range.
      * @param to Date representing the last day the range. It is not added to the list.
+     * 
      * @return A list with all the Dates ranging between first and last date as {@link LocalDate}s
      * 
      * @see Room#book(Date, Date)
@@ -131,6 +138,7 @@ public class Room implements Serializable {
 
     /**
      * Getter for the hash of the room's id as a String.
+     * 
      * @return String of the hash.
      */
     public String getId(){
@@ -138,9 +146,9 @@ public class Room implements Serializable {
     }
 
     /**
-     * Getter for the hash of the room's id as an int. Useful if
-     * combined with modulo operation determine which worker should
-     * have the room/
+     * Getter for the hash of the room's id as an int. Useful if combined with 
+     * modulo operation determine which worker should have the room.
+     * 
      * @return Integer of the hash.
      */
     public int getIntId(){
@@ -167,21 +175,33 @@ public class Room implements Serializable {
         return this.cost;
     }
 
+    public String getPath(){
+        return this.hotelImage;
+    }
+
     @Override
     public String toString(){
+
         StringBuilder sb = new StringBuilder();
         String hotelName = this.name.replaceFirst("Room\\d", "");
-        // https://www.regular-expressions.info/unicode.html
-        // Link to show how it works:
-        //  https://regex101.com/r/QsUvXF/1
+        // // https://www.regular-expressions.info/unicode.html
+        // // Link to show how it works:
+        // //  https://regex101.com/r/QsUvXF/1
         hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
-        String intro = String.format("\u2022 Room %s belongs to hotel \"%s\". ", this.name, hotelName);
-        sb.append(intro);
-        String info = String.format("It costs %.2f per night and it is available from %tD to %tD. It can host up to %d people.\n",  
-                            this.cost, this.startDate, this.endDate, this.nOfPeople );
+
+        // String intro = String.format("\u2022 Room %s belongs to hotel \"%s\". ", this.name, hotelName);
+        // sb.append(intro);
+
+        // String info = String.format("It costs %.2f per night and it is available from %tD to %tD. It can host up to %d people.\n",  
+        //                     this.cost, this.startDate, this.endDate, this.nOfPeople );
+        // sb.append(info);
+
+        // String bookInfo = String.format("  To book it enter code %d with the date range you want to book it.\n", this.getIntId());
+        // sb.append(bookInfo);
+
+        String info = this.getPath() +" "+ hotelName +" "+ this.name +" "+ this.cost +" "+ this.startDate +" "+ this.endDate +" "+ this.nOfPeople +" "+ this.getIntId();
         sb.append(info);
-        String bookInfo = String.format("  To book it enter code %d with the date range you want to book it.\n", this.getIntId());
-        sb.append(bookInfo);
+
         return sb.toString();
     }
 

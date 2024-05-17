@@ -2,8 +2,10 @@ package distributed.Share;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,25 +22,26 @@ import distributed.JSONFileSystem.JSONDirManager;
  * @author pdvass
  */
 public class Filter implements Serializable {
-    private static final long serialVersionUID = 290320241224L;
 
+    private static final long serialVersionUID = 290320241224L;
     private String region = "";
     private Date[] dateRange = new Date[2];
     private float stars = -1;
     private int nOfPersons = -1;
     
     public Filter(String[] filters){
-        try {
+        try{
             // Infinity-like parameters to initialise the dateRange array. If dates are given as
             // a filter, then they are "relaxed".
             dateRange[0] = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/9999");
             dateRange[1] = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2002");
-        } catch (ParseException e) {
+        } catch (ParseException e){
             e.printStackTrace();
         }
 
-        for(String filter : filters ){
-            if (filter.contains("region")) {
+        for(String filter : filters ) {
+
+            if (filter.contains("region")){
                 String[] reg = filter.trim().split(":");
                 this.region = reg[1];
             }
@@ -68,8 +71,6 @@ public class Filter implements Serializable {
         }
     }
 
-    ////////////////////////// GETTERS //////////////////////////
-
     public String getRegion(){
         return this.region;
     }
@@ -90,9 +91,8 @@ public class Filter implements Serializable {
         return this.dateRange[0].toString() + " and " + this.dateRange[1].toString();
     }
 
-    ////////////////////////// GETTERS //////////////////////////
-
-    ////////////// UNIQUE TO SERVER //////////////
+    ////////////////// GETTERS //////////////////
+    ////////////// UNIQUE TO SERVER /////////////
 
     /**
      * Applies filters to Hotel List.
@@ -103,6 +103,7 @@ public class Filter implements Serializable {
      * @see JSONDirManager
      */
     public final List<Hotel> applyFilter(){
+
         JSONDirManager manager = new JSONDirManager();
         ArrayList<Hotel> hotels = new ArrayList<>();
         try {
@@ -146,5 +147,5 @@ public class Filter implements Serializable {
 
         return filteredHotels;
     }
-    ////////////// UNIQUE TO SERVER //////////////
+
 }

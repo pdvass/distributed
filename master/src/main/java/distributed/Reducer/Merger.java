@@ -17,9 +17,10 @@ import distributed.Share.Mail;
  * @author pdvass
  */
 public class Merger {
+
     private static volatile ArrayList<Mail> receivedMails = null;
     private static volatile boolean write_lock = true;
-    private ReducerClient rClient = null;
+    private ReducerClient reducerClient = null;
     private Mail sendMail = null;
 
 
@@ -30,16 +31,15 @@ public class Merger {
     }
 
     /**
-     * This method receives the mails from all the workers synchronized
-     * and calls the merger to merge their contents .
+     * This method receives the mails from all the workers synchronized and 
+     * calls the merger to merge their contents.
      * 
-     * @param mail The object sent from the workers  
-     * 
+     * @param mail The object sent from the workers.
      */
-    
     public void receiveMail(Mail mail){
-        synchronized(receivedMails){
-            while(!write_lock){
+
+        synchronized(receivedMails) {
+            while(!write_lock) {
                 try {
                     receivedMails.wait();
                 } catch (InterruptedException e){
@@ -66,41 +66,40 @@ public class Merger {
      * In case of a Manager's request, then it merges HashMaps.
      * 
      * @see ReducerHandler
-     * 
      */
-
     @SuppressWarnings("unchecked")
     private void mergeContents(){
         
         ArrayList<Room> mergedList = new ArrayList<>();
         TreeMap<String, Long> mergedMaps = new TreeMap<>();
+
         String[] res = null;
         String subject = "";
         String recipient = "";
-        
+
         Object mergedContents = null;
 
-        for (Mail mail : receivedMails){
+        for (Mail mail : receivedMails) {
             
             if(mail.getSubject().equals("Book")){
+
                 subject = "Book";
                 String[] contents = (String[]) mail.getContents();
                 if( Boolean.parseBoolean(contents[0])){
                     res = new String[]{mail.getSender(), contents[0], contents[1], contents[2]};
-                    // System.out.println(mail.getSender());
                 }
                 
             } else if (mail.getRecipient().contains("client")){
+
                 recipient = mail.getRecipient();
                 for (Room contents : (ArrayList<Room>) mail.getContents()) {
                     System.out.println(contents.toString());
                     mergedList.add(contents);
                 }
-                // mergedList.addAll((ArrayList<Room>) mail.getContents());
                 
             } else if (mail.getRecipient().equals("manager")){
+
                 recipient = "manager";
-                // TreeMap<String, Long> mergedMap = new TreeMap<String, Long>();
                 TreeMap<String, Long> map = (TreeMap<String, Long>) mail.getContents();
                 
                 map.forEach((key, value) -> {
@@ -111,7 +110,6 @@ public class Merger {
                     }
                 });
                 
-                
             }
             
         } 
@@ -121,7 +119,6 @@ public class Merger {
         } else if(recipient.contains("client")){
             mergedContents = mergedList.clone();
         } else if(recipient.equals("manager")){
-            // mergedMaps.forEach((key, value) -> {System.out.println(key + ": " + value);});
             mergedContents = mergedMaps.clone();
         } else {
             System.err.println("Problem");
@@ -143,17 +140,18 @@ public class Merger {
      * @see ReducerClient
      */
     private void sendMailToServer(Mail mail){
-        this.rClient = new ReducerClient();
+        this.reducerClient = new ReducerClient();
         try {
-            this.rClient.startConnection("localhost", 4555);
-            this.rClient.sendMessage("reducer connection");
-            String response = this.rClient.receiveMsg();
+            this.reducerClient.startConnection("localhost", 4555);
+            this.reducerClient.sendMessage("reducer connection");
 
+            String response = this.reducerClient.receiveMsg();
             if(!response.equals("reducer connected")){
                 System.out.println("Could not connect");
             } 
+            
             System.out.println("connected");
-            this.rClient.sendObject(mail);
+            this.reducerClient.sendObject(mail);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
  * @author panagou
  */
 public class ReducerClient {
+
     private Socket clientSocket = null;
     private ObjectInputStream ois = null;
     private ObjectOutputStream oos = null;
@@ -86,6 +87,4 @@ public class ReducerClient {
         clientSocket.close();
     }
 
-
 }
-

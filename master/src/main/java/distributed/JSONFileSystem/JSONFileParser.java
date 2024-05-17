@@ -19,6 +19,7 @@ import distributed.Estate.Hotel;
  * @see JSONDirManager
  */
 public class JSONFileParser {
+
     private String path;
 
     /**
@@ -43,24 +44,27 @@ public class JSONFileParser {
 
     /**
      * Parses the file located at the path given. May throw an exception.
+     * 
      * @return A JSONObject representing the data of the JSON file given.
+     * 
      * @throws FileNotFoundException If the file does not exist.
      * @throws Exception If there is a problem reading the file.
      */
     protected JSONObject parseFile() throws FileNotFoundException, Exception{
         JSONObject data = null;
         JSONParser parser = new JSONParser();
-        // FileReader may throw an Exception.
-        data = (JSONObject) parser.parse(new FileReader(this.path));
 
+        data = (JSONObject) parser.parse(new FileReader(this.path));
         return data;
     }
 
     @SuppressWarnings("unchecked")
     protected Hotel iterateJSON(JSONObject data){
+
         if(data == null){
             throw new IllegalArgumentException("data argument should not be null") ;
         }
+
         if(data.size() == 0){
             return null;
         }
@@ -76,6 +80,7 @@ public class JSONFileParser {
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> startDate = new ArrayList<>();
             ArrayList<String> endDate = new ArrayList<>();
+
             float cost = 0;
             int nOfPeople = 0;
             // End of Room Info
@@ -83,6 +88,7 @@ public class JSONFileParser {
             String region = "";
             float stars = 0.0f;
             int nOfReviews = 0;
+            String pathImage = "";
         };
 
         var returnValue = new Object(){
@@ -98,11 +104,12 @@ public class JSONFileParser {
             JSONObject roomsArray = (JSONObject) rooms;
 
             hotelWrapper.name = roomsArray.get("name").toString();                 
-            hotelWrapper.region  = roomsArray.get("region").toString();
+            hotelWrapper.region = roomsArray.get("region").toString();
             hotelWrapper.stars = Float.parseFloat(roomsArray.get("stars").toString());
             hotelWrapper.nOfReviews = Integer.parseInt(roomsArray.get("nOfReviews").toString());
+            hotelWrapper.pathImage = roomsArray.get("path").toString();
 
-            returnValue.hotel = new Hotel(hotelWrapper.name, hotelWrapper.region, hotelWrapper.stars, hotelWrapper.nOfReviews);
+            returnValue.hotel = new Hotel(hotelWrapper.name, hotelWrapper.region, hotelWrapper.stars, hotelWrapper.nOfReviews, hotelWrapper.pathImage);
 
             // Rooms are represented internally by an ArrayList. We take advantage of it 
             // by representing rooms as an array in JSON's file structure.
@@ -138,18 +145,21 @@ public class JSONFileParser {
     }
 
     @SuppressWarnings("unchecked")
-    protected void createHotelJSON(String name, String region, float stars, int n){
+    protected void createHotelJSON(String name, String region, float stars, int n, String pathImage){
+
         JSONObject data = new JSONObject();
         data.put("region", region);
         data.put("name", name);
+        data.put("path", pathImage);
 
         JSONArray rooms = new JSONArray();
         data.put("rooms", rooms);
-
         data.put("stars", stars);
         data.put("nOfReviews", n);
+
         JSONObject hotel = new JSONObject();
         hotel.put(name, data);
+        
         String json = hotel.toJSONString();
 
         try {

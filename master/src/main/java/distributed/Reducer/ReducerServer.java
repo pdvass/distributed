@@ -10,8 +10,8 @@ import java.net.*;
  * @author panagou
  */
 public class ReducerServer extends Thread{
-    private ServerSocket reducerSocket = null;
 
+    private ServerSocket reducerSocket = null;
     private final int PORT = 25565;
 
     public void run(){
@@ -23,17 +23,14 @@ public class ReducerServer extends Thread{
     }
 
     public void init(int port) throws IOException{
+
         this.reducerSocket = new ServerSocket(port);
         this.reducerSocket.setReuseAddress(true);
 
-        // The reducer accepts results from worker i of the n workers
-        // where i= the id of the worker.
-        while(true){
+        while(true) {
 
             Socket workerSocket = reducerSocket.accept();
             Response res = new Response(workerSocket, null);
-
-            // Send message of connection.
             String msg = res.readMessage();
 
             if(msg.equals("worker connection")){
@@ -44,7 +41,6 @@ public class ReducerServer extends Thread{
                 Thread response = new Thread(responseSocket);
                 response.start();
             }
-
         }
          
     }

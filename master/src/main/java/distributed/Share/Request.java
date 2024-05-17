@@ -15,6 +15,7 @@ import java.net.Socket;
  * @author pdvass
  */
 public class Request {
+
     private Socket connection = null;
     private Object contents;
     private ObjectInputStream ois = null;
@@ -52,7 +53,6 @@ public class Request {
      * Request class is responsible for casting it to String.
      *
      * @throws IOException
-     * 
      */
     public void sendMessage() throws IOException{
         this.oos.writeUTF((String) this.contents);
@@ -63,7 +63,6 @@ public class Request {
      * Receives a string message through the enstablished connection.
      *
      * @throws IOException
-     * 
      */
     public String receiveMessage() throws IOException{
         String res = this.ois.readUTF();
@@ -73,7 +72,6 @@ public class Request {
     /**
      * Sends an Object through the enstablished connection.
      * @throws IOException 
-     * 
      */
     public void sendRequestObject() throws IOException{
         this.oos.writeObject(this.contents);
@@ -82,6 +80,7 @@ public class Request {
 
      /**
      * Receives a Object through the enstablished connection.
+     * 
      * @throws IOException 
      * @throws ClassNotFoundException 
      *
@@ -90,4 +89,5 @@ public class Request {
         Object res = this.ois.readObject();
         return res;
     }
+    
 }
