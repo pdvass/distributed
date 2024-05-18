@@ -2,13 +2,15 @@ package distributed;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 import distributed.Client.TCPClient;
 import distributed.Share.Filter;
 import distributed.Share.Request;
+import distributed.Estate.*;
 
 /**
  * ClientTerminal is used for the Client to use from the cmd to send requests to the server.
@@ -83,9 +85,13 @@ public class ClientTerminal {
                     try{
                         // We already know from server side, that we need to cast to List<String>
                         @SuppressWarnings("unchecked")
-                        List<String> hotels = (List<String>) this.req.receiveRequestObject();
+                        HashMap<String, ArrayList<Room>> hotels = (HashMap<String, ArrayList<Room>>) this.req.receiveRequestObject();
 
-                        hotels.forEach(hotelString -> System.out.println(hotelString));
+                        //System.out.println(hotels);
+                        for (String hotelName : hotels.keySet()) {
+                            System.out.println(hotelName);
+                        }
+                        //hotels.forEach(hotelString -> System.out.println(hotelString));
                     } catch (Exception e){
                         System.out.println(e.getMessage());
                     }

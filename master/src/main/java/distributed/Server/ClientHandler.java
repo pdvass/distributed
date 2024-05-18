@@ -3,6 +3,7 @@ package distributed.Server;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import distributed.Bookkeeper;
@@ -139,11 +140,26 @@ public class ClientHandler extends Thread {
                     } else {
                         // We know the server sides leaves the messages as List<Room> 
                         @SuppressWarnings("unchecked")
-                        List<Room> response = (List<Room>) msg.getContents();
-                        ArrayList<String> toClient = new ArrayList<String>();
+                        List<Room> rooms = (List<Room>) msg.getContents();
+                        // ArrayList<String> toClient = new ArrayList<String>();
+                        // response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
 
-                        response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
-                        this.res.changeContents(toClient);
+                        HashMap<String, ArrayList<Room>> response = new HashMap<>();
+
+                        for (Room room : rooms) {
+                            String hotelName = room.getName().replaceFirst("Room\\d", "");
+                            hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
+
+                            if (response.containsKey(hotelName)) {
+                                response.get(hotelName).add(room);
+                            } else {
+                                ArrayList<Room> roomsList = new ArrayList<>();
+                                roomsList.add(room);
+                                response.put(hotelName, roomsList);
+                            }
+                        }
+
+                        this.res.changeContents(response);
                         
                         try {
                             this.res.sendObject();

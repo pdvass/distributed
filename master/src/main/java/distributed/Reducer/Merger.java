@@ -93,7 +93,7 @@ public class Merger {
 
                 recipient = mail.getRecipient();
                 for (Room contents : (ArrayList<Room>) mail.getContents()) {
-                    System.out.println(contents.toString());
+                    //System.out.println(contents.toString());
                     mergedList.add(contents);
                 }
                 

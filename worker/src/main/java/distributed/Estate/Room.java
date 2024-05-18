@@ -41,7 +41,7 @@ public class Room implements Serializable {
     private float hotelsStars;
     private String hotelsImage;
 
-    public Room(String name, String startDate, String endDate, float cost, int nOfPeople){
+    public Room(String name, String startDate, String endDate, float cost, int nOfPeople, String hotelsReg, float hotelsStars, String hotelsImage){
         this.name = name;
         // Create hash from the JSON's name that has been assigned to the room of the hotel.
         try{
@@ -68,6 +68,9 @@ public class Room implements Serializable {
         // NOTE: Default 
         this.nOfPeople = nOfPeople;
         this.cost = cost;
+        this.hotelsRegion = hotelsReg;
+        this.hotelsStars = hotelsStars;
+        this.hotelsImage = hotelsImage;
         this.totalBookings = 0;
     }
 
@@ -200,9 +203,33 @@ public class Room implements Serializable {
     }
 
     public String toString(){
-        String r = String.format("Hotel's Image is %s. \nHotel %s: room %d. Has a capacity of %d people, costs %.2f per night and is located in %s.", 
-                    this.hotelsImage, this.name, this.getIntId(), this.nOfPeople, this.cost, this.hotelsRegion);
-        return r;
+
+        StringBuilder sb = new StringBuilder();
+        String hotelName = this.name.replaceFirst("Room\\d", "");
+        // // https://www.regular-expressions.info/unicode.html
+        // // Link to show how it works:
+        // //  https://regex101.com/r/QsUvXF/1
+        hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
+
+        String intro = String.format("\u2022 (Hotel's Image is %s) Hotel \"%s\" with %.2f stars is located in %s. ", this.hotelsImage, hotelName, this.hotelsStars, this.hotelsRegion);
+        sb.append(intro);
+
+        String info = String.format("Room %s: It costs %.2f per night and it is available from %tD to %tD. It can host up to %d people.\n",  
+                                    this.name, this.cost, this.startDate, this.endDate, this.nOfPeople );
+        sb.append(info);
+
+        String bookInfo = String.format("To book it enter code %d with the date range you want to book it.\n", this.getIntId());
+        sb.append(bookInfo);
+
+        // String intro = String.format("(Hotel's Image is %s) \nHotel %s with %2f stars is located in %s: ", 
+        //                 this.hotelsImage, hotelName, this.hotelsStars, this.hotelsRegion);
+        // sb.append(intro);
+
+        // String info = String.format("\nRoom %d with code %d. Has a capacity of %d people, costs %.2f per night.", 
+        //                 this.name, this.getIntId(), this.nOfPeople, this.cost);
+        // sb.append(info);
+
+        return sb.toString();
     }
 
 }
