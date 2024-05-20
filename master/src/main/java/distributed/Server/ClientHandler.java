@@ -1,7 +1,12 @@
 package distributed.Server;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,20 +146,18 @@ public class ClientHandler extends Thread {
                         // We know the server sides leaves the messages as List<Room> 
                         @SuppressWarnings("unchecked")
                         List<Room> rooms = (List<Room>) msg.getContents();
-                        // ArrayList<String> toClient = new ArrayList<String>();
-                        // response.iterator().forEachRemaining(room -> toClient.add(room.toString()));
 
-                        HashMap<String, ArrayList<Room>> response = new HashMap<>();
+                        HashMap<String, ArrayList<String>> response = new HashMap<>();
 
                         for (Room room : rooms) {
                             String hotelName = room.getName().replaceFirst("Room\\d", "");
                             hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
 
                             if (response.containsKey(hotelName)) {
-                                response.get(hotelName).add(room);
+                                response.get(hotelName).add(room.toString());
                             } else {
-                                ArrayList<Room> roomsList = new ArrayList<>();
-                                roomsList.add(room);
+                                ArrayList<String> roomsList = new ArrayList<>();
+                                roomsList.add(room.toString());
                                 response.put(hotelName, roomsList);
                             }
                         }
@@ -166,6 +169,42 @@ public class ClientHandler extends Thread {
                         } catch (IOException e) {
                             System.out.println("Could not send results to client" + this.id);
                         }
+
+                        String[] filePaths = {
+                            "C:\\Users\\User\\Documents\\AUEB\\diethnes.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\fourSeasons.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\hilton.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\hotelCalifornia.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\pergamos.png"
+                        };
+
+                        List<byte[]> bytesOfImages = new ArrayList<>();
+                        List<Integer> bytesLength = new ArrayList<>();
+                        Path path = null;
+                        byte[] bytes = null;
+
+                        for (String filePath : filePaths) {
+                            try {
+                                path = Paths.get(filePath);
+                                bytes = Files.readAllBytes(path);
+                                bytesOfImages.add(bytes);
+                                bytesLength.add(bytes.length);
+                            } catch (Exception e) {
+                                System.out.println("Error editing image: " + filePath);
+                                e.printStackTrace();
+                            }
+                        }
+
+                        try {
+                            this.res.changeContents(bytesOfImages);
+                            this.res.sendObject();
+
+                            this.res.changeContents(bytesLength);
+                            this.res.sendObject();
+                        } catch (IOException e) {
+                            System.out.println("Could not send results to client" + this.id);
+                        }
+                        
                     }
                 }
             }

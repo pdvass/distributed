@@ -85,13 +85,19 @@ public class ClientTerminal {
                     try{
                         // We already know from server side, that we need to cast to List<String>
                         @SuppressWarnings("unchecked")
-                        HashMap<String, ArrayList<Room>> hotels = (HashMap<String, ArrayList<Room>>) this.req.receiveRequestObject();
+                        HashMap<String, ArrayList<String>> hotels = (HashMap<String, ArrayList<String>>) this.req.receiveRequestObject();
+                        @SuppressWarnings("unchecked")
+                        List<byte[]> bytesOfImages = (List<byte[]>) this.req.receiveRequestObject();
+                        @SuppressWarnings("unchecked")
+                        List<Integer> bytesLength = (List<Integer>) this.req.receiveRequestObject();
 
-                        //System.out.println(hotels);
-                        for (String hotelName : hotels.keySet()) {
-                            System.out.println(hotelName);
+                        for (String hotelName: hotels.keySet()) {
+                            for (String room: hotels.get(hotelName)) {
+                                System.out.println(room);
+                            }
                         }
-                        //hotels.forEach(hotelString -> System.out.println(hotelString));
+
+
                     } catch (Exception e){
                         System.out.println(e.getMessage());
                     }

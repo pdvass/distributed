@@ -195,29 +195,18 @@ public class Room implements Serializable {
     public String toString(){
 
         StringBuilder sb = new StringBuilder();
-        String hotelName = this.name.replaceFirst("Room\\d", "");
-        // // https://www.regular-expressions.info/unicode.html
-        // // Link to show how it works:
-        // //  https://regex101.com/r/QsUvXF/1
-        hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
+        // String hotelName = this.name.replaceFirst("Room\\d", "");
+        // https://www.regular-expressions.info/unicode.html
+        // Link to show how it works:
+        // https://regex101.com/r/QsUvXF/1
+        // hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
 
-        String intro = String.format("\u2022 (Hotel's Image is %s) Hotel \"%s\" with %.2f stars is located in %s. ", this.hotelsImage, hotelName, this.hotelsStars, this.hotelsRegion);
-        sb.append(intro);
-
-        String info = String.format("Room %s: It costs %.2f per night and it is available from %tD to %tD. It can host up to %d people.\n",  
-                                    this.name, this.cost, this.startDate, this.endDate, this.nOfPeople );
+        String info = String.format("Room %s: It costs %.2f per night and it is available from %tD to %tD. It can host up to %d people.\n",
+                        this.name, this.cost, this.startDate, this.endDate, this.nOfPeople );
         sb.append(info);
 
-        String bookInfo = String.format("To book it enter code %d with the date range you want to book it.\n", this.getIntId());
+        String bookInfo = String.format("To book it enter code %d.\n", this.getIntId());
         sb.append(bookInfo);
-
-        // String intro = String.format("(Hotel's Image is %s) \nHotel %s with %2f stars is located in %s: ", 
-        //                 this.hotelsImage, hotelName, this.hotelsStars, this.hotelsRegion);
-        // sb.append(intro);
-
-        // String info = String.format("\nRoom %d with code %d. Has a capacity of %d people, costs %.2f per night.", 
-        //                 this.name, this.getIntId(), this.nOfPeople, this.cost);
-        // sb.append(info);
 
         return sb.toString();
     }
