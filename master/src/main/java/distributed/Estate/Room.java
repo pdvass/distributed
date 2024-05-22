@@ -202,7 +202,7 @@ public class Room implements Serializable {
         // hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
 
         String info = String.format("%s: %.2f per night, %d people, available from %tD to %tD.\n",
-                        this.name, this.cost, this.startDate, this.endDate, this.nOfPeople );
+                        this.name, this.cost, this.nOfPeople, this.startDate, this.endDate);
         sb.append(info);
 
         String bookInfo = String.format("To book it enter code %d.\n", this.getIntId());
