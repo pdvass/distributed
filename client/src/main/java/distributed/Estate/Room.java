@@ -201,12 +201,24 @@ public class Room implements Serializable {
         // https://regex101.com/r/QsUvXF/1
         // hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
 
-        String info = String.format("Room %s: It costs %.2f per night and it is available from %tD to %tD. It can host up to %d people.\n",
+        String info = String.format("%s: %.2f per night, %d people, available from %tD to %tD.\n",
                         this.name, this.cost, this.startDate, this.endDate, this.nOfPeople );
         sb.append(info);
 
         String bookInfo = String.format("To book it enter code %d.\n", this.getIntId());
         sb.append(bookInfo);
+
+        return sb.toString();
+    }
+
+    public String getHotelInfo(){
+
+        StringBuilder sb = new StringBuilder();
+        String hotelName = this.name.replaceFirst("Room\\d", "");
+        hotelName = String.join(" ", hotelName.split("(?=\\p{Lu})"));
+
+        String intro = String.format("\u2022 Hotel \"%s\" with %.2f stars is located in %s. ", hotelName, this.hotelsStars, this.hotelsRegion);
+        sb.append(intro);
 
         return sb.toString();
     }

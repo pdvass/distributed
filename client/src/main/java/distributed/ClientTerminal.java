@@ -10,7 +10,6 @@ import java.util.Scanner;
 import distributed.Client.TCPClient;
 import distributed.Share.Filter;
 import distributed.Share.Request;
-import distributed.Estate.*;
 
 /**
  * ClientTerminal is used for the Client to use from the cmd to send requests to the server.
@@ -63,17 +62,21 @@ public class ClientTerminal {
                     this.req.changeContents("filter");
                     this.req.sendMessage();
 
-                    String[] tokens = msg.split(" ");
-                    Filter filter = new Filter(tokens);
+                    // String[] tokens = msg.split(" ");
+                    // Filter filter = new Filter(tokens);
 
-                    this.req.changeContents(filter);
+                    this.req.changeContents(msg);
                     this.req.sendRequestObject();
                     try{
                         // We already know from server side, that we need to cast to List<String>
                         @SuppressWarnings("unchecked")
-                        List<String> filteredHotels = (List<String>) this.req.receiveRequestObject();
+                        HashMap<String, ArrayList<String>> filteredRooms = (HashMap<String, ArrayList<String>>) this.req.receiveRequestObject();
+                        @SuppressWarnings("unchecked")
+                        HashMap<String, String> hotels = (HashMap<String, String>) this.req.receiveRequestObject();
 
-                        filteredHotels.forEach(hotelString -> System.out.println(hotelString));
+                        for(ArrayList<String> hotel: filteredRooms.values()) {
+                            System.out.println(hotel);
+                        }
                     } catch (Exception e){
                         System.out.println(e.getMessage());
                     }
@@ -85,14 +88,16 @@ public class ClientTerminal {
                     try{
                         // We already know from server side, that we need to cast to List<String>
                         @SuppressWarnings("unchecked")
-                        HashMap<String, ArrayList<String>> hotels = (HashMap<String, ArrayList<String>>) this.req.receiveRequestObject();
+                        HashMap<String, ArrayList<String>> rooms = (HashMap<String, ArrayList<String>>) this.req.receiveRequestObject();
+                        @SuppressWarnings("unchecked")
+                        HashMap<String, String> hotels = (HashMap<String, String>) this.req.receiveRequestObject();
                         @SuppressWarnings("unchecked")
                         List<byte[]> bytesOfImages = (List<byte[]>) this.req.receiveRequestObject();
                         @SuppressWarnings("unchecked")
                         List<Integer> bytesLength = (List<Integer>) this.req.receiveRequestObject();
 
-                        for (String hotelName: hotels.keySet()) {
-                            for (String room: hotels.get(hotelName)) {
+                        for (String hotelName: rooms.keySet()) {
+                            for (String room: rooms.get(hotelName)) {
                                 System.out.println(room);
                             }
                         }

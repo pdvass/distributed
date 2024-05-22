@@ -1,7 +1,5 @@
 package distributed.Server;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -74,8 +72,10 @@ public class ClientHandler extends Thread {
 
                 if(greeting.equals("filter")){
 
-                    Filter f = (Filter) this.res.readObject();
-                    Mail request = new Mail(this.id, "bookkeeper", "Filter", f);
+                    String msg = (String) this.res.readObject();
+                    String[] tokens = msg.split(" ");
+                    Filter filter = new Filter(tokens);
+                    Mail request = new Mail(this.id, "bookkeeper", "Filter", filter);
                     
                     String contents = String.format("Transaction opens from %s", this.id);
                     Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
@@ -148,6 +148,7 @@ public class ClientHandler extends Thread {
                         List<Room> rooms = (List<Room>) msg.getContents();
 
                         HashMap<String, ArrayList<String>> response = new HashMap<>();
+                        HashMap<String, String> hotels = new HashMap<>();
 
                         for (Room room : rooms) {
                             String hotelName = room.getName().replaceFirst("Room\\d", "");
@@ -160,49 +161,58 @@ public class ClientHandler extends Thread {
                                 roomsList.add(room.toString());
                                 response.put(hotelName, roomsList);
                             }
-                        }
 
-                        this.res.changeContents(response);
-                        
-                        try {
-                            this.res.sendObject();
-                        } catch (IOException e) {
-                            System.out.println("Could not send results to client" + this.id);
-                        }
-
-                        String[] filePaths = {
-                            "C:\\Users\\User\\Documents\\AUEB\\diethnes.png",
-                            "C:\\Users\\User\\Documents\\AUEB\\fourSeasons.png",
-                            "C:\\Users\\User\\Documents\\AUEB\\hilton.png",
-                            "C:\\Users\\User\\Documents\\AUEB\\hotelCalifornia.png",
-                            "C:\\Users\\User\\Documents\\AUEB\\pergamos.png"
-                        };
-
-                        List<byte[]> bytesOfImages = new ArrayList<>();
-                        List<Integer> bytesLength = new ArrayList<>();
-                        Path path = null;
-                        byte[] bytes = null;
-
-                        for (String filePath : filePaths) {
-                            try {
-                                path = Paths.get(filePath);
-                                bytes = Files.readAllBytes(path);
-                                bytesOfImages.add(bytes);
-                                bytesLength.add(bytes.length);
-                            } catch (Exception e) {
-                                System.out.println("Error editing image: " + filePath);
-                                e.printStackTrace();
+                            if (!hotels.containsKey(hotelName)) {
+                                hotels.put(hotelName, room.getHotelInfo());
                             }
                         }
-
+                        
                         try {
-                            this.res.changeContents(bytesOfImages);
+                            this.res.changeContents(response);
                             this.res.sendObject();
 
-                            this.res.changeContents(bytesLength);
+                            this.res.changeContents(hotels);
                             this.res.sendObject();
                         } catch (IOException e) {
                             System.out.println("Could not send results to client" + this.id);
+                        }
+
+                        if(msg.getSubject().equals("hotels")){
+
+                            String[] filePaths = {
+                                "C:\\Users\\User\\Documents\\AUEB\\diethnes.png",
+                                "C:\\Users\\User\\Documents\\AUEB\\fourSeasons.png",
+                                "C:\\Users\\User\\Documents\\AUEB\\hilton.png",
+                                "C:\\Users\\User\\Documents\\AUEB\\hotelCalifornia.png",
+                                "C:\\Users\\User\\Documents\\AUEB\\pergamos.png"
+                            };
+
+                            List<byte[]> bytesOfImages = new ArrayList<>();
+                            List<Integer> bytesLength = new ArrayList<>();
+                            Path path = null;
+                            byte[] bytes = null;
+
+                            for (String filePath : filePaths) {
+                                try {
+                                    path = Paths.get(filePath);
+                                    bytes = Files.readAllBytes(path);
+                                    bytesOfImages.add(bytes);
+                                    bytesLength.add(bytes.length);
+                                } catch (Exception e) {
+                                    System.out.println("Error editing image: " + filePath);
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            try {
+                                this.res.changeContents(bytesOfImages);
+                                this.res.sendObject();
+
+                                this.res.changeContents(bytesLength);
+                                this.res.sendObject();
+                            } catch (IOException e) {
+                                System.out.println("Could not send results to client" + this.id);
+                            }
                         }
                         
                     }
