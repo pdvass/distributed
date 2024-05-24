@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import distributed.Share.Mail;
  * @author pdvass
  */
 public class Worker extends Thread {
+
 
     private ArrayList<Room> rooms = null;
     private Socket conn = null;
@@ -36,7 +38,11 @@ public class Worker extends Thread {
 
     public void run(){
         this.connect();
-        this.init();
+        for(int i = 0; i < 2; i++){
+            Runnable task = () -> {this.init();};
+            task.run();
+        }
+        // this.init();
     }
 
     public void connect(){
@@ -44,6 +50,7 @@ public class Worker extends Thread {
             this.req.sendMessage();
             System.out.println("Sent!");
             String isConnected = this.req.receiveMessage();
+
 
             if(!isConnected.equals("worker connected")){
                 throw new Exception();
@@ -66,6 +73,7 @@ public class Worker extends Thread {
 
     public void init(){
         try{
+
             Mail incoming = (Mail) this.req.receiveRequestObject();
             System.out.println(incoming.getSender());
 
@@ -76,6 +84,8 @@ public class Worker extends Thread {
                     System.out.println("Got a room");
                     Room room = (Room) incoming.getContents();
                     this.rooms.add(room);
+
+                } else if(message.equals("Book")){
 
                 } else if(message.equals("Book")){
 
@@ -93,16 +103,20 @@ public class Worker extends Thread {
                         }
                     }
 
+
                     incoming.respond();
                     String[] contents = new String[]{Boolean.toString(isBooked), info[2], info[1]};
                     incoming.setContents(contents);
+
 
                     this.reducerReq.changeContents(incoming);
                     this.reducerReq.sendRequestObject();
 
                 } else if (incoming.getSender().contains("client")){
+                } else if (incoming.getSender().contains("client")){
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
+
 
                     try {
                         f = (Filter) typeOfRequest;
@@ -123,14 +137,16 @@ public class Worker extends Thread {
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + incoming.getSender() + " asked for hotels");
 
+
                         incoming.respond();
                         incoming.setContents(this.rooms);
+
 
                         this.reducerReq.changeContents(incoming);
                         this.reducerReq.sendRequestObject();
                     }
                 } else if (incoming.getSender().equals("manager")){
-                    System.out.println("Request received from manager");
+                    // System.out.println("Request received from manager");
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
                     try {
@@ -138,6 +154,7 @@ public class Worker extends Thread {
                     } catch (Exception e){
                         System.out.println("Error during casting " + e.getMessage());
                     }
+                    
                     List<Room> rooms = f.applyManagerFilter(this.rooms);
                     TreeMap<String, Long> bookingsPerRegion = new TreeMap<String, Long>();
                     System.out.println("Filter date range that arrived at worker ->" + f.getDateRangeString());
@@ -145,11 +162,12 @@ public class Worker extends Thread {
                         String region = room.getHotelsRegion();
                         if(bookingsPerRegion.get(region) == null){
                             bookingsPerRegion.put(region, room.getTotalBookings());
+                            bookingsPerRegion.put(region, room.getTotalBookings());
                         } else {
                             bookingsPerRegion.put(region, bookingsPerRegion.get(region) + room.getTotalBookings());
                         }
                     });
-                    bookingsPerRegion.forEach((key, value) -> {System.out.println(key + ": " + value);});
+                    // bookingsPerRegion.forEach((key, value) -> {System.out.println(key + ": " + value);});
                     incoming.setContents(bookingsPerRegion);
                     incoming.respond();
                     this.reducerReq.changeContents(incoming);
@@ -158,7 +176,6 @@ public class Worker extends Thread {
                 }
 
                 incoming = (Mail) this.req.receiveRequestObject();
-                // incoming = (Mail) incomingTuple.getSecond();
             }
         } catch (Exception e) {
             e.printStackTrace();

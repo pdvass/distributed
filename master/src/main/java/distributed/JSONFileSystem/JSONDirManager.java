@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,10 +50,12 @@ public class JSONDirManager {
         String fileName = file.getName();
         String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
 
+
         return extension;
     }
 
     public void updateFileList(){
+
 
         this.fileList.clear();
         File files = new File(this.path);
@@ -87,8 +91,10 @@ public class JSONDirManager {
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
 
+
         try {
             File newHotel = new File(fileName);
+
 
             if(newHotel.createNewFile()){
                 System.out.println("New Hotel Added");
@@ -124,6 +130,7 @@ public class JSONDirManager {
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
 
+
         JSONFileParser parser = new JSONFileParser(fileName);
         JSONObject data = null;
         try {
@@ -137,6 +144,7 @@ public class JSONDirManager {
         JSONObject room = new JSONObject();
         JSONObject roomInfo = new JSONObject();
         String roomID = name + "Room" + Integer.toString(rooms.size() + 1);
+
 
         roomInfo.put("id", roomID);
         roomInfo.put("startDate", startDate);
@@ -175,9 +183,11 @@ public class JSONDirManager {
     /**
      * Removes a hotel by deleting its corresponding JSON file.
      * 
+     * 
      * @param name The name of hotel that is going to be deleeted.
      */
     public void removeHotel(String name){
+
 
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";    
@@ -186,6 +196,7 @@ public class JSONDirManager {
             if(newHotel.delete()){
                 System.out.println("Hotel deleted");
             }
+
 
             this.fileList.stream()
                          .filter(file -> file.getName().equals(newHotel.getName()));
@@ -209,6 +220,7 @@ public class JSONDirManager {
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
 
+
         JSONFileParser parser = new JSONFileParser(fileName);
         JSONObject data = null;
         try {
@@ -220,6 +232,7 @@ public class JSONDirManager {
 
         JSONArray rooms = (JSONArray) ((JSONObject) data.get(name)).get("rooms");
         JSONArray toBeRemoved = new JSONArray();
+
 
         var index = new Object(){
             int value = 0;
@@ -262,15 +275,18 @@ public class JSONDirManager {
      * 
      * @return ArrayList with all the hotels manager is directing.
      * 
+     * 
      * @throws FileNotFoundException
      * @throws Exception
      */
     public ArrayList<Hotel> getHotels() throws FileNotFoundException, Exception {
 
+
         ArrayList<Hotel> hotels = new ArrayList<>();
         for(File f : fileList){
             JSONFileParser parser = new JSONFileParser(this.path + f.getName());
             JSONObject data = parser.parseFile();
+
 
             hotels.add(parser.iterateJSON(data));
         }
@@ -294,6 +310,7 @@ public class JSONDirManager {
         for(File f : fileList) {
             JSONFileParser parser = new JSONFileParser(hotelPath + f.getName());
             JSONObject data = parser.parseFile();
+
 
             hotel = parser.iterateJSON(data);
         }
@@ -338,13 +355,16 @@ public class JSONDirManager {
     @SuppressWarnings("unchecked")
     public void addReview(String name, float review){
 
+
         if (review < 0 || review > 5) {
             System.out.println("Review must be at least 0 with a maximum of 5 stars.");
             return;
         }
 
+
         name = name.replaceAll(" ", "");
         String fileName = this.path + name + ".json";
+
 
         File reviewdFile = null;
         for(File f : this.fileList) {
@@ -353,6 +373,7 @@ public class JSONDirManager {
                 reviewdFile = f;
             }
         }
+
 
         if(reviewdFile == null){
             this.logError(String.format("Hotel %s not found, to add a review.", name));
@@ -372,10 +393,12 @@ public class JSONDirManager {
                 return;
             }
 
+
             double stars = (double) ((JSONObject) data.get(name)).get("stars");
             long n = (long) ((JSONObject) data.get(name)).get("nOfReviews");
             double newStars = ((stars * n) + review) / (n + 1);
             BigDecimal newStarsRounded = new BigDecimal(newStars).setScale(2, RoundingMode.UP);
+            
             
             ((JSONObject) data.get(name)).remove("stars");
             ((JSONObject) data.get(name)).remove("nOfReviews");

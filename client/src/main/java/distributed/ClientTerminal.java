@@ -49,6 +49,7 @@ public class ClientTerminal {
         System.out.println("Welcome to out Booking agency. Type list for available commands.");
         System.out.print("> ");
 
+
         Scanner scanner = new Scanner(System.in);
         String msg = scanner.nextLine();
         
@@ -88,6 +89,7 @@ public class ClientTerminal {
                     this.req.changeContents("hotels");
                     this.req.sendMessage();
 
+
                     try{
                         // We already know from server side, that we need to cast to List<String>
                         @SuppressWarnings("unchecked")
@@ -112,7 +114,7 @@ public class ClientTerminal {
                     break;
                 case "book":
                     System.out.println("Booking the room for you");
-                    //  
+                    
                     this.req.changeContents(msg);
                     this.req.sendMessage();
 
@@ -142,6 +144,7 @@ public class ClientTerminal {
         this.req.changeContents("q");
         this.req.sendMessage();
 
+
         client.stop();
         scanner.close();
     }
@@ -152,7 +155,6 @@ public class ClientTerminal {
         
         switch (tokens[0]) {
             case "get":
-
                 if(tokens.length < 2) {
                     System.out.println("Not enough arguments");
                     return "";

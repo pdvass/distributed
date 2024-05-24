@@ -28,8 +28,8 @@ public class Filter implements Serializable {
         try {
             // Infinity-like parameters to initialise the dateRange array. If dates are given as
             // a filter, then they are "relaxed".
-            dateRange[0] = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/9999");
-            dateRange[1] = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2002");
+            dateRange[0] = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2002");
+            dateRange[1] = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/9999");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -103,9 +103,9 @@ public class Filter implements Serializable {
         List<Room> filteredHotels = hotels.stream()
                         .filter(hotel -> hotel.getHotelsRegion().equals(this.region) || this.region.equals(""))
                         .filter(hotel -> hotel.getHotelsStars() >= this.stars || this.stars == -1)
-                        .filter(room -> ( room.getStartDate().after(this.dateRange[0])  
-                                         ||  room.getStartDate().equals(this.dateRange[0]) ))
-                        .filter(room -> room.getEndDate().before(this.dateRange[1]) )
+                        .filter(room -> ( room.getStartDate().before(this.dateRange[1])  
+                                         ||  room.getStartDate().equals(this.dateRange[1]) ))
+                        .filter(room -> room.getEndDate().after(this.dateRange[0]) )
                         .filter(room -> room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1)
                         .collect(Collectors.toList());
 

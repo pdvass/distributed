@@ -17,9 +17,11 @@ import distributed.Share.Mail;
 /**
  * Client Handler is responsible for managing the connection between
  * the server and the client, by exchanging Requests and Responses. Each 
- * client has its own ClientHandler.
+ * client has its own ClientHandler. It communicates with other handlers
+ * through Mailbox.
  * 
  * @see distributed.Share.Request
+ * @see Mailbox
  * @see Response
  * 
  * @author pdvass
@@ -27,7 +29,10 @@ import distributed.Share.Mail;
  */
 public class ClientHandler extends Thread {
 
+
     private static volatile long totalUsers = 0;
+
+    private static volatile long transactionNumber = 0;
     private String id;
     private Socket clienSocket = null;
     private Response res = null;
@@ -40,6 +45,7 @@ public class ClientHandler extends Thread {
         this.res = res;
         this.bookkeeper.addUser();
         this.mailbox = new Mailbox();
+
 
         if(totalUsers == Long.MAX_VALUE){
             totalUsers = 0;
@@ -78,25 +84,27 @@ public class ClientHandler extends Thread {
                     Filter filter = new Filter(tokens);
 
                     System.out.println(filter.getDateRangeString());
-                    Mail request = new Mail(this.id, "bookkeeper", "Filter", filter);
+                    Mail request = new Mail(this.id, "bookkeeper", "Filter", filter, transactionNumber);
                     
-                    String contents = String.format("Transaction opens from %s", this.id);
-                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
+                    String contents = String.format("Transaction opens from %s with transaction number %d", this.id, transactionNumber);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents, transactionNumber);
                     
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
 
                 } else if (greeting.equals("hotels")){
-                    Mail request = new Mail(this.id, "bookkeeper", "Message", "hotels");
-                    String contents = String.format("Transaction opens from %s", this.id);
-                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents);
+                    this.incrementTransactionNumber();
+
+                    Mail request = new Mail(this.id, "bookkeeper", "Message", "hotels", transactionNumber);
+                    String contents = String.format("Transaction opens from %s with transaction number %d", this.id, transactionNumber);
+                    Mail transaction = new Mail(this.id, "worker", "Transaction", contents, transactionNumber);
                     
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, transaction);  
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
                     
                 } else if(greeting.contains("book")){
                     String[] info = greeting.split(" ");
-                    Mail request = new Mail(this.id, "bookkeeper", "Book", info);
+                    Mail request = new Mail(this.id, "bookkeeper", "Book", info, transactionNumber);
                     this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
                     
                 } else{
@@ -114,14 +122,20 @@ public class ClientHandler extends Thread {
         }
     }
 
+    private synchronized void incrementTransactionNumber(){
+        transactionNumber = transactionNumber + 1;
+    }
+
     public void checkMail(){
         while (true) {
             ArrayList<Mail> msgs = this.mailbox.checkMail(this.type, this.id);
+
 
             if(!msgs.isEmpty()){
                 for(Mail msg : msgs) {
 
                     if(msg.getSubject().equals("Book")){
+
 
                         if(msg.getContents() == null){
                             this.res.changeContents("No room available");
@@ -133,11 +147,13 @@ public class ClientHandler extends Thread {
                             }
                         }
 
+
                         String[] contents = (String[]) msg.getContents();
 
-                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents);
+                        Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents, -1);
                         this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
                     } else if(msg.getSubject().equals("Booked")) {
+
 
                         this.res.changeContents("Booked successfully");
                         try {

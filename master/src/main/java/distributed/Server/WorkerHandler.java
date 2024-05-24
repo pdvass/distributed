@@ -11,9 +11,11 @@ import distributed.Share.Mail;
 /**
  * Worker Handler is responsible for managing the connection between
  * the server and the worker, by exchanging Requests and Responses. Each 
- * worker has its own WorkerHandler.
+ * worker has its own WorkerHandler. t communicates with other handlers
+ * through Mailbox.
  * 
  * @see distributed.Share.Request
+ * @see Mailbox
  * @see Response
  * 
  * @author pdvass

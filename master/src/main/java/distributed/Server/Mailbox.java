@@ -49,7 +49,7 @@ public class Mailbox extends Thread {
      * @param type Type of handler trying to access the mail.
      * @return The mails directed to the handler.
      */
-    public ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
+    public  ArrayList<Mail> checkMail(HandlerTypes type, String callerID){
 
         synchronized (messages){
             while(!read_lock) {

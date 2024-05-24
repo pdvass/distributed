@@ -17,6 +17,7 @@ public class Mail implements Serializable {
     private String recipient;
     private String subject;
     private Object contents;
+    private long transactionNumber;
 
     /**
      * Constructs the mail
@@ -26,11 +27,12 @@ public class Mail implements Serializable {
      * @param subject String denoting the subject of the mail.
      * @param contents Object with the contents of the Mail.
      */
-    public Mail(String sender, String recipient, String subject, Object contents){
+    public Mail(String sender, String recipient, String subject, Object contents, long transactionNumber){
         this.sender = sender;
         this.recipient = recipient;
         this.subject = subject;
         this.contents = contents;
+        this.transactionNumber = transactionNumber;
     }
 
     public String getRecipient(){
@@ -55,6 +57,10 @@ public class Mail implements Serializable {
 
     public void setRecipient(String newRecipient){
         this.recipient = newRecipient;
+    }
+
+    public long getTransactionNumber(){
+        return this.transactionNumber;
     }
 
     /**

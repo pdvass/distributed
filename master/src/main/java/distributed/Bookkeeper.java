@@ -156,7 +156,7 @@ public class Bookkeeper extends Thread {
                                 Date[] dates = new Filter(info).getDateRange();
                                 room.book(dates[0], dates[1]);
                                 // System.out.println("booked " + mail.getSender());
-                                Mail approval = new Mail("bookkeeper", mail.getSender(), "Booked", "Booked successfully");
+                                Mail approval = new Mail("bookkeeper", mail.getSender(), "Booked", "Booked successfully", -1);
                                 this.mailbox.addMessage(this.type, HandlerTypes.CLIENT, approval);
                             }
                         }
@@ -165,7 +165,7 @@ public class Bookkeeper extends Thread {
 
                         for(int i = 0; i < nOfWorkers; i++) {
 
-                            Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents());
+                            Mail clonedMail = new Mail(mail.getSender(), mail.getRecipient(), mail.getSubject(), mail.getContents(), mail.getTransactionNumber());
                             clonedMail.setRecipient("worker" + i);
 
                             System.out.println(mail.getSender());
@@ -196,7 +196,7 @@ public class Bookkeeper extends Thread {
             String targetWorkerName = "worker" + workerIndex;
             workers.get(targetWorkerName).add(room);
 
-            mail = new Mail("Bookkeeper", targetWorkerName, "room", room);
+            mail = new Mail("Bookkeeper", targetWorkerName, "room", room, -1);
             this.mailbox.addMessage(this.type, HandlerTypes.WORKER, mail);
 
             String info = "Room with hash " + roomId + " is to be distributed to " + targetWorkerName;

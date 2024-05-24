@@ -20,6 +20,7 @@ import distributed.Estate.Hotel;
  */
 public class JSONFileParser {
 
+
     private String path;
 
     /**
@@ -45,7 +46,9 @@ public class JSONFileParser {
     /**
      * Parses the file located at the path given. May throw an exception.
      * 
+     * 
      * @return A JSONObject representing the data of the JSON file given.
+     * 
      * 
      * @throws FileNotFoundException If the file does not exist.
      * @throws Exception If there is a problem reading the file.
@@ -54,6 +57,7 @@ public class JSONFileParser {
         JSONObject data = null;
         JSONParser parser = new JSONParser();
 
+
         data = (JSONObject) parser.parse(new FileReader(this.path));
         return data;
     }
@@ -61,9 +65,11 @@ public class JSONFileParser {
     @SuppressWarnings("unchecked")
     protected Hotel iterateJSON(JSONObject data){
 
+
         if(data == null){
             throw new IllegalArgumentException("data argument should not be null") ;
         }
+
 
         if(data.size() == 0){
             return null;
@@ -80,6 +86,7 @@ public class JSONFileParser {
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> startDate = new ArrayList<>();
             ArrayList<String> endDate = new ArrayList<>();
+
 
             float cost = 0;
             int nOfPeople = 0;
@@ -157,8 +164,10 @@ public class JSONFileParser {
         data.put("stars", stars);
         data.put("nOfReviews", n);
 
+
         JSONObject hotel = new JSONObject();
         hotel.put(name, data);
+        
         
         String json = hotel.toJSONString();
 

@@ -3,18 +3,25 @@ package distributed.Estate;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+
 
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.List;
 import java.util.TreeMap;
+
+import java.nio.charset.StandardCharsets;
+import java.io.Serializable;
+import java.math.BigInteger;
 
 import java.nio.charset.StandardCharsets;
 import java.io.Serializable;
@@ -28,6 +35,7 @@ import java.math.BigInteger;
  * @see Hotel
  */
 public class Room implements Serializable {
+
 
     private static final long serialVersionUID = 80420241743L;
     private String name;
@@ -85,6 +93,7 @@ public class Room implements Serializable {
      * Books the room by mutating the internal state of its available dates list. The range is
      * inclusive - exclusive.
      * 
+     * 
      * @param from Date representing the first day of which the room need to be booked.
      * @param to Date representing the last day of which the room need to be booked. This day is not
      * considered booked by the room.
@@ -113,8 +122,10 @@ public class Room implements Serializable {
      * Internal tool for producing a {@link List} with all the dates between the
      * date range given, as its values.
      * 
+     * 
      * @param from Date representing the first day the range.
      * @param to Date representing the last day the range. It is not added to the list.
+     * 
      * 
      * @return A list with all the Dates ranging between first and last date as {@link LocalDate}s
      * 
@@ -139,6 +150,7 @@ public class Room implements Serializable {
     /**
      * Getter for the hash of the room's id as a String.
      * 
+     * 
      * @return String of the hash.
      */
     public String getId(){
@@ -146,6 +158,9 @@ public class Room implements Serializable {
     }
 
     /**
+     * Getter for the hash of the room's id as an int. Useful if combined with 
+     * modulo operation determine which worker should have the room.
+     * 
      * Getter for the hash of the room's id as an int. Useful if combined with 
      * modulo operation determine which worker should have the room.
      * 
@@ -193,6 +208,7 @@ public class Room implements Serializable {
 
     @Override
     public String toString(){
+
 
         StringBuilder sb = new StringBuilder();
         // String hotelName = this.name.replaceFirst("Room\\d", "");
