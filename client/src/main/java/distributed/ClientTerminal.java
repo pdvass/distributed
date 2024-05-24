@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import distributed.Client.TCPClient;
-import distributed.Share.Filter;
 import distributed.Share.Request;
 
 /**
@@ -73,9 +72,13 @@ public class ClientTerminal {
                         HashMap<String, ArrayList<String>> filteredRooms = (HashMap<String, ArrayList<String>>) this.req.receiveRequestObject();
                         @SuppressWarnings("unchecked")
                         HashMap<String, String> hotels = (HashMap<String, String>) this.req.receiveRequestObject();
+                        @SuppressWarnings("unchecked")
+                        List<byte[]> bytesOfImages = (List<byte[]>) this.req.receiveRequestObject();
+                        @SuppressWarnings("unchecked")
+                        List<Integer> bytesLength = (List<Integer>) this.req.receiveRequestObject();
 
-                        for(ArrayList<String> hotel: filteredRooms.values()) {
-                            System.out.println(hotel);
+                        for(ArrayList<String> room: filteredRooms.values()) {
+                            System.out.println(room);
                         }
                     } catch (Exception e){
                         System.out.println(e.getMessage());
@@ -109,7 +112,7 @@ public class ClientTerminal {
                     break;
                 case "book":
                     System.out.println("Booking the room for you");
-                    // book roomID dates:[dd/MM/yyyy-dd/MM/yyyy]
+                    //  
                     this.req.changeContents(msg);
                     this.req.sendMessage();
 

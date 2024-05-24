@@ -103,9 +103,9 @@ public class Filter implements Serializable {
         List<Room> filteredHotels = hotels.stream()
                         .filter(hotel -> hotel.getHotelsRegion().equals(this.region) || this.region.equals(""))
                         .filter(hotel -> hotel.getHotelsStars() >= this.stars || this.stars == -1)
-                        .filter(room -> ( room.getStartDate().before(this.dateRange[0])  
+                        .filter(room -> ( room.getStartDate().after(this.dateRange[0])  
                                          ||  room.getStartDate().equals(this.dateRange[0]) ))
-                        .filter(room -> room.getEndDate().after(this.dateRange[1]) )
+                        .filter(room -> room.getEndDate().before(this.dateRange[1]) )
                         .filter(room -> room.getNOfPeople() == this.nOfPersons || this.nOfPersons == -1)
                         .collect(Collectors.toList());
 

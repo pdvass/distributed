@@ -73,8 +73,11 @@ public class ClientHandler extends Thread {
                 if(greeting.equals("filter")){
 
                     String msg = (String) this.res.readObject();
+
                     String[] tokens = msg.split(" ");
                     Filter filter = new Filter(tokens);
+
+                    System.out.println(filter.getDateRangeString());
                     Mail request = new Mail(this.id, "bookkeeper", "Filter", filter);
                     
                     String contents = String.format("Transaction opens from %s", this.id);
@@ -177,7 +180,7 @@ public class ClientHandler extends Thread {
                             System.out.println("Could not send results to client" + this.id);
                         }
 
-                        if(msg.getSubject().equals("hotels")){
+                        
 
                             String[] filePaths = {
                                 "C:\\Users\\User\\Documents\\AUEB\\diethnes.png",
@@ -213,7 +216,7 @@ public class ClientHandler extends Thread {
                             } catch (IOException e) {
                                 System.out.println("Could not send results to client" + this.id);
                             }
-                        }
+                        
                         
                     }
                 }
