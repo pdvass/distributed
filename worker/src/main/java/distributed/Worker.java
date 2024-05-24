@@ -36,7 +36,11 @@ public class Worker extends Thread {
 
     public void run(){
         this.connect();
-        this.init();
+        for(int i = 0; i < 2; i++){
+            Runnable task = () -> {this.init();};
+            task.run();
+        }
+        // this.init();
     }
 
     public void connect(){
@@ -68,7 +72,7 @@ public class Worker extends Thread {
         try{
 
             Mail incoming = (Mail) this.req.receiveRequestObject();
-            System.out.println(incoming.getSender());
+            // System.out.println(incoming.getSender());
 
             while (true) {
                 String message = incoming.getSubject();
@@ -111,8 +115,8 @@ public class Worker extends Thread {
                         // System.out.println("Error during casting " + e.getMessage());
                     }
                     if(f != null){
-                        System.out.println("Applying filters to my room list" + this.rooms.size());
-                        System.out.println("Got filter " + f.getDateRangeString());
+                        // System.out.println("Applying filters to my room list" + this.rooms.size());
+                        // System.out.println("Got filter " + f.getDateRangeString());
 
                         List<Room> filteredRoms = f.applyFilter(this.rooms);
                         // Mail response = new Mail(message, filteredRoms);
@@ -131,7 +135,7 @@ public class Worker extends Thread {
                         this.reducerReq.sendRequestObject();
                     }
                 } else if (incoming.getSender().equals("manager")){
-                    System.out.println("Request received from manager");
+                    // System.out.println("Request received from manager");
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
                     try {
@@ -150,7 +154,7 @@ public class Worker extends Thread {
                             bookingsPerRegion.put(region, bookingsPerRegion.get(region) + room.getTotalBookings());
                         }
                     });
-                    bookingsPerRegion.forEach((key, value) -> {System.out.println(key + ": " + value);});
+                    // bookingsPerRegion.forEach((key, value) -> {System.out.println(key + ": " + value);});
                     incoming.setContents(bookingsPerRegion);
                     incoming.respond();
                     this.reducerReq.changeContents(incoming);
@@ -159,7 +163,6 @@ public class Worker extends Thread {
                 }
 
                 incoming = (Mail) this.req.receiveRequestObject();
-                // incoming = (Mail) incomingTuple.getSecond();
             }
         } catch (Exception e) {
             e.printStackTrace();

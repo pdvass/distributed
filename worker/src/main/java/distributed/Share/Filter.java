@@ -28,8 +28,8 @@ public class Filter implements Serializable {
         try {
             // Infinity-like parameters to initialise the dateRange array. If dates are given as
             // a filter, then they are "relaxed".
-            dateRange[0] = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/9999");
-            dateRange[1] = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2002");
+            dateRange[0] = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2002");
+            dateRange[1] = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/9999");
         } catch (ParseException e) {
             e.printStackTrace();
         }

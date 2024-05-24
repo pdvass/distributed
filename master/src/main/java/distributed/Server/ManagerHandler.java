@@ -75,9 +75,9 @@ public class ManagerHandler extends Thread {
                         
                         @SuppressWarnings("unchecked") 
                         TreeMap<String, Long> ans = (TreeMap<String, Long>) bookings.get(0).getContents();
-                        System.out.println(ans.size());
+                        // System.out.println(ans.size());
                         
-                        ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
+                        // ans.forEach((key, value) -> {System.out.println(key + " hi " + value);});
                         this.res.changeContents(ans);
                         this.res.sendObject();
                         break;

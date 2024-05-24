@@ -2,6 +2,8 @@ package distributed.Reducer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 import distributed.Estate.Room;
@@ -16,17 +18,17 @@ import distributed.Share.Mail;
  * @author panagou
  * @author pdvass
  */
-public class Merger {
+public class Merger extends Thread {
 
-    private static volatile ArrayList<Mail> receivedMails = null;
+    private static volatile HashMap<Long, ArrayList<Mail>> receivedMails_ = null;
     private static volatile boolean write_lock = true;
     private ReducerClient reducerClient = null;
     private Mail sendMail = null;
 
 
     public Merger(){
-        if(receivedMails == null){ 
-            receivedMails = new ArrayList<>(); 
+        if(receivedMails_ == null){
+            receivedMails_ = new HashMap<>();
         }
     }
 
@@ -36,27 +38,42 @@ public class Merger {
      * 
      * @param mail The object sent from the workers.
      */
+    @SuppressWarnings("unchecked")
     public void receiveMail(Mail mail){
 
-        synchronized(receivedMails) {
+        synchronized(receivedMails_) {
             while(!write_lock) {
                 try {
-                    receivedMails.wait();
+                    receivedMails_.wait();
                 } catch (InterruptedException e){
                     e.printStackTrace();
                 }
             }
 
             write_lock = false;
+            if(mail == null){
+                System.out.println("Worker Died");
+            }
+            if(receivedMails_.size() > 0 && receivedMails_.containsKey(mail.getTransactionNumber())){
+                receivedMails_.get(mail.getTransactionNumber()).add(mail);
+            } else {
+                ArrayList<Mail> transactionMails = new ArrayList<>();
+                transactionMails.add(mail);
+                receivedMails_.put(mail.getTransactionNumber(), transactionMails);
+            }
 
-            receivedMails.add(mail);
-            if (receivedMails.size() == ReducerHandler.totalHandlers){
-                this.mergeContents();
-                receivedMails.clear();
+            Set<Long> keys = receivedMails_.keySet();
+            for(long key: keys){
+                if(receivedMails_.get(key).size() == 3){
+                    ArrayList<Mail> mailToBeMerged = (ArrayList<Mail>) receivedMails_.get(key).clone();
+                    receivedMails_.remove(key);
+                    Runnable merger = () -> {this.mergeContents(mailToBeMerged);};
+                    merger.run();
+                }
             }
 
             write_lock = true; 
-            receivedMails.notifyAll();
+            receivedMails_.notifyAll();
         }
     }
 
@@ -68,7 +85,7 @@ public class Merger {
      * @see ReducerHandler
      */
     @SuppressWarnings("unchecked")
-    private void mergeContents(){
+    private void mergeContents(ArrayList<Mail> receivedMailsToMerge){
         
         ArrayList<Room> mergedList = new ArrayList<>();
         TreeMap<String, Long> mergedMaps = new TreeMap<>();
@@ -79,7 +96,7 @@ public class Merger {
 
         Object mergedContents = null;
 
-        for (Mail mail : receivedMails) {
+        for (Mail mail : receivedMailsToMerge) {
             
             if(mail.getSubject().equals("Book")){
 
@@ -124,9 +141,9 @@ public class Merger {
             System.err.println("Problem");
         }
 
-        System.out.println(receivedMails.get(0).getSubject());
-        this.sendMail = new Mail(receivedMails.get(0).getSender(), receivedMails.get(0).getRecipient(), 
-                                receivedMails.get(0).getSubject(), mergedContents, -1);
+        System.out.println(receivedMailsToMerge.get(0).getSubject());
+        this.sendMail = new Mail(receivedMailsToMerge.get(0).getSender(), receivedMailsToMerge.get(0).getRecipient(), 
+                                receivedMailsToMerge.get(0).getSubject(), mergedContents, -1);
 
         this.sendMailToServer(this.sendMail);
 
