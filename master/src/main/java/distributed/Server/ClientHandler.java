@@ -29,9 +29,7 @@ import distributed.Share.Mail;
  */
 public class ClientHandler extends Thread {
 
-
     private static volatile long totalUsers = 0;
-
     private static volatile long transactionNumber = 0;
     private String id;
     private Socket clienSocket = null;
@@ -77,9 +75,9 @@ public class ClientHandler extends Thread {
             while(!greeting.equals("q")) {
 
                 if(greeting.equals("filter")){
+                    this.incrementTransactionNumber();
 
                     String msg = (String) this.res.readObject();
-
                     String[] tokens = msg.split(" ");
                     Filter filter = new Filter(tokens);
 
@@ -103,6 +101,7 @@ public class ClientHandler extends Thread {
                     this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, request);
                     
                 } else if(greeting.contains("book")){
+                    this.incrementTransactionNumber();
                     String[] info = greeting.split(" ");
                     Mail request = new Mail(this.id, "bookkeeper", "Book", info, transactionNumber);
                     this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.BOOKKEEPER, request);
@@ -196,42 +195,40 @@ public class ClientHandler extends Thread {
                             System.out.println("Could not send results to client" + this.id);
                         }
 
-                        
+                        String[] filePaths = {
+                            "C:\\Users\\User\\Documents\\AUEB\\diethnes.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\fourSeasons.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\hilton.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\hotelCalifornia.png",
+                            "C:\\Users\\User\\Documents\\AUEB\\pergamos.png"
+                        };
 
-                            String[] filePaths = {
-                                "C:\\Users\\User\\Documents\\AUEB\\diethnes.png",
-                                "C:\\Users\\User\\Documents\\AUEB\\fourSeasons.png",
-                                "C:\\Users\\User\\Documents\\AUEB\\hilton.png",
-                                "C:\\Users\\User\\Documents\\AUEB\\hotelCalifornia.png",
-                                "C:\\Users\\User\\Documents\\AUEB\\pergamos.png"
-                            };
+                        List<byte[]> bytesOfImages = new ArrayList<>();
+                        List<Integer> bytesLength = new ArrayList<>();
+                        Path path = null;
+                        byte[] bytes = null;
 
-                            List<byte[]> bytesOfImages = new ArrayList<>();
-                            List<Integer> bytesLength = new ArrayList<>();
-                            Path path = null;
-                            byte[] bytes = null;
-
-                            for (String filePath : filePaths) {
-                                try {
-                                    path = Paths.get(filePath);
-                                    bytes = Files.readAllBytes(path);
-                                    bytesOfImages.add(bytes);
-                                    bytesLength.add(bytes.length);
-                                } catch (Exception e) {
-                                    System.out.println("Error editing image: " + filePath);
-                                    e.printStackTrace();
-                                }
-                            }
-
+                        for (String filePath : filePaths) {
                             try {
-                                this.res.changeContents(bytesOfImages);
-                                this.res.sendObject();
-
-                                this.res.changeContents(bytesLength);
-                                this.res.sendObject();
-                            } catch (IOException e) {
-                                System.out.println("Could not send results to client" + this.id);
+                                path = Paths.get(filePath);
+                                bytes = Files.readAllBytes(path);
+                                bytesOfImages.add(bytes);
+                                bytesLength.add(bytes.length);
+                            } catch (Exception e) {
+                                System.out.println("Error editing image: " + filePath);
+                                e.printStackTrace();
                             }
+                        }
+
+                        try {
+                            this.res.changeContents(bytesOfImages);
+                            this.res.sendObject();
+
+                            this.res.changeContents(bytesLength);
+                            this.res.sendObject();
+                        } catch (IOException e) {
+                            System.out.println("Could not send results to client" + this.id);
+                        }
                         
                         
                     }

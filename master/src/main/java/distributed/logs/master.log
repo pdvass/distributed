@@ -1,0 +1,155 @@
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -1333897753 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -1267769555 is to be distributed to worker2 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -1906184660 is to be distributed to worker2 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 1095179056 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -1036181519 is to be distributed to worker2 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 662066448 is to be distributed to worker0 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 1984787920 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 3437501 is to be distributed to worker2 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -1117153711 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 1548305173 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 799549516 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -884012541 is to be distributed to worker0 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash -1872113212 is to be distributed to worker1 24/05/2024 15:27:59
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:27:59
+[INFO] Room with hash 135731883 is to be distributed to worker0 24/05/2024 15:27:59
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:28:48
+[TRANSACTION] Transaction opens from client0 with transaction number 1 24/05/2024 15:28:48
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:28:48
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:28:48
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:28:48
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:28:49
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -1333897753 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -1267769555 is to be distributed to worker2 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -1906184660 is to be distributed to worker2 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 1095179056 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -1036181519 is to be distributed to worker2 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 662066448 is to be distributed to worker0 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 1984787920 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 3437501 is to be distributed to worker2 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -1117153711 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 1548305173 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 799549516 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -884012541 is to be distributed to worker0 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash -1872113212 is to be distributed to worker1 24/05/2024 15:35:56
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:35:56
+[INFO] Room with hash 135731883 is to be distributed to worker0 24/05/2024 15:35:56
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:36:50
+[TRANSACTION] Transaction opens from client0 with transaction number 1 24/05/2024 15:36:50
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:36:50
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:36:51
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:36:51
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:36:53
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:36:56
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:37:50
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:37:50
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:37:51
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:37:51
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:39:06
+[TRANSACTION] Transaction opens from client0 with transaction number 1 24/05/2024 15:39:06
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:39:06
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:39:06
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:39:06
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:39:06
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:39:07
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:07
+[INFO] Room with hash -1333897753 is to be distributed to worker1 24/05/2024 15:45:07
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:07
+[INFO] Room with hash -1267769555 is to be distributed to worker2 24/05/2024 15:45:07
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:07
+[INFO] Room with hash -1906184660 is to be distributed to worker2 24/05/2024 15:45:07
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:07
+[INFO] Room with hash 1095179056 is to be distributed to worker1 24/05/2024 15:45:07
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:07
+[INFO] Room with hash -1036181519 is to be distributed to worker2 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash 662066448 is to be distributed to worker0 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash 1984787920 is to be distributed to worker1 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash 3437501 is to be distributed to worker2 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash -1117153711 is to be distributed to worker1 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash 1548305173 is to be distributed to worker1 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash 799549516 is to be distributed to worker1 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash -884012541 is to be distributed to worker0 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash -1872113212 is to be distributed to worker1 24/05/2024 15:45:08
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:45:08
+[INFO] Room with hash 135731883 is to be distributed to worker0 24/05/2024 15:45:08
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:46:06
+[TRANSACTION] Transaction opens from client0 with transaction number 1 24/05/2024 15:46:06
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:46:06
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:46:06
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:46:07
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:46:09
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:46:13
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:47:00
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:00
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:00
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:01
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:47:02
+[INFO] MANAGER left a message to BOOKKEEPER 24/05/2024 15:47:02
+[INFO] BOOKKEEPER left a message to CLIENT 24/05/2024 15:47:02
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:47:18
+[TRANSACTION] Transaction opens from client0 with transaction number 3 24/05/2024 15:47:18
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:47:18
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:18
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:19
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:19
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:47:19
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:47:40
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:40
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:40
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:47:40
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:47:40
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:48:26
+[TRANSACTION] Transaction opens from client0 with transaction number 5 24/05/2024 15:48:26
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:48:26
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:48:26
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:48:26
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:48:26
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:48:26
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:48:38
+[TRANSACTION] Transaction opens from client0 with transaction number 6 24/05/2024 15:48:38
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:48:38
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:48:38
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:48:39
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:48:39
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:48:40
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:49:01
+[TRANSACTION] Transaction opens from client0 with transaction number 7 24/05/2024 15:49:01
+[INFO] CLIENT left a message to BOOKKEEPER 24/05/2024 15:49:01
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:49:01
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:49:01
+[INFO] BOOKKEEPER left a message to WORKER 24/05/2024 15:49:01
+[INFO] REDUCER left a message to CLIENT 24/05/2024 15:49:01
