@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Booking App</string>
+    <string name="app_title">Welcome to Booking Net</string>
+    <string name="app_username">user name or email</string>
+    <string name="app_enter">ENTER</string>
+    <string name="hotelD">Diethnes</string>
+    <string name="fourS">Four Seasons</string>
+    <string name="hilton">Hilton</string>
+    <string name="hotelC">Hotel California</string>
+    <string name="perg">Pergamos</string>
+    <string name="filter">APPLY</string>
+    <string name="book">BOOK</string>
+    <string name="from">from</string>
+    <string name="to">to</string>
+    <string name="room">room number</string>
+    <string name="persons">persons</string>
+    <string name="region">region</string>
+    <string name="stars">stars</string>
+    <string name="hotel">hotel name</string>
+    <string name="review">REVIEW</string>
+</resources>

@@ -10,10 +10,10 @@ import distributed.Estate.Room;
 import distributed.Share.Mail;
 
 /**
- * The Merger class receives the Objects from the workers and merges them. 
- * 
+ * The Merger class receives the Objects from the workers and merges them.
+ *
  * @see Mail
- * 
+ *
  * @author stellagianno
  * @author panagou
  * @author pdvass
@@ -33,9 +33,9 @@ public class Merger extends Thread {
     }
 
     /**
-     * This method receives the mails from all the workers synchronized and 
+     * This method receives the mails from all the workers synchronized and
      * calls the merger to merge their contents.
-     * 
+     *
      * @param mail The object sent from the workers.
      */
     @SuppressWarnings("unchecked")
@@ -72,7 +72,7 @@ public class Merger extends Thread {
                 }
             }
 
-            write_lock = true; 
+            write_lock = true;
             receivedMails_.notifyAll();
         }
     }
@@ -81,12 +81,12 @@ public class Merger extends Thread {
      * Merges the contents each Worker Handler in Reducer's side leaves.
      * In case a client is the recipient then the merge is about ArrayLists
      * In case of a Manager's request, then it merges HashMaps.
-     * 
+     *
      * @see ReducerHandler
      */
     @SuppressWarnings("unchecked")
     private void mergeContents(ArrayList<Mail> receivedMailsToMerge){
-        
+
         ArrayList<Room> mergedList = new ArrayList<>();
         TreeMap<String, Long> mergedMaps = new TreeMap<>();
 
@@ -97,7 +97,7 @@ public class Merger extends Thread {
         Object mergedContents = null;
 
         for (Mail mail : receivedMailsToMerge) {
-            
+
             if(mail.getSubject().equals("Book")){
 
                 subject = "Book";
@@ -105,7 +105,7 @@ public class Merger extends Thread {
                 if( Boolean.parseBoolean(contents[0])){
                     res = new String[]{mail.getSender(), contents[0], contents[1], contents[2]};
                 }
-                
+
             } else if (mail.getRecipient().contains("client")){
 
                 recipient = mail.getRecipient();
@@ -113,12 +113,12 @@ public class Merger extends Thread {
                     System.out.println(contents.toString());
                     mergedList.add(contents);
                 }
-                
+
             } else if (mail.getRecipient().equals("manager")){
 
                 recipient = "manager";
                 TreeMap<String, Long> map = (TreeMap<String, Long>) mail.getContents();
-                
+
                 map.forEach((key, value) -> {
                     if(mergedMaps.get(key) == null){
                         mergedMaps.put(key, value);
@@ -126,11 +126,11 @@ public class Merger extends Thread {
                         mergedMaps.put(key, mergedMaps.get(key) + value);
                     }
                 });
-                
+
             }
-            
-        } 
-        
+
+        }
+
         if(subject.equals("Book")){
             mergedContents = res;
         } else if(recipient.contains("client")){
@@ -142,31 +142,31 @@ public class Merger extends Thread {
         }
 
         System.out.println(receivedMailsToMerge.get(0).getSubject());
-        this.sendMail = new Mail(receivedMailsToMerge.get(0).getSender(), receivedMailsToMerge.get(0).getRecipient(), 
+        this.sendMail = new Mail(receivedMailsToMerge.get(0).getSender(), receivedMailsToMerge.get(0).getRecipient(),
                                 receivedMailsToMerge.get(0).getSubject(), mergedContents, -1);
 
         this.sendMailToServer(this.sendMail);
 
     }
-    
+
     /**
      * Takes a mail with the merged contents and sends it back to the server.
-     * 
+     *
      * @param mail the final mail.
-     * 
+     *
      * @see ReducerClient
      */
     private void sendMailToServer(Mail mail){
         this.reducerClient = new ReducerClient();
         try {
-            this.reducerClient.startConnection("localhost", 4555);
+            this.reducerClient.startConnection("192.168.2.6", 4555);
             this.reducerClient.sendMessage("reducer connection");
 
             String response = this.reducerClient.receiveMsg();
             if(!response.equals("reducer connected")){
                 System.out.println("Could not connect");
-            } 
-            
+            }
+
             System.out.println("connected");
             this.reducerClient.sendObject(mail);
         } catch (IOException e) {

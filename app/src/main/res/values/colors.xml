@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#FF000000</color>
+    <color name="grey">#b3b3b3</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Shades of blue -->
+    <color name="darkBlue">#193366</color>
+    <color name="lightBlue">#7094db</color>
+
+    <!-- Shades of green -->
+    <color name="darkGreen">#0d261a</color>
+    <color name="lightGreen">#39ac73</color>
+
+    <!-- Shades of purple -->
+    <color name="darkPurple">#391339</color>
+    <color name="lightPurple">#d279d2</color>
+
+</resources>
