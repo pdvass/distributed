@@ -146,13 +146,11 @@ public class ClientHandler extends Thread {
                             }
                         }
 
-
                         String[] contents = (String[]) msg.getContents();
 
                         Mail noticeMail = new Mail(this.id, "bookkeeper", "Booked", contents, -1);
                         this.mailbox.addMessage(HandlerTypes.MANAGER, HandlerTypes.BOOKKEEPER, noticeMail);
                     } else if(msg.getSubject().equals("Booked")) {
-
 
                         this.res.changeContents("Booked successfully");
                         try {
@@ -160,6 +158,12 @@ public class ClientHandler extends Thread {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    } else if(msg.getSubject().equals("Review")) {
+
+                        String content = (String) msg.getContents();
+                        // hotel:Hilton stars:4
+                        Mail noticeMail = new Mail(this.id, "manager", "Review", content, -1);
+                        this.mailbox.addMessage(HandlerTypes.CLIENT, HandlerTypes.MANAGER, noticeMail);
                     } else {
                         // We know the server sides leaves the messages as List<Room> 
                         @SuppressWarnings("unchecked")

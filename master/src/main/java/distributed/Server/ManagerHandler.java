@@ -24,7 +24,6 @@ import distributed.Share.Mail;
  */
 public class ManagerHandler extends Thread {
 
-
     private Socket clienSocket = null;
     private Response res = null;
     private Bookkeeper bookkeeper = new Bookkeeper();
@@ -71,12 +70,10 @@ public class ManagerHandler extends Thread {
                         Mail managerRequest = new Mail("manager", "bookkeeper", "Filter", filter, -1);
                         this.mailbox.addMessage(this.type, HandlerTypes.BOOKKEEPER, managerRequest);
                         
-                        
                         ArrayList<Mail> bookings = new ArrayList<Mail>();
                         while(bookings.isEmpty()){
                             bookings = this.mailbox.checkMail(this.type, "manager");
                         }
-                        
                         
                         @SuppressWarnings("unchecked") 
                         TreeMap<String, Long> ans = (TreeMap<String, Long>) bookings.get(0).getContents();

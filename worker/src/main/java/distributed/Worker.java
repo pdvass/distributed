@@ -87,8 +87,6 @@ public class Worker extends Thread {
 
                 } else if(message.equals("Book")){
 
-                } else if(message.equals("Book")){
-
                     String[] info = (String[]) incoming.getContents();
                     // info -> {"book", roomID, dates}
                     Date[] dateRange = new Filter(info).getDateRange();
@@ -111,12 +109,9 @@ public class Worker extends Thread {
 
                     this.reducerReq.changeContents(incoming);
                     this.reducerReq.sendRequestObject();
-
-                } else if (incoming.getSender().contains("client")){
                 } else if (incoming.getSender().contains("client")){
                     Object typeOfRequest = incoming.getContents();
                     Filter f = null;
-
 
                     try {
                         f = (Filter) typeOfRequest;
@@ -137,10 +132,8 @@ public class Worker extends Thread {
                     } else if(typeOfRequest instanceof String && ((String) typeOfRequest).equals("hotels")){
                         System.out.println("Client " + incoming.getSender() + " asked for hotels");
 
-
                         incoming.respond();
                         incoming.setContents(this.rooms);
-
 
                         this.reducerReq.changeContents(incoming);
                         this.reducerReq.sendRequestObject();
