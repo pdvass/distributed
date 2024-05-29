@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <!-- LinearLayout vertically -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- LinearLayout to arrange EditTexts and Buttons horizontal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/editPerson"
+                    android:labelFor="@id/editPerson"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:autofillHints="@string/persons"
+                    android:background="@drawable/square_bg"
+                    android:inputType="text|number"
+                    android:text="@string/persons"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/editRegion"
+                    android:labelFor="@id/editRegion"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:autofillHints="@string/region"
+                    android:background="@drawable/square_bg"
+                    android:inputType="text"
+                    android:text="@string/region"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/editStars"
+                    android:labelFor="@id/editStars"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:autofillHints="@string/stars"
+                    android:background="@drawable/square_bg"
+                    android:inputType="text|number"
+                    android:text="@string/stars"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    android:layout_marginBottom="15dp"/>
+
+                <Button
+                    android:id="@+id/btnFilter"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_bg"
+                    android:text="@string/filter"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/editFrom"
+                    android:labelFor="@id/editFrom"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:autofillHints="@string/from"
+                    android:background="@drawable/square_bg"
+                    android:inputType="text|date"
+                    android:text="@string/from"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/editTo"
+                    android:labelFor="@id/editTo"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:autofillHints="@string/to"
+                    android:background="@drawable/square_bg"
+                    android:inputType="text|date"
+                    android:text="@string/to"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <!-- EditText -->
+                <EditText
+                    android:id="@+id/editRoomName"
+                    android:labelFor="@id/editRoomName"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:autofillHints="@string/room"
+                    android:background="@drawable/square_bg"
+                    android:inputType="text"
+                    android:text="@string/room"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    android:layout_marginBottom="15dp" />
+
+                <Button
+                    android:id="@+id/btnBook"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_bg"
+                    android:text="@string/book"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+        <!-- LinearLayout to arrange ImageViews and TextViews vertically -->
+        </LinearLayout>
+
+            <!-- Hotel Diethnes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- ImageView -->
+                <ImageView
+                    android:id="@+id/imageDieth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="15dp"
+                    android:contentDescription="@string/hotelD"/>
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/titleDieth"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/hotelD"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/textDieth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/hotelD"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Four Season -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- ImageView -->
+                <ImageView
+                    android:id="@+id/imageFS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="15dp"
+                    android:contentDescription="@string/fourS" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/titleFS"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/fourS"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/textFS"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/fourS"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Hilton -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- ImageView -->
+                <ImageView
+                    android:id="@+id/imageHil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="15dp"
+                    android:contentDescription="@string/hilton" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/titleHil"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/hilton"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/textHil"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/hilton"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Hotel California -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- ImageView -->
+                <ImageView
+                    android:id="@+id/imageHC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="15dp"
+                    android:contentDescription="@string/hotelC" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/titleHC"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/hotelC"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/textHC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/hotelC"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Hotel Pergamos -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- ImageView -->
+                <ImageView
+                    android:id="@+id/imagePerg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="15dp"
+                    android:contentDescription="@string/perg" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/titlePerg"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/perg"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <!-- TextView -->
+                <TextView
+                    android:id="@+id/textPerg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/perg"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <!-- EditText -->
+            <EditText
+                android:id="@+id/editReview"
+                android:labelFor="@id/editReview"
+                android:layout_width="150dp"
+                android:layout_height="20dp"
+                android:background="@drawable/square_bg"
+                android:autofillHints="@string/stars"
+                android:inputType="text"
+                android:text="@string/stars"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                android:textStyle="normal" />
+
+            <!-- EditText -->
+            <EditText
+                android:id="@+id/editHotel"
+                android:labelFor="@id/editHotel"
+                android:layout_width="150dp"
+                android:layout_height="20dp"
+                android:background="@drawable/square_bg"
+                android:autofillHints="@string/hotel"
+                android:inputType="text"
+                android:text="@string/hotel"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                android:layout_marginBottom="15dp" />
+
+            <Button
+                android:id="@+id/btnReview"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_bg"
+                android:text="@string/review"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

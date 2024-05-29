@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <!-- LinearLayout vertically -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Hotel Diethnes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/imageDieth"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="@string/hotelD"/>
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/titleDieth"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/hotelD"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/textDieth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/hotelD"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Four Season -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/imageFS"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="@string/fourS" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/titleFS"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/fourS"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/textFS"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/fourS"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Hilton -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/imageHil"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="@string/hilton" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/titleHil"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/hilton"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/textHil"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/hilton"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Hotel California -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/imageHC"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="@string/hotelC" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/titleHC"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/hotelC"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/textHC"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/hotelC"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Hotel Pergamos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/imagePerg"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="@string/perg" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/titlePerg"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/perg"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/textPerg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/perg"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
